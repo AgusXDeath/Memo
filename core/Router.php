@@ -1,10 +1,10 @@
 <?php
 // app/core/Router.php
 
-include_once '../controllers/ProductController.php';
+include_once '../controllers/tableController.php';
 include_once '../views/View.php';
 
-$controller = new ProductController();
+$controller = new tableController();
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {

@@ -6,16 +6,18 @@ import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.componen
 import { TablaGruposComponent } from './tabla-grupos/tabla-grupos.component';
 import { AdminComponent } from './admin/admin.component';
 
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
     TablaUsuariosComponent,
     TablaGruposComponent,
-    AdminComponent
+    AdminComponent,
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    SharedModule
   ]
 })
 export class AdminModule { }

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+
+
 @Component({
   selector: 'app-tabla-grupos',
   templateUrl: './tabla-grupos.component.html',

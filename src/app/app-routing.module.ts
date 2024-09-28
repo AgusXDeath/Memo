@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegistroComponent } from './modules/autentificacion/components/registro/registro.component';
-
+import { InicioSesionComponent } from './modules/autentificacion/components/inicio-sesion/inicio-sesion.component';
 
 const routes: Routes = [
   {
-    path: "", component:RegistroComponent
+    path: "", redirectTo: "inicio-sesion", pathMatch: 'full'
   },
   {
-    path: "",loadChildren:()=>import('./modules/admin/admin.module').then(m=>m.AdminModule)
+    path: "", component:InicioSesionComponent
+  },
+  {
+    path: "dashboard",loadChildren:()=>import('./modules/autentificacion/components/dashboard/dashboard.module').then(m=>m.DashboardModule)
+  },
+  {
+    path: "**", redirectTo: "inicio-sesion", pathMatch: 'full'
   }
 ];
 

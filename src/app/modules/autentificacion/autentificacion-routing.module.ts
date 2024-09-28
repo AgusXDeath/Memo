@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegistroComponent } from './components/registro/registro.component';
+import { InicioSesionComponent } from './components/inicio-sesion/inicio-sesion.component';
 
 const routes: Routes = [
   {
-    path: "", component:RegistroComponent
+    path: "", component:InicioSesionComponent
   },
   {
-    path: "registro", component:RegistroComponent
+    path: "inicio-sesion", component:InicioSesionComponent
   }
 ];
 

@@ -6,18 +6,21 @@ import { TablaUsuariosComponent } from './tabla-usuarios/tabla-usuarios.componen
 import { TablaGruposComponent } from './tabla-grupos/tabla-grupos.component';
 import { AdminComponent } from './admin/admin.component';
 
-import { SharedModule } from '../shared/shared.module';
+//componentes de Material
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
     TablaUsuariosComponent,
     TablaGruposComponent,
-    AdminComponent,
+    AdminComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    SharedModule
+    MatTableModule,
+  
+    
   ]
 })
 export class AdminModule { }

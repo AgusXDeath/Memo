@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuariosService } from 'src/app/services/usuarios.service';
-
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalAgregarUsuarioComponent } from './modal-agregar-usuario/modal-agregar-usuario.component';
 
 @Component({
   selector: 'app-tabla-usuarios',
@@ -9,22 +11,86 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 
 
+
 export class TablaUsuariosComponent implements OnInit {
 
+  usuarios = new MatTableDataSource<any>([]); // Utiliza MatTableDataSource
+  selectedUsuario: any = {idUsuario: null, nombreUsuario: '', mail: '', clave:''};  // Variable para almacenar el usuario seleccionado
 
-  usuarios: any[] = []; 
+  // Inyecta el servicio UsuariosService
+  constructor(private usuariosService: UsuariosService, public dialog: MatDialog) {}
 
-  constructor(private apiService: UsuariosService) { }
-
+  //metodo para mostrar los usuarios en la tabla
   ngOnInit(): void {
-    this.listarUsuarios()
+    this.loadUsuarios();
   }
 
-  listarUsuarios(){
-    this.apiService.getAll().subscribe( data => {
-      this.usuarios = data;
-      console.log(this.usuarios);
+  loadUsuarios() {
+    this.usuariosService.getUsuarios().subscribe(data => {
+      console.log('Datos de la API:', data);  // Muestra lo que devuelve la API
+      this.usuarios.data = data;  // Asigna los datos a la tabla
+    });
+  }
+
+  // Metodo que abre el modal para agregar un usuario
+  openCreateForm(): void {
+    const dialogRef = this.dialog.open(ModalAgregarUsuarioComponent, {
+      width: '300px',
+      data: { nombreUsuario: '', mail: '', clave: '', idgrupo: '' } // se abre el modal vacio para agregar 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const nuevoUsuario = { nombreUsuario: result, mail: result, clave: result, idgrupo: result };
+        this.createUsuario(nuevoUsuario);
+      }
+    });
+  }
+
+  // abre el modal para editar un usuario existente
+  openEditForm(usuario: any): void {
+    const dialogRef = this.dialog.open(ModalAgregarUsuarioComponent, {
+      width: '300px',
+      data: { nombreUsuario: usuario.nombreUsuario, mail: usuario.mail, clave: usuario.clave, idgrupo: usuario.idgrupo } // Se envian los datos actuales para la edicion
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const usuarioActualizado = { nombreUsuario: result, mail: result, clave: result, idgrupo: result };
+        this.updateUsuario(usuario.idUsuario, usuarioActualizado);
+      }
     })
   }
 
-}
+  // metodo para crear un usuario
+  createUsuario(usuario: any) {
+    this.usuariosService.createUsuario(usuario).subscribe(response => {
+      console.log('Usuario creado:', response);
+      this.loadUsuarios(); // Recarga la tabla
+    
+    }, error => {
+      console.error('Error al crear usuario:', error);
+    });
+  }
+
+  // metodo para actualizar un usuario
+  updateUsuario(id: number, usuario: any) {
+    this.usuariosService.updateUsuario(id, usuario).subscribe(response => {
+      console.log('Usuario actualizado:', response);
+      this.loadUsuarios(); // Recarga la tabla
+    }, error => {
+      console.error('Error al actualizar usuario:', error);
+    });
+  }
+
+  // metodo para eliminar un usuario
+  deleteUsuario(id: number) {
+    this.usuariosService.deleteUsuario(id).subscribe(response => {
+      console.log('Usuario eliminado:', response);
+      this.loadUsuarios(); // Recarga la tabla
+    },error => {
+      console.error('Error al eliminar usuario:', error);
+    });
+  }
+
+}  

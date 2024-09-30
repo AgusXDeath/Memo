@@ -1,4 +1,132 @@
-<!-- tabla -->
+<!--Tabla para listar los usuarios-->
+<table mat-table [dataSource]="usuarios" class="mat-elevation-z8">
+    <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.NombreUsuario}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.Mail}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="clave">
+        <th mat-header-cell *matHeaderCellDef> Clave </th>
+        <td mat-cell *matCellDef="let element"> {{element.Clave}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="idGrupo">
+        <th mat-header-cell *matHeaderCellDef> IdGrupo </th>
+        <td mat-cell *matCellDef="let element"> {{element.IdGrupo}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['nombre', 'email', 'clave', 'idGrupo']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['nombre', 'email', 'clave', 'idGrupo'];"></tr>
+</table>
+
+<!-- Botón para abrir el modal de creación -->
+<button mat-raised-button (click)="openCreateForm()">Agregar Usuario</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- formulario hecho en clase
+<div class="container">
+    <div class="row">
+        <h1>Agregar un nuevo usuario</h1>
+        <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+     
+            <input  matInput placeholder="Ej: pepito">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field> <br>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Mail</mat-label>
+            <input  matInput placeholder="Ej: pepito2022">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field> <br>
+
+       
+        <mat-form-field>
+            <mat-label>Clave</mat-label>
+            <input  matInput [type]="hide ? 'password' : 'text'" #input minlength="6"
+                required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint align="start">Mínimo:6/{{input.value.length}}</mat-hint>
+        </mat-form-field> <br>
+
+       
+        <button class="boton" mat-raised-button color="primary" (click)="registrar()">Registrar</button>
+    </div>
+</div>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- tabla sin angular material-->
+<!-- 
 <table class="table">
   <thead>
       <tr>
@@ -10,15 +138,15 @@
       </tr>
   </thead>
   <tbody>
-      <tr *ngFor="let usuario of usuarios"><!-- *ngFor="let producto of coleccionProductos" -->
-          <!-- <th scope="row">1</th> -->
+      <tr *ngFor="let usuario of usuarios">
+ 
 
           <td>{{usuario.NombreUsuario}}</td>
           <td>{{usuario.Mail}}</td>
           <td>{{usuario.Clave}}</td>
           <td>{{usuario.IdGrupo}}</td>
 
-          <!-- ACCIONES -->
+    
            <td>
               <button id="btn-edit" title="Editar" type="button" class="btn btn-outline-warning">
                   <mat-icon>edit</mat-icon>
@@ -32,7 +160,7 @@
           
       </tr>
   </tbody>
-</table>
+</table> -->
 
 
 <!--prueba para listar datos-->

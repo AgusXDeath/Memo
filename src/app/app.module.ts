@@ -8,6 +8,11 @@ import { AutentificacionModule } from './modules/autentificacion/autentificacion
 import { SharedModule } from './modules/shared/shared.module';
 import { AdminModule } from './modules/admin/admin.module';
 
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button'; // Si deseas botones para agregar/editar/eliminar
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // Importa FormsModule
+import { MatInputModule } from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +23,12 @@ import { AdminModule } from './modules/admin/admin.module';
     BrowserAnimationsModule,
     AutentificacionModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    AdminModule,
+    MatTableModule,
+    MatButtonModule,
+    FormsModule,  // Agrega FormsModule
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

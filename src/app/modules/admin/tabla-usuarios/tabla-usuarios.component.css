@@ -1,3 +1,18 @@
+/*estilos del formulario */
+.container{
+    display: flex;
+    padding: 300px;
+    padding-top: 50px;
+    text-align: center;
+    justify-content: center;
+}
+.boton{
+    width: 120px;
+    margin: auto;
+}
+
+
+/* estilos de la tabla sin angular material 
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -7,7 +22,7 @@
 }
 
 .table thead tr {
-    background-color: #3452b4; /* Color del navbar */
+    background-color: #3452b4;
     color: #ffffff;
     text-align: left;
     font-weight: bold;
@@ -28,7 +43,7 @@
 }
 
 .table tbody tr:last-of-type {
-    border-bottom: 2px solid #3452b4; /* Color del navbar */
+    border-bottom: 2px solid #3452b4; 
 }
 
 .table img {
@@ -38,7 +53,7 @@
 }
 
 .table button {
-    margin: 0 10px; /* Reducir aún más el margen para que los botones queden más juntos */
+    margin: 0 10px; 
 }
 
 
@@ -49,3 +64,4 @@
 .table button#delete {
     color: #dc3545;
 }
+ */

@@ -21,10 +21,12 @@ export class UsuariosService {
   }
   
   createUsuario(usuario: any): Observable<any> {
+    console.log(usuario);
     return this.http.post(this.apiUrlUsuarios, usuario);
   }
   
   updateUsuario(id: number, usuario: any): Observable<any> {
+    console.log(usuario);
     return this.http.put(`${this.apiUrlUsuarios}&id=${id}`, usuario);
   }
   

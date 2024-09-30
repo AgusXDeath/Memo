@@ -15,10 +15,10 @@ import { ModalAgregarUsuarioComponent } from './modal-agregar-usuario/modal-agre
 export class TablaUsuariosComponent implements OnInit {
 
   usuarios = new MatTableDataSource<any>([]); // Utiliza MatTableDataSource
-  selectedUsuario: any = {idUsuario: null, nombreUsuario: '', mail: '', clave:''};  // Variable para almacenar el usuario seleccionado
+  selectedUsuario: any = { idUsuario: null, nombreUsuario: '', mail: '', clave: '', idgrupo: '' };  // Variable para almacenar el usuario seleccionado
 
   // Inyecta el servicio UsuariosService
-  constructor(private usuariosService: UsuariosService, public dialog: MatDialog) {}
+  constructor(private usuariosService: UsuariosService, public dialog: MatDialog) { }
 
   //metodo para mostrar los usuarios en la tabla
   ngOnInit(): void {
@@ -41,7 +41,14 @@ export class TablaUsuariosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const nuevoUsuario = { nombreUsuario: result, mail: result, clave: result, idgrupo: result };
+        /* const nuevoUsuario = { nombreUsuario: result, mail: result, clave: result, idgrupo: result }; */
+        const { nombreUsuario, mail, clave, idgrupo } = result
+        const nuevoUsuario = {
+          nombreUsuario,
+          mail,
+          clave,
+          idgrupo
+        }
         this.createUsuario(nuevoUsuario);
       }
     });
@@ -56,8 +63,15 @@ export class TablaUsuariosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const usuarioActualizado = { nombreUsuario: result, mail: result, clave: result, idgrupo: result };
-        this.updateUsuario(usuario.idUsuario, usuarioActualizado);
+        /* const usuarioActualizado = { nombreUsuario: result, mail: result, clave: result, idgrupo: result }; */
+        const { nombreUsuario, mail, clave, idgrupo } = result
+        const usuarioActualizado = {
+          nombreUsuario,
+          mail,
+          clave,
+          idgrupo
+        }
+        this.updateUsuario(usuario.idUsuario, result);
       }
     })
   }
@@ -67,7 +81,7 @@ export class TablaUsuariosComponent implements OnInit {
     this.usuariosService.createUsuario(usuario).subscribe(response => {
       console.log('Usuario creado:', response);
       this.loadUsuarios(); // Recarga la tabla
-    
+
     }, error => {
       console.error('Error al crear usuario:', error);
     });
@@ -88,7 +102,7 @@ export class TablaUsuariosComponent implements OnInit {
     this.usuariosService.deleteUsuario(id).subscribe(response => {
       console.log('Usuario eliminado:', response);
       this.loadUsuarios(); // Recarga la tabla
-    },error => {
+    }, error => {
       console.error('Error al eliminar usuario:', error);
     });
   }

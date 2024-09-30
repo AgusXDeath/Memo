@@ -10,7 +10,7 @@ export class ModalAgregarUsuarioComponent {
   nombreUsuario: string;
   mail: string;
   clave: string;
-  idgrupo: string;
+  idgrupo: number;
 
   constructor(
     public dialogRef: MatDialogRef<ModalAgregarUsuarioComponent>,
@@ -27,14 +27,24 @@ export class ModalAgregarUsuarioComponent {
   }
 
   onSave(): void {
-    if (this.nombreUsuario && this.mail && this.clave) {
-      this.dialogRef.close(this.nombreUsuario);
+    if (this.nombreUsuario.trim() && this.mail.trim() && this.clave.trim() && this.idgrupo) {
+/*       this.dialogRef.close(this.nombreUsuario);
       this.dialogRef.close(this.mail);
       this.dialogRef.close(this.clave);
-      this.dialogRef.close(this.idgrupo); 
+      this.dialogRef.close(this.idgrupo);  */
+      
+      const usuario = {
+        nombreUsuario: this.nombreUsuario,
+        mail: this.mail,
+        clave: this.clave,
+        idgrupo: this.idgrupo
+      };
+      this.dialogRef.close(usuario);
+      
+    }
     }
   }
 
 
 
-}
+

@@ -1,5 +1,14 @@
-/*estilos del formulario */
-.container{
+.boton-agregar{
+    display: block; /* Para que el botón ocupe toda la línea */
+    margin: 20px auto; /* Centra el botón horizontalmente */
+}
+
+.boton-agregar:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el cursor */
+    color: white; /* Color del texto */
+  }
+
+/* .container{
     display: flex;
     padding: 300px;
     padding-top: 50px;
@@ -10,7 +19,7 @@
     width: 120px;
     margin: auto;
 }
-
+ */
 
 /* estilos de la tabla sin angular material 
 .table {

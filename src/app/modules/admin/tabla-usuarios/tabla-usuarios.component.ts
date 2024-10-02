@@ -58,7 +58,7 @@ export class TablaUsuariosComponent implements OnInit {
   openEditForm(usuario: any): void {
     const dialogRef = this.dialog.open(ModalAgregarUsuarioComponent, {
       width: '300px',
-      data: { nombreUsuario: usuario.nombreUsuario, mail: usuario.mail, clave: usuario.clave, idgrupo: usuario.idgrupo } // Se envian los datos actuales para la edicion
+      data: { nombreUsuario: usuario.NombreUsuario, mail: usuario.Mail, clave: usuario.Clave, idgrupo: usuario.IdGrupo } // Se envian los datos actuales para la edicion, los datos luego "usuarios." deben estar tal cual en la tabla de la bd
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -71,7 +71,7 @@ export class TablaUsuariosComponent implements OnInit {
           clave,
           idgrupo
         }
-        this.updateUsuario(usuario.idUsuario, result);
+        this.updateUsuario(usuario.IdUsuarios, usuarioActualizado); // "IdUsuarios" debe ser tal cual esté en la tabla de la bd
       }
     })
   }
@@ -99,6 +99,7 @@ export class TablaUsuariosComponent implements OnInit {
 
   // metodo para eliminar un usuario
   deleteUsuario(id: number) {
+    console.log(id);
     this.usuariosService.deleteUsuario(id).subscribe(response => {
       console.log('Usuario eliminado:', response);
       this.loadUsuarios(); // Recarga la tabla

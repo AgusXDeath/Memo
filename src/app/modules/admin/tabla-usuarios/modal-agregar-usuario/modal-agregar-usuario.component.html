@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{ data.nombreUsuario ? 'Editar Usuario' : 'Agregar Usuario'}}</h1>
+
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="nombreUsuario" name="nombreUsuario" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Mail</mat-label>
+        <input matInput [(ngModel)]="mail" name="mail" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Clave</mat-label>
+        <input type="password" matInput [(ngModel)]="clave" name="clave" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>idGrupo</mat-label>
+        <input matInput [(ngModel)]="idgrupo" name="idgrupo" required>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-button (click)="onSave()" cdkFocusInitial>guardar</button>
+</div>

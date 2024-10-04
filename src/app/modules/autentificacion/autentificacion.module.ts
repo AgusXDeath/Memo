@@ -8,7 +8,8 @@ import { RegistroComponent } from './components/registro/registro.component';
 // COMPONENTES DE MATERIAL
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; 
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar'; // Importar MatSnackBarModule
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -23,11 +24,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule, // Agregar aquí
     ReactiveFormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,   
   ],
   exports: [
-    RegistroComponent
+    RegistroComponent,
+    InicioSesionComponent // Exportar también el componente de inicio de sesión si es necesario
   ]
 })
 export class AutentificacionModule { }

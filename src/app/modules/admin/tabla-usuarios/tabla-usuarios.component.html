@@ -4,28 +4,45 @@
         </span>
       </mat-toolbar>
   </div>
-
+<!-- Tabla para listar los usuarios -->
 <table mat-table [dataSource]="usuarios" class="mat-elevation-z8">
-    <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.NombreUsuario}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.Mail}} </td>
-    </ng-container>
+  <!-- Columna Nombre -->
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let element"> {{element.NombreUsuario}} </td>
+  </ng-container>
 
-      <ng-container matColumnDef="clave">
-        <th mat-header-cell *matHeaderCellDef> Clave </th>
-        <td mat-cell *matCellDef="let element"> {{element.Clave}} </td>
-      </ng-container>
+  <!-- Columna Email -->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <td mat-cell *matCellDef="let element"> {{element.Mail}} </td>
+  </ng-container>
 
-      <ng-container matColumnDef="idGrupo">
-        <th mat-header-cell *matHeaderCellDef> IdGrupo </th>
-        <td mat-cell *matCellDef="let element"> {{element.IdGrupo}} </td>
-      </ng-container>
+  <!-- Columna Clave -->
+  <ng-container matColumnDef="clave">
+    <th mat-header-cell *matHeaderCellDef> Clave </th>
+    <td mat-cell *matCellDef="let element"> {{element.Clave}} </td>
+  </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="['nombre', 'email', 'clave', 'idGrupo']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['nombre', 'email', 'clave', 'idGrupo'];"></tr>
-  </table>
+  <!-- Columna Descripción del Grupo -->
+  <ng-container matColumnDef="grupoDescripcion">
+    <th mat-header-cell *matHeaderCellDef> Grupo </th>
+    <td mat-cell *matCellDef="let element"> {{element.DescripcionGrupo}} </td> <!-- Mostrar descripción -->
+  </ng-container>
+
+  <!-- Columna de Acciones -->
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button (click)="openEditForm(element)">Editar</button>
+      <button mat-button color="warn" (click)="deleteUsuario(element.IdUsuarios)">Eliminar</button>
+    </td>
+  </ng-container>
+
+  <!-- Filas -->
+  <tr mat-header-row *matHeaderRowDef="['nombre', 'email', 'clave', 'grupoDescripcion', 'acciones']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['nombre', 'email', 'clave', 'grupoDescripcion', 'acciones'];"></tr>
+</table>
+
+<!-- Botón para abrir el modal de creación -->
+<button class="boton-agregar" mat-raised-button (click)="openCreateForm()">Agregar Usuario</button>

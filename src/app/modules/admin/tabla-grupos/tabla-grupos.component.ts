@@ -20,8 +20,14 @@ export class TablaGruposComponent implements OnInit {
   }
 
   loadGrupos() {
-    this.apiService.getGrupos().subscribe(data => {
-      this.grupos.data = data;
+    this.apiService.getGrupos().subscribe(grupos => {
+      this.apiService.getUsuarios().subscribe(usuarios => {
+        // Recorre los grupos y cuenta cuántos usuarios pertenecen a cada uno
+        this.grupos.data = grupos.map(grupo => {
+          const cantidadUsuarios = usuarios.filter(u => u.IdGrupo === grupo.IdGrupo).length;
+          return { ...grupo, cantidadUsuarios };
+        });
+      });
     });
   }
 

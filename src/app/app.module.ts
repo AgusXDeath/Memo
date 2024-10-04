@@ -1,40 +1,26 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';import { AppRoutingModule } from './app-routing.module';
-
-import { HttpClientModule } from '@angular/common/http';
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
-import { SharedModule } from './modules/shared/shared.module';
-import { AdminModule } from './modules/admin/admin.module';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
-
-import { MatTableModule } from '@angular/material/table';
-import { MatButtonModule } from '@angular/material/button'; // Si deseas botones para agregar/editar/eliminar
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // Importa FormsModule
-import { MatInputModule } from '@angular/material/input';
-
+// Módulos propios
+import { AppComponent } from './app.component';
+import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
+import { AutentificacionModule } from './modules/autentificacion/autentificacion.module'; // Importa tu módulo de autenticación aquí
 
 @NgModule({
   declarations: [
     AppComponent,
-  
-    
+    // Otros componentes globales
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    AutentificacionModule,
-    SharedModule,
-    AdminModule,
+    AppRoutingModule,
     HttpClientModule,
-    MatButtonModule,
-    MatTableModule,
-    FormsModule,
-    ReactiveFormsModule,  // Importa FormsModule para usar ReactiveFormsModule en los componentes que usan formularios
-    MatInputModule,  // Si deseas botones para agregar/editar/eliminar
-    
+    AdminModule,  // Importando el módulo de administración
+    AutentificacionModule,  // Asegúrate de importar el módulo de autenticación
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -31,9 +31,14 @@ export class TablaUsuariosComponent implements OnInit {
         this.usuarios.data = usuarios.map(usuario => {
           const grupo = grupos.find(g => g.IdGrupo === usuario.IdGrupo);
           return { ...usuario, DescripcionGrupo: grupo ? grupo.Descripcion : 'Sin grupo' };
+          showPassword: false  // Agrega un campo para controlar la visibilidad de la contraseña
         });
       });
     });
+  }
+
+  togglePasswordVisibility(usuario: any) {
+    usuario.showPassword = !usuario.showPassword;  // Alterna el estado de la visibilidad
   }
 
   // Metodo que abre el modal para agregar un usuario

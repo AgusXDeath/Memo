@@ -16,12 +16,17 @@
         <input type="password" matInput [(ngModel)]="clave" name="clave" required>
     </mat-form-field>
 
+    <!-- Cambiamos el input por un select para idGrupo -->
     <mat-form-field>
-        <mat-label>idGrupo</mat-label>
-        <input matInput [(ngModel)]="idgrupo" name="idgrupo" required>
+        <mat-label>Grupo</mat-label>
+        <mat-select [(ngModel)]="idgrupo" name="idgrupo" required>
+            <mat-option *ngFor="let grupo of grupos" [value]="grupo.IdGrupo">
+                {{ grupo.Descripcion }}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCancel()">Cancelar</button>
-    <button mat-button (click)="onSave()" cdkFocusInitial>guardar</button>
+    <button mat-button (click)="onSave()" cdkFocusInitial>Guardar</button>
 </div>

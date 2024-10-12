@@ -26,10 +26,19 @@ export class TablaUsuariosComponent implements OnInit {
   }
 
   loadUsuarios() {
-    this.usuariosService.getUsuarios().subscribe(data => {
-      console.log('Datos de la API:', data);  // Muestra lo que devuelve la API
-      this.usuarios.data = data;  // Asigna los datos a la tabla
+    this.usuariosService.getUsuarios().subscribe(usuarios => {
+      this.usuariosService.getGrupos().subscribe(grupos => {
+        this.usuarios.data = usuarios.map(usuario => {
+          const grupo = grupos.find(g => g.IdGrupo === usuario.IdGrupo);
+          return { ...usuario, DescripcionGrupo: grupo ? grupo.Descripcion : 'Sin grupo' };
+          showPassword: false  // Agrega un campo para controlar la visibilidad de la contraseña
+        });
+      });
     });
+  }
+
+  togglePasswordVisibility(usuario: any) {
+    usuario.showPassword = !usuario.showPassword;  // Alterna el estado de la visibilidad
   }
 
   // Metodo que abre el modal para agregar un usuario

@@ -11,7 +11,7 @@ export class UsuariosService {
   private apiUrlUsuarios = 'http://localhost/Memo/api-php/public/index.php?resource=usuarios';
   private apiUrlGrupos = 'http://localhost/Memo/api-php/public/index.php?resource=grupos';
   private apiUrlFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=funciones';
-  private apiUrlGrupoFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=grupofunciones';
+  private apiUrlGrupoFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=gruposfunciones';
   
   constructor(private http: HttpClient) { }
   

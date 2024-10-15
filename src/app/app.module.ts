@@ -7,11 +7,13 @@ import { HttpClientModule } from '@angular/common/http';
 // Módulos propios
 import { AppComponent } from './app.component';
 import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
-import { AutentificacionModule } from './modules/autentificacion/autentificacion.module'; // Importa tu módulo de autenticación aquí
+import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
+    
     // Otros componentes globales
   ],
   imports: [

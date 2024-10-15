@@ -2,7 +2,6 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
-// app/core/RouterUsuariosGrupos.php
 
 include_once '../controllers/UsuariosGruposController.php';
 include_once '../views/View.php';
@@ -10,9 +9,8 @@ include_once '../views/View.php';
 $controller = new UsuariosGruposController();
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Verificar si 'resource' está definido en la URL
 if (isset($_GET['resource'])) {
-    $resource = $_GET['resource'];  // Puede ser 'usuarios', 'grupos', 'funciones', 'grupofunciones'
+    $resource = $_GET['resource'];  // Puede ser 'usuarios', 'grupos', 'funciones', 'grupofunciones', 'mensajes'
 
     switch ($method) {
         case 'GET':
@@ -40,6 +38,12 @@ if (isset($_GET['resource'])) {
                 } else {
                     $result = $controller->getAllgrupoFunciones();
                 } 
+            } elseif ($resource === 'mensajes') {  // Nuevo caso para 'mensajes'
+                if (isset($_GET['id'])) {
+                    $result = $controller->getMensajeById($_GET['id']);
+                } else {
+                    $result = $controller->getAllMensajes();
+                }
             }
             View::render($result);
             break;
@@ -54,6 +58,8 @@ if (isset($_GET['resource'])) {
                 $result = $controller->createFuncion($data);
             } elseif ($resource === 'gruposFunciones') {
                 $result = $controller->creategrupoFunciones($data);
+            } elseif ($resource === 'mensajes') {  // Nuevo caso para 'mensajes'
+                $result = $controller->createMensaje($data);
             }
             View::render($result);
             break;
@@ -68,7 +74,9 @@ if (isset($_GET['resource'])) {
                 } elseif ($resource === 'funciones') {
                     $result = $controller->updateFuncion($_GET['id'], $data);
                 } elseif ($resource === 'gruposFunciones') {
-                    $result = $controller->updategrupoFunciones($_GET['id'],$data);
+                    $result = $controller->updategrupoFunciones($_GET['id'], $data);
+                } elseif ($resource === 'mensajes') {  // Nuevo caso para 'mensajes'
+                    $result = $controller->updateMensaje($_GET['id'], $data);
                 }
                 View::render($result);
             }
@@ -84,6 +92,8 @@ if (isset($_GET['resource'])) {
                     $result = $controller->deleteFuncion($_GET['id']);
                 } elseif ($resource === 'gruposFunciones') {
                     $result = $controller->deletegrupoFunciones($_GET['id']);
+                } elseif ($resource === 'mensajes') {  // Nuevo caso para 'mensajes'
+                    $result = $controller->deleteMensaje($_GET['id']);
                 }
                 View::render($result);
             }
@@ -94,7 +104,6 @@ if (isset($_GET['resource'])) {
             break;
     }
 } else {
-    // Manejo del caso en que 'resource' no está presente en la URL
     View::render(json_encode(["message" => "Recurso no especificado en la URL"]));
 }
 ?>

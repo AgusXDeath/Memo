@@ -1,12 +1,13 @@
 [
     {
-        "nombre": "Dashboard",
+        "nombre": "Inicio",
         "redirect": "/dashboard"
     },
     {
         "nombre": "Usuarios",
         "redirect": "/dashboard/usuarios"
     },
+    
     {
         "nombre": "GrupoUsuarios",
         "redirect": "/dashboard/grupos"

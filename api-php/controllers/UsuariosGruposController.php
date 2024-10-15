@@ -9,6 +9,8 @@ include_once '../models/grupoUsuario.php';
 include_once '../models/funcion.php'; // Añadir modelo de Funciones
 include_once '../models/GrupoFunciones.php';
 include_once '../core/Database.php';
+include_once '../models/mensajes.php';  // Añadir modelo de Mensajes
+
 
 class UsuariosGruposController {
     private $db;
@@ -16,14 +18,16 @@ class UsuariosGruposController {
     private $grupoUsuario;
     private $funcion; // Añadir objeto para manejar Funciones
     private $grupoFunciones;
+    private $mensajes;
 
     public function __construct() {
         $database = new Database();
         $this->db = $database->getConnection();
         $this->usuario = new Usuario($this->db);
         $this->grupoUsuario = new GrupoUsuario($this->db);
-        $this->funcion = new Funcion($this->db); // Instanciar el modelo de Funciones
+        $this->funcion = new Funcion($this->db);
         $this->grupoFunciones = new GrupoFunciones($this->db);
+        $this->mensajes = new Mensajes($this->db);  // Instancia del modelo Mensajes
     }
 
     // Métodos para Usuarios
@@ -214,5 +218,55 @@ class UsuariosGruposController {
         }
         return json_encode(["message" => "Error al eliminar la relación grupo-funciones"]);
     }
+
+
+
+    public function getAllMensajes() {
+        $stmt = $this->mensajes->getAll();
+        $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($mensajes);
+    }
+
+    public function getMensajeById($id) {
+        $mensaje = $this->mensajes->getById($id);
+        return json_encode($mensaje);
+    }
+
+    public function createMensaje($data) {
+        $this->mensajes->emisor = $data->emisor;
+        $this->mensajes->receptor = $data->receptor;
+        $this->mensajes->mensaje = $data->mensaje;
+        $this->mensajes->estadoLeido = $data->estadoLeido;
+        $this->mensajes->estadoEnviado = $data->estadoEnviado;
+        $this->mensajes->estadoFavorito = $data->estadoFavorito;
+        $this->mensajes->estadoPapelera = $data->estadoPapelera;
+    
+        if ($this->mensajes->create()) {
+            return json_encode(["message" => "Mensaje creado con éxito"]);
+        }
+        return json_encode(["message" => "Error al crear el mensaje"]);
+    }
+    public function updateMensaje($id, $data) {
+        $this->mensajes->emisor = $data->emisor;
+        $this->mensajes->receptor = $data->receptor;
+        $this->mensajes->mensaje = $data->mensaje;
+        $this->mensajes->estadoLeido = $data->estadoLeido;
+        $this->mensajes->estadoEnviado = $data->estadoEnviado;
+        $this->mensajes->estadoFavorito = $data->estadoFavorito;
+        $this->mensajes->estadoPapelera = $data->estadoPapelera;
+    
+        if ($this->mensajes->update($id)) {
+            return json_encode(["message" => "Mensaje actualizado con éxito"]);
+        }
+        return json_encode(["message" => "Error al actualizar el mensaje"]);
+    }
+    
+    public function deleteMensaje($id) {
+        if ($this->mensajes->delete($id)) {
+            return json_encode(["message" => "Mensaje eliminado con éxito"]);
+        }
+        return json_encode(["message" => "Error al eliminar el mensaje"]);
+    }
+            
 }
 ?>

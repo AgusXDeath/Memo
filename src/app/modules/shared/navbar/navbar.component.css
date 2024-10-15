@@ -1,14 +1,22 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
-  .example-container {
-    height: 100%;
-  }
-  
-  .example-sidenav {
-    width: 250px;
-  }
-  
-  .example-sidenav-content {
-    padding: 20px;
-  }
+.example-container {
+  height: 100%;
+}
+
+.example-sidenav {
+  width: 250px; /* Ancho del sidebar */
+  z-index: 1000; /* Asegúrate de que el sidebar esté por encima de otros elementos */
+}
+
+.example-sidenav-content {
+  padding: 20px;
+}
+
+/* Para el contenido cuando el sidebar está abierto */
+.mat-drawer-opened {
+  z-index: 1000; /* Asegúrate de que esté por encima */
+}
+
+.mat-drawer-content {
+  position: relative;
+  z-index: 1; /* Mantiene el contenido de la vista por debajo del sidebar */
+}

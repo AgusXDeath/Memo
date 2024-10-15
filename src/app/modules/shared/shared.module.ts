@@ -15,6 +15,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatMenuModule
   ],
   exports: [
     SharedRoutingModule,
@@ -44,7 +46,10 @@ import {MatIconModule} from '@angular/material/icon';
     MatToolbarModule,
     NavbarComponent,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatMenuModule
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+  showFiller = false;
+ }

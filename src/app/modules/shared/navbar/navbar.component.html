@@ -2,8 +2,44 @@
     <mat-toolbar color="primary">
       <span>Memo sistem</span>
       <span class="example-spacer"></span>
-      <button mat-button *ngFor="let item of menu" [routerLink]="item.redirect"> {{ item.nombre }}</button>
- 
+      <ng-container *ngFor="let item of menu; let i = index">
+        <button mat-button [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex">
+          {{ item.nombre }}
+        </button>
+      </ng-container>
+      <button mat-button >
+        <div class="valign-center">
+          <span>Movimientos</span>
+          <i class="material-icons">arrow_drop_down</i></div>
+      </button>
+      <button mat-button >
+        <div class="valign-center">
+          <span>Parametros</span>
+          <i class="material-icons">arrow_drop_down</i></div>
+      </button>
+      <button mat-button >
+        <div class="valign-center">
+          <span>Consultas</span>
+          <i class="material-icons">arrow_drop_down</i></div>
+      </button>
+      <button mat-button >
+        <div class="valign-center">
+          <span>Paneles</span>
+          <i class="material-icons">arrow_drop_down</i></div>
+      </button>
+       
+       <button mat-button [matMenuTriggerFor]="about" >
+        <div class="valign-center">
+          <span>Seguridad</span>
+          <i class="material-icons">arrow_drop_down</i></div>
+      </button>
+  
+       <mat-menu #about="matMenu">
+        <button mat-button *ngFor="let item of menu.slice(1)" [routerLink]="item.redirect">
+          {{ item.nombre }}
+        </button>
+       </mat-menu>
+       
       <span class="example-spacer"></span>
       <button routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
         <mat-icon>logout</mat-icon>

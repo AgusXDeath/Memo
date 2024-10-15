@@ -10,6 +10,9 @@ import { Menu } from '../../interfaces/menu';
 export class NavbarComponent implements OnInit {
   menu: Menu[] = [];
 
+  mostrarSoloItemIndex: number = 0; // Índice del elemento que quieres mostrar en el navbar
+  showFiller = false; // Controla si se muestra el texto adicional en el sidenav 
+
   constructor(private _menuService: MenuService) {  }
 
   ngOnInit(): void {

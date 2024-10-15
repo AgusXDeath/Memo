@@ -19,3 +19,28 @@
 .spinner {
     margin: 0 auto;
 }
+.color{
+    background-color: green;
+    color: white;
+}
+
+
+
+.container {
+    display: flex;
+    height: 100vh; /* Altura completa de la ventana */
+  }
+  
+  .image-section {
+    flex: 1; /* Ocupa la mitad izquierda */
+    background-image: url('../../../../../assets/img/foto-cipo.jpg'); /* Opcional: poner la imagen como fondo */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .body {
+    flex: 1; /* Ocupa la mitad derecha */
+    display: flex;
+    align-items: center; /* Centra el formulario verticalmente */
+    justify-content: center; /* Centra el formulario horizontalmente */
+  }

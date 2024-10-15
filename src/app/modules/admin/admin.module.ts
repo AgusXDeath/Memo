@@ -31,6 +31,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox'; // Importar MatC
 
 // Formularios
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     TablaUsuariosComponent,
@@ -62,7 +63,8 @@ import { FormsModule } from '@angular/forms';
     
 
     // Formularios
-    FormsModule  // Necesario para ngModel
+    FormsModule,  // Necesario para ngModel
+    ReactiveFormsModule 
   ]
 })
 export class AdminModule { }

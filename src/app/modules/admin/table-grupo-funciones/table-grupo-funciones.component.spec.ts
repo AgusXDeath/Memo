@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableGrupoFuncionesComponent } from './table-grupo-funciones.component';
+import { TablaGruposFuncionesComponent } from './table-grupo-funciones.component';
 
 describe('TableGrupoFuncionesComponent', () => {
-  let component: TableGrupoFuncionesComponent;
-  let fixture: ComponentFixture<TableGrupoFuncionesComponent>;
+  let component: TablaGruposFuncionesComponent;
+  let fixture: ComponentFixture<TablaGruposFuncionesComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TableGrupoFuncionesComponent]
+      declarations: [TablaGruposFuncionesComponent]
     });
-    fixture = TestBed.createComponent(TableGrupoFuncionesComponent);
+    fixture = TestBed.createComponent(TablaGruposFuncionesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

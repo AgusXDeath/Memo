@@ -72,12 +72,12 @@ export class UsuariosService {
     return this.http.get<any[]>(this.apiUrlGrupoFunciones);
   }
   
-  createGrupoFuncion(grupoFuncion: any): Observable<any> {
-    return this.http.post(this.apiUrlGrupoFunciones, grupoFuncion);
+  createGrupoFuncion(grupoFunciones: any): Observable<any> {
+    return this.http.post(this.apiUrlGrupoFunciones, grupoFunciones);
   }
   
-  updateGrupoFuncion(id: number, grupoFuncion: any): Observable<any> {
-    return this.http.put(`${this.apiUrlGrupoFunciones}&id=${id}`, grupoFuncion);
+  updateGrupoFuncion(id: number, grupoFunciones: any): Observable<any> {
+    return this.http.put(`${this.apiUrlGrupoFunciones}&id=${id}`, grupoFunciones);
   }
   
   deleteGrupoFuncion(id: number): Observable<any> {

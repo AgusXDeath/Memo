@@ -13,7 +13,7 @@ export class InicioSesionComponent implements OnInit {
   form: FormGroup;
   loading = false;
 
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router:Router ) {
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router) {
     // Inicializando el FormGroup con los controles necesarios
     this.form = this.fb.group({
       usuario: ['', [Validators.required]], // Control para el usuario
@@ -31,7 +31,7 @@ export class InicioSesionComponent implements OnInit {
       const password = this.form.value.password;
 
       if (usuario === 'admin' && password === 'muni') {
-      this.fakeloading();
+        this.fakeloading();
       } else {
         // Si la validación falla, llamamos al método error
         this.error();
@@ -47,13 +47,13 @@ export class InicioSesionComponent implements OnInit {
     });
   }
 
-  fakeloading () {
+  fakeloading() {
 
     this.loading = true;
-    setTimeout (() => { 
-       
+    setTimeout(() => {
+
       //redireccionamos al tashboard
-     this.router.navigate(['dashboard']);
-        }, 1500);
+      this.router.navigate(['dashboard']);
+    }, 1500);
   }
 }

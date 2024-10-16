@@ -1,22 +1,46 @@
 .example-container {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Hace que el contenedor ocupe toda la altura de la vista */
 }
 
-.example-sidenav {
-  width: 250px; /* Ancho del sidebar */
-  z-index: 1000; /* Asegúrate de que el sidebar esté por encima de otros elementos */
+.mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2; /* Asegura que la barra de navegación esté siempre visible encima del contenido */
 }
 
 .example-sidenav-content {
+  margin-top: 64px; /* Alinea el contenido debajo del navbar (ajusta según la altura del navbar) */
   padding: 20px;
+  flex: 1; /* Hace que el contenido tome el resto del espacio disponible */
 }
 
-/* Para el contenido cuando el sidebar está abierto */
-.mat-drawer-opened {
-  z-index: 1000; /* Asegúrate de que esté por encima */
+.mat-drawer-container {
+  flex: 1;
+  display: flex;
+  margin-top: 64px; /* Igual a la altura del navbar */
+}
+
+.mat-drawer {
+  width: 250px;
 }
 
 .mat-drawer-content {
-  position: relative;
-  z-index: 1; /* Mantiene el contenido de la vista por debajo del sidebar */
+  padding: 20px;
+  overflow: auto; /* Asegura que el contenido pueda hacer scroll si es necesario */
+}
+.toolbar-button {
+  margin-right: 10px; /* Espacio entre botones */
+}
+
+.valign-center {
+  display: flex;
+  align-items: center;
+}
+
+.example-spacer {
+  flex: 1; /* Utiliza el espacio restante disponible */
 }

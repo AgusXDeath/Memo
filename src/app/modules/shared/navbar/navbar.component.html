@@ -1,3 +1,58 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="drawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>  <img src="../../../../../assets/img/imagenInicios.png" alt="logo de muni" width="100%"></span>
+ 
+  <span class="example-spacer"></span>
+  <ng-container *ngFor="let item of menu; let i = index">
+    <button mat-button class="toolbar-button" [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex">
+      {{ item.nombre }}
+    </button>
+  </ng-container>
+  <!-- <button mat-button class="toolbar-button"> 
+    <div class="valign-center">
+      <span>Movimientos</span>
+      <i class="material-icons">arrow_drop_down</i>
+    </div>
+  </button>
+  <button mat-button class="toolbar-button">
+    <div class="valign-center">
+      <span>Parametros</span>
+      <i class="material-icons">arrow_drop_down</i>
+    </div>
+  </button>
+  <button mat-button class="toolbar-button">
+    <div class="valign-center">
+      <span>Consultas</span>
+      <i class="material-icons">arrow_drop_down</i>
+    </div>
+  </button>
+  <button mat-button class="toolbar-button">
+    <div class="valign-center">
+      <span>Paneles</span>
+      <i class="material-icons">arrow_drop_down</i>
+    </div>
+  </button>-->
+  <button mat-button class="toolbar-button" [matMenuTriggerFor]="about">
+    <div class="valign-center">
+      <span>Seguridad</span>
+      <i class="material-icons">arrow_drop_down</i>
+    </div>
+  </button>
+
+  <mat-menu #about="matMenu">
+    <button mat-menu-item *ngFor="let item of menu.slice(1)" [routerLink]="item.redirect">
+      {{ item.nombre }}
+    </button>
+  </mat-menu>
+
+  <span class="example-spacer"></span>
+  <button routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="over">
     <h2>Mensajes</h2>
@@ -7,58 +62,6 @@
   </mat-drawer>
 
   <div class="example-sidenav-content">
-    <mat-toolbar color="primary">
-      <span>Memo sistem</span>
-      <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span class="example-spacer"></span>
-      <ng-container *ngFor="let item of menu; let i = index">
-        <button mat-button [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex">
-          {{ item.nombre }}
-        </button>
-      </ng-container>
-      <button mat-button>
-        <div class="valign-center">
-          <span>Movimientos</span>
-          <i class="material-icons">arrow_drop_down</i>
-        </div>
-      </button>
-      <button mat-button>
-        <div class="valign-center">
-          <span>Parametros</span>
-          <i class="material-icons">arrow_drop_down</i>
-        </div>
-      </button>
-      <button mat-button>
-        <div class="valign-center">
-          <span>Consultas</span>
-          <i class="material-icons">arrow_drop_down</i>
-        </div>
-      </button>
-      <button mat-button>
-        <div class="valign-center">
-          <span>Paneles</span>
-          <i class="material-icons">arrow_drop_down</i>
-        </div>
-      </button>
-      <button mat-button [matMenuTriggerFor]="about">
-        <div class="valign-center">
-          <span>Seguridad</span>
-          <i class="material-icons">arrow_drop_down</i>
-        </div>
-      </button>
-
-      <mat-menu #about="matMenu">
-        <button mat-menu-item *ngFor="let item of menu.slice(1)" [routerLink]="item.redirect">
-          {{ item.nombre }}
-        </button>
-      </mat-menu>
-
-      <span class="example-spacer"></span>
-      <button routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </mat-toolbar>
+    <router-outlet></router-outlet> <!-- Aquí se renderiza el contenido del dashboard y tablas -->
   </div>
 </mat-drawer-container>

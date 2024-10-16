@@ -55,12 +55,11 @@
 
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="over">
-    <h2>Mensajes</h2>
-    <button mat-button routerLink="/bandeja-entrada">Bandeja de entrada</button> <br>
-    <button mat-button routerLink="/bandeja-salida">Bandeja de salida</button> <br>
-    <button mat-button routerLink="/borradores">Borradores</button>
+    <h2 class="sidebar-title">Mensajes</h2>
+    <ng-container *ngFor="let item of filteredMessagesMenu">
+      <button mat-button class="sidebar-button" [routerLink]="item.redirect">{{ item.nombre }}</button>
+    </ng-container>
   </mat-drawer>
-
   <div class="example-sidenav-content">
     <router-outlet></router-outlet> <!-- Aquí se renderiza el contenido del dashboard y tablas -->
   </div>

@@ -5,13 +5,15 @@ import { MensajesRoutingModule } from './mensajes-routing.module';
 import { BandejaEntradaComponent } from './bandeja-entrada/bandeja-entrada.component';
 import { BandejaSalidaComponent } from './bandeja-salida/bandeja-salida.component';
 import { BorradorComponent } from './borrador/borrador.component';
+import { BorradoresComponent } from './borradores/borradores.component';
 
 
 @NgModule({
   declarations: [
     BandejaEntradaComponent,
     BandejaSalidaComponent,
-    BorradorComponent
+    BorradorComponent,
+    BorradoresComponent
   ],
   imports: [
     CommonModule,

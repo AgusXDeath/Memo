@@ -19,5 +19,17 @@
     {
         "nombre": "GrupoFunciones",
         "redirect": "/dashboard/grupofunciones"
+    },
+    {
+        "nombre": "Bandeja de entrada",
+        "redirect": "/bandeja-entrada"
+    },
+    {
+        "nombre": "Bandeja de salida",
+        "redirect": "/bandeja-salida"
+    },
+    {
+        "nombre": "Borradores",
+        "redirect": "/borradores"
     }
 ]

@@ -1,7 +1,7 @@
 .example-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Hace que el contenedor ocupe toda la altura de la vista */
+  height: 100vh;
 }
 
 .mat-toolbar {
@@ -9,13 +9,13 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2; /* Asegura que la barra de navegación esté siempre visible encima del contenido */
+  z-index: 2;
 }
 
 .example-sidenav-content {
-  margin-top: 64px; /* Alinea el contenido debajo del navbar (ajusta según la altura del navbar) */
+  margin-top: 64px; /* Altura del navbar */
   padding: 20px;
-  flex: 1; /* Hace que el contenido tome el resto del espacio disponible */
+  flex: 1;
 }
 
 .mat-drawer-container {
@@ -26,12 +26,14 @@
 
 .mat-drawer {
   width: 250px;
+  
 }
 
 .mat-drawer-content {
   padding: 20px;
-  overflow: auto; /* Asegura que el contenido pueda hacer scroll si es necesario */
+  overflow: auto;
 }
+
 .toolbar-button {
   margin-right: 10px; /* Espacio entre botones */
 }
@@ -42,5 +44,15 @@
 }
 
 .example-spacer {
-  flex: 1; /* Utiliza el espacio restante disponible */
+  flex: 1;
+}
+
+.sidebar-title {
+  color: #1976d2; /* Color del título */
+  margin: 16px 0; /* Espaciado arriba y abajo del título */
+  text-align: center; /* Centrar el título */
+}
+
+.sidebar-button {
+  margin: 10px 0; /* Espaciado entre botones */
 }

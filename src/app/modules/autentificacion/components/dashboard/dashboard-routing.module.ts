@@ -6,6 +6,10 @@ import { TablaUsuariosComponent } from 'src/app/modules/admin/tabla-usuarios/tab
 import { TablaGruposComponent } from 'src/app/modules/admin/tabla-grupos/tabla-grupos.component';
 import { TablaGruposFuncionesComponent } from 'src/app/modules/admin/table-grupo-funciones/table-grupo-funciones.component';
 import { TablaFuncionesComponent } from 'src/app/modules/admin/table-funciones/table-funciones.component';
+import { BandejaEntradaComponent } from 'src/app/modules/mensajes/components/bandeja-entrada/bandeja-entrada.component';
+import { BandejaSalidaComponent } from 'src/app/modules/mensajes/components/bandeja-salida/bandeja-salida.component';
+import { BorradoresComponent } from 'src/app/modules/mensajes/components/borradores/borradores.component';
+
 
 const routes: Routes = [
   {
@@ -14,7 +18,10 @@ const routes: Routes = [
     {path:"usuarios",component:TablaUsuariosComponent },
     {path:"grupos",component:TablaGruposComponent },
     {path:"grupofunciones",component:TablaGruposFuncionesComponent },
-    {path:"funciones",component:TablaFuncionesComponent }
+    {path:"funciones",component:TablaFuncionesComponent },
+    { path: 'bandeja-entrada', component: BandejaEntradaComponent },
+    { path: 'bandeja-salida', component: BandejaSalidaComponent },
+    { path: 'borradores', component: BorradoresComponent },
     ] }
 ];
 

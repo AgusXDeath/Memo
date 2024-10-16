@@ -24,6 +24,20 @@ export class NavbarComponent implements OnInit {
       this.menu = data;
     })
   }
-
-
+  // Método para filtrar los elementos del menú
+  get filteredMessagesMenu() {
+    return this.menu.filter(item => 
+      item.nombre === 'Bandeja de entrada' || 
+      item.nombre === 'Bandeja de salida' || 
+      item.nombre === 'Borradores'
+    ).map(item => {
+      return { 
+        ...item, 
+        redirect: 
+          item.nombre === 'Bandeja de entrada' ? '/dashboard/bandeja-entrada' : 
+          item.nombre === 'Bandeja de salida' ? '/dashboard/bandeja-salida' : 
+          '/dashboard/borradores'
+      };
+    });
+  }
 }

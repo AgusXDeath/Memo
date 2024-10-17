@@ -3,19 +3,51 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { timeout } from 'rxjs';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-inicio-sesion',
   templateUrl: './inicio-sesion.component.html',
   styleUrls: ['./inicio-sesion.component.css']
 })
-export class InicioSesionComponent implements OnInit {
-  form: FormGroup;
+export class InicioSesionComponent {
+  loginForm: FormGroup;
+
+  constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private router: Router) {
+    this.loginForm = this.fb.group({
+      mail: ['', [Validators.required, Validators.email]],
+      clave: ['', Validators.required]
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const { mail, clave } = this.loginForm.value;
+      this.usuariosService.login(mail, clave).subscribe(
+        response => {
+          console.log('Respuesta del servidor:', response);
+          this.router.navigate(['dashboard']);
+          // Aca van otras acciones, como redirigir al usuario o guardar el token
+        },
+        error => {
+          console.error('Login error:', error);
+        }
+      );
+    }
+  }
+
+
+
+
+
+
+// LOGICA DEL FORMULARIO ORIGINAL
+/*   form: FormGroup;
   loading = false;
 
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router) {
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router) { */
     // Inicializando el FormGroup con los controles necesarios
-    this.form = this.fb.group({
+/*     this.form = this.fb.group({
       usuario: ['', [Validators.required]], // Control para el usuario
       password: ['', [Validators.required]] // Control para la contraseña
     });
@@ -30,7 +62,7 @@ export class InicioSesionComponent implements OnInit {
       const usuario = this.form.value.usuario;
       const password = this.form.value.password;
 
-      if (usuario === 'agus' && password === '2006') {
+      if (usuario === 'admin' && password === 'muni') {
         this.fakeloading();
       } else {
         // Si la validación falla, llamamos al método error
@@ -39,9 +71,9 @@ export class InicioSesionComponent implements OnInit {
       }
     }
   }
-
+ */
   // Método para mostrar un error
-  error() {
+/*   error() {
     this._snackBar.open('Usuario o contraseña inválidos', '', {
       duration: 3000,
     });
@@ -50,10 +82,10 @@ export class InicioSesionComponent implements OnInit {
   fakeloading() {
 
     this.loading = true;
-    setTimeout(() => {
+    setTimeout(() => { */
 
       //redireccionamos al tashboard
-      this.router.navigate(['dashboard']);
+/*       this.router.navigate(['dashboard']);
     }, 1500);
-  }
+  } */
 }

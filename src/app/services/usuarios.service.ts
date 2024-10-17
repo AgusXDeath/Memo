@@ -8,10 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class UsuariosService {
 
-  private apiUrlUsuarios = 'http://localhost/api-php/public/index.php?resource=usuarios';
-  private apiUrlGrupos = 'http://localhost/api-php/public/index.php?resource=grupos';
-  private apiUrlFunciones = 'http://localhost/api-php/public/index.php?resource=funciones';
-  private apiUrlGrupoFunciones = 'http://localhost/api-php/public/index.php?resource=grupofunciones';
+  private apiUrlUsuarios = 'http://localhost/api-php2/public/index.php?resource=usuarios';
+  private apiUrlGrupos = 'http://localhost/api-php2/public/index.php?resource=grupos';
+  private apiUrlFunciones = 'http://localhost/api-php2/public/index.php?resource=funciones';
+  private apiUrlGrupoFunciones = 'http://localhost/api-php2/public/index.php?resource=grupofunciones';
+  private apiUrlLogin = 'http://localhost/api-php2/public/index.php?resource=login';
   
   constructor(private http: HttpClient) { }
   
@@ -83,4 +84,10 @@ export class UsuariosService {
   deleteGrupoFuncion(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrlGrupoFunciones}&id=${id}`);
   }
+
+  // Método para Login
+  login(mail: string, clave: string): Observable<any> {
+    const loginData = { mail, clave };
+    return this.http.post(this.apiUrlLogin, loginData);
+  } 
 }

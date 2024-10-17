@@ -26,8 +26,12 @@ export class InicioSesionComponent {
       this.usuariosService.login(mail, clave).subscribe(
         response => {
           console.log('Respuesta del servidor:', response);
-          this.router.navigate(['dashboard']);
-          // Aca van otras acciones, como redirigir al usuario o guardar el token
+          if (response.status === 'success') {
+            // redirigir al usuario y proporcionarle un token
+            this.router.navigate(['dashboard']);
+          } else {
+            console.error('Credenciales invalidas:', response.message);
+          }
         },
         error => {
           console.error('Login error:', error);

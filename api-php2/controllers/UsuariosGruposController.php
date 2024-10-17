@@ -214,5 +214,36 @@ class UsuariosGruposController {
         }
         return json_encode(["message" => "Error al eliminar la relación grupo-funciones"]);
     }
+
+    // Método para inicio de sesión 
+    public function login($mail, $clave) {
+        // Obtener el usuario por mail
+        $usuario = $this->usuario->getByMail($mail);
+
+        // Verificar si el usuario existe y la contraseña es correcta
+        if ($usuario) {
+            error_log("Usuario encontrado: " . print_r($usuario, true));
+            if (isset($usuario['Clave']) && $usuario['Clave'] === $clave) {
+                // Generar una respuesta de exito
+                return json_encode([
+                    'status' => 'success',
+                    'message' => 'Inicio de sesión exitoso',
+                    'user' => $usuario
+                ]);
+            } else {
+                error_log("clave incorrecta o no encontrada");
+            }
+        } else {
+            error_log("Usuario no encontrado");
+        }
+
+        // Generar una respuesta de error
+        return json_encode([
+            'status' => 'error',
+            'message' => 'Credenciales inválidas'
+        ]);
+    }
+
+    
 }
 ?>

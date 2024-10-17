@@ -69,5 +69,16 @@ public function update($id) {
         $stmt->bindParam(':idUsuarios', $id);
         return $stmt->execute();
     }
+
+    // Obtener un usuario por mail
+    public function getByMail($mail) {
+        $query = "SELECT * FROM " . $this->table . " WHERE Mail = :mail LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':mail', $mail);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
 }
 ?>

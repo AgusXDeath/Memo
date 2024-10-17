@@ -12,6 +12,8 @@ export class UsuariosService {
   private apiUrlGrupos = 'http://localhost/Memo/api-php/public/index.php?resource=grupos';
   private apiUrlFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=funciones';
   private apiUrlGrupoFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=gruposfunciones';
+  private apiUrlMensajes = 'http://localhost/Memo/api-php/public/index.php?resource=mensajes';  // URL para mensaje
+
   
   constructor(private http: HttpClient) { }
   
@@ -82,5 +84,37 @@ export class UsuariosService {
   
   deleteGrupoFuncion(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrlGrupoFunciones}&id=${id}`);
+  }
+
+   // Métodos para Mensajes (NUEVO)
+   getMensajes(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrlMensajes);
+  }
+
+  getMensajeById(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrlMensajes}&id=${id}`);
+  }
+
+  createMensaje(mensaje: any): Observable<any> {
+    return this.http.post(this.apiUrlMensajes, mensaje);
+  }
+
+  updateMensaje(id: number, mensaje: any): Observable<any> {
+    return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje);
+  }
+
+  deleteMensaje(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrlMensajes}&id=${id}`);
+  }
+  getMensajesEntrada(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlMensajes}&tipo=entrada`);  // Filtra los mensajes recibidos
+  }
+  
+  getMensajesSalida(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlMensajes}&tipo=salida`);  // Filtra los mensajes enviados
+  }
+  
+  getMensajesBorrador(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlMensajes}&tipo=borrador`);  // Filtra los mensajes guardados
   }
 }

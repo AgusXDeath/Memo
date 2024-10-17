@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
 import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
+import { MensajesModule } from './modules/mensajes/mensajes.module';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { AutentificacionModule } from './modules/autentificacion/autentificacion
     HttpClientModule,
     AdminModule,  // Importando el módulo de administración
     AutentificacionModule,  // Asegúrate de importar el módulo de autenticación
+    MensajesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

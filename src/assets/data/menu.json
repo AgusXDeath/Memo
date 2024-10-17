@@ -32,4 +32,9 @@
         "nombre": "Borradores",
         "redirect": "/borradores"
     }
+    ,
+    {
+        "nombre": "Mensajes",
+        "redirect": "/mensajes"
+    }
 ]

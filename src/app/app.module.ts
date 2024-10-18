@@ -25,6 +25,7 @@ import { MensajesModule } from './modules/mensajes/mensajes.module';
     AdminModule,  // Importando el módulo de administración
     AutentificacionModule,  // Asegúrate de importar el módulo de autenticación
     MensajesModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

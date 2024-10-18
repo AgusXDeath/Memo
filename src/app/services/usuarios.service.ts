@@ -1,10 +1,22 @@
 // Importaciones necesarias de Angular y RxJS
-import { HttpClient } from '@angular/common/http'; // Para realizar solicitudes HTTP
-import { Injectable } from '@angular/core'; // Para poder usar la inyección de dependencias en Angular
-import { Observable } from 'rxjs'; // Para trabajar con observables, que permiten manejar datos asíncronos
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+export interface Mensaje {
+  id?: number; // ID opcional para los nuevos mensajes
+  emisor: string;
+  receptor: string;
+  contenido: string;
+  estadoLeido: boolean;
+  estadoRecibido: boolean;
+  estadoFavorito: boolean;
+  estadoPapelera: boolean;
+}
 
 @Injectable({
-  providedIn: 'root' // Indica que este servicio estará disponible a nivel de toda la aplicación
+  providedIn: 'root'
 })
 export class UsuariosService {
 
@@ -12,8 +24,7 @@ export class UsuariosService {
   private apiUrlGrupos = 'http://localhost/Memo/api-php/public/index.php?resource=grupos';
   private apiUrlFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=funciones';
   private apiUrlGrupoFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=gruposfunciones';
-  private apiUrlMensajes = 'http://localhost/Memo/api-php/public/index.php?resource=mensajes';  // URL para mensaje
-
+  private apiUrlMensajes = 'http://localhost/Memo/api-php/public/index.php?resource=mensajes';
   
   constructor(private http: HttpClient) { }
   
@@ -85,36 +96,40 @@ export class UsuariosService {
   deleteGrupoFuncion(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrlGrupoFunciones}&id=${id}`);
   }
-
-   // Métodos para Mensajes (NUEVO)
-   getMensajes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrlMensajes);
+  // Métodos para Mensajes
+  getMensajes(): Observable<Mensaje[]> {
+    return this.http.get<Mensaje[]>(this.apiUrlMensajes).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  getMensajeById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrlMensajes}&id=${id}`);
+  getMensajeById(id: number): Observable<Mensaje> {
+    return this.http.get<Mensaje>(`${this.apiUrlMensajes}&id=${id}`).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  createMensaje(mensaje: any): Observable<any> {
-    return this.http.post(this.apiUrlMensajes, mensaje);
+  createMensaje(mensaje: Mensaje): Observable<Mensaje> {
+    return this.http.post<Mensaje>(this.apiUrlMensajes, mensaje).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  updateMensaje(id: number, mensaje: any): Observable<any> {
-    return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje);
+  updateMensaje(id: number, mensaje: Mensaje): Observable<Mensaje> {
+    return this.http.put<Mensaje>(`${this.apiUrlMensajes}&id=${id}`, mensaje).pipe(
+      catchError(this.handleError)
+    );
   }
 
   deleteMensaje(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrlMensajes}&id=${id}`);
+    return this.http.delete(`${this.apiUrlMensajes}&id=${id}`).pipe(
+      catchError(this.handleError)
+    );
   }
-  getMensajesEntrada(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrlMensajes}&tipo=entrada`);  // Filtra los mensajes recibidos
+
+  private handleError(error: any) {
+    console.error('Ocurrió un error:', error);
+    return throwError(() => new Error('Error en la solicitud, intenta de nuevo más tarde.'));
   }
-  
-  getMensajesSalida(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrlMensajes}&tipo=salida`);  // Filtra los mensajes enviados
-  }
-  
-  getMensajesBorrador(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrlMensajes}&tipo=borrador`);  // Filtra los mensajes guardados
-  }
+
 }

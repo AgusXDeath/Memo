@@ -36,14 +36,15 @@
     border-radius: 10px; /* Bordes redondeados */
   }
   
-  .ancho {
-    width: 80%;
-  }
+
   
-  .boton {
+  .custom-button {
+    background-color: #a8cf45;
+    color: #002952;
     height: 50px;
-  }
-  
+    width: 80%;
+    
+}
   .spinner {
     margin: 0 auto;
   }

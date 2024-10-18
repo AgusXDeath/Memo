@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Enviar Mensaje</h2>
+<h2 mat-dialog-title>{{ mensaje.idMensajes ? 'Editar Mensaje' : 'Enviar Mensaje' }}</h2>
 <mat-dialog-content>
   <mat-form-field>
     <mat-label>Emisor</mat-label>
@@ -14,8 +14,8 @@
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onGuardar()">Guardar Borrador</button>
-  <button mat-button (click)="onEnviar()">Enviar</button>
+  <button mat-button *ngIf="!mensaje.idMensajes" (click)="onEnviar()">Enviar</button> <!-- Solo aparece si es un nuevo mensaje -->
+  <button mat-button *ngIf="mensaje.idMensajes" (click)="onGuardar()">Guardar Cambios</button> <!-- Solo aparece si es una edición -->
+  <button mat-button *ngIf="!mensaje.idMensajes" (click)="onGuardar()">Guardar Borrador</button> <!-- Solo aparece en modo "nuevo" -->
   <button mat-button (click)="onNoClick()">Cancelar</button>
 </mat-dialog-actions>
-

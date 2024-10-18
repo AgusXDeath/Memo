@@ -4,16 +4,6 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-export interface Mensaje {
-  id?: number; // ID opcional para los nuevos mensajes
-  emisor: string;
-  receptor: string;
-  contenido: string;
-  estadoLeido: boolean;
-  estadoRecibido: boolean;
-  estadoFavorito: boolean;
-  estadoPapelera: boolean;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +14,7 @@ export class UsuariosService {
   private apiUrlGrupos = 'http://localhost/Memo/api-php/public/index.php?resource=grupos';
   private apiUrlFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=funciones';
   private apiUrlGrupoFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=gruposfunciones';
-  private apiUrlMensajes = 'http://localhost/Memo/api-php/public/index.php?resource=mensajes';
+  
   
   constructor(private http: HttpClient) { }
   
@@ -96,40 +86,4 @@ export class UsuariosService {
   deleteGrupoFuncion(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrlGrupoFunciones}&id=${id}`);
   }
-  // Métodos para Mensajes
-  getMensajes(): Observable<Mensaje[]> {
-    return this.http.get<Mensaje[]>(this.apiUrlMensajes).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  getMensajeById(id: number): Observable<Mensaje> {
-    return this.http.get<Mensaje>(`${this.apiUrlMensajes}&id=${id}`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  createMensaje(mensaje: Mensaje): Observable<Mensaje> {
-    return this.http.post<Mensaje>(this.apiUrlMensajes, mensaje).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  updateMensaje(id: number, mensaje: Mensaje): Observable<Mensaje> {
-    return this.http.put<Mensaje>(`${this.apiUrlMensajes}&id=${id}`, mensaje).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  deleteMensaje(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrlMensajes}&id=${id}`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  private handleError(error: any) {
-    console.error('Ocurrió un error:', error);
-    return throwError(() => new Error('Error en la solicitud, intenta de nuevo más tarde.'));
-  }
-
 }

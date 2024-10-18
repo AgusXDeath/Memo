@@ -19,10 +19,11 @@ export class MensajesService {
   }
 
   updateMensaje(id: number, mensaje: any): Observable<any> {
+    // Cambia la URL para que incluya el ID directamente en la ruta
     return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje);
   }
 
   deleteMensaje(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrlMensajes}&id=${id}`);
-  }
+}
 }

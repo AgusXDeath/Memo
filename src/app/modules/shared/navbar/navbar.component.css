@@ -6,6 +6,8 @@
 
 .mat-toolbar {
   position: fixed;
+  color:#002952;
+  background-color: #a8cf45 ;
   top: 0;
   left: 0;
   right: 0;
@@ -26,6 +28,8 @@
 
 .mat-drawer {
   width: 220px;
+  background-color:#002952 ;
+  color:#a8cf45;
 }
 
 .mat-drawer-content {
@@ -47,11 +51,13 @@
 }
 
 .sidebar-title {
-  color: #1976d2; /* Color del título */
+  color:#a8cf45;
   margin: 16px 0; /* Espaciado arriba y abajo del título */
   text-align: center; /* Centrar el título */
 }
 
 .sidebar-button {
   margin: 10px 0; /* Espaciado entre botones */
+  background-color:#a8cf45;
+  color:#002952
 }

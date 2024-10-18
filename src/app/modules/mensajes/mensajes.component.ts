@@ -11,7 +11,7 @@ import { MensajesService } from './servicio/mensajes.service';
 })
 export class MensajesComponent implements OnInit {
   mensajes: any[] = [];
-  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones']; // Agrega la columna de acciones aquí
+  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones'];
 
   constructor(private mensajesService: MensajesService, public dialog: MatDialog) { }
 
@@ -22,13 +22,14 @@ export class MensajesComponent implements OnInit {
   loadMensajes(): void {
     this.mensajesService.getMensajes().subscribe(data => {
       this.mensajes = data;
+      console.log("Mensajes cargados:", this.mensajes);
     });
   }
 
   openFormDialog(mensaje?: any): void {
     const dialogRef = this.dialog.open(MensajeFormComponent, {
       width: '400px',
-      data: mensaje || { emisor: '', receptor: '', mensaje: '' } // Pasa datos si está editando
+      data: mensaje || { emisor: '', receptor: '', mensaje: '', idMensajes: null } // Agrega idMensajes por si es nuevo
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -42,17 +43,27 @@ export class MensajesComponent implements OnInit {
     this.openFormDialog(mensaje); // Abre el formulario con los datos del mensaje a editar
   }
 
-  deleteMensaje(id: number): void {
+  deleteMensaje(mensaje: any): void {
+    console.log("Mensaje recibido para eliminar:", mensaje);
+    if (!mensaje || !mensaje.idMensajes) {
+      console.error("Mensaje o ID no disponible", mensaje);
+      return;
+    }
+    const id = mensaje.idMensajes;
+    console.log("Eliminando mensaje con ID:", id);
     if (confirm('¿Estás seguro de que deseas eliminar este mensaje?')) {
       this.mensajesService.deleteMensaje(id).subscribe(() => {
-        this.loadMensajes(); // Vuelve a cargar la lista después de eliminar
+        console.log("Mensaje eliminado");
+        this.loadMensajes();
+      }, error => {
+        console.error("Error eliminando mensaje:", error);
       });
     }
   }
 
   moveToPapelera(mensaje: any): void {
     mensaje.estadoPapelera = true; // Cambia el estado a papelera
-    this.mensajesService.updateMensaje(mensaje.id, mensaje).subscribe(() => {
+    this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje).subscribe(() => {
       this.loadMensajes(); // Vuelve a cargar la lista después de mover a papelera
     });
   }

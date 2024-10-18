@@ -9,16 +9,11 @@ import { MensajesService } from '../servicio/mensajes.service';
 })
 export class MensajeFormComponent {
   mensaje: any = {
- 
-  emisor: '',
-  receptor: '',
-  mensaje: '',
-  estadoLeido: false,  // Añadido
-  estadoEnviado: false,
-  estadoFavorito: false,  // Añadido
-  estadoPapelera: false,
-  estadoRecibido: false   // Añadido
-
+    emisor: '',
+    receptor: '',
+    mensaje: '',
+    estadoEnviado: false,
+    estadoPapelera: false
   };
 
   constructor(
@@ -26,37 +21,41 @@ export class MensajeFormComponent {
     private mensajesService: MensajesService,
     @Inject(MAT_DIALOG_DATA) public data: any // Recibe el mensaje (si está editando)
   ) {
-    if (data && data.idMensajes) {
+    if (data) {
       this.mensaje = { ...data }; // Si es edición, asigna los datos del mensaje al formulario
-    } else {
-      this.mensaje = { emisor: '', receptor: '', mensaje: '', estadoEnviado: false, estadoPapelera: false }; // Si es nuevo, inicializa un mensaje vacío
-    }
-  }
-
-  private guardarMensaje(): void {
-    if (this.mensaje.idMensajes) {
-      // Si tiene ID, actualiza el mensaje
-      this.mensajesService.updateMensaje(this.mensaje.idMensajes, this.mensaje).subscribe(() => {
-        this.dialogRef.close(true); // Cierra el modal
-      });
-    } else {
-      // Si no tiene ID, crea un nuevo mensaje
-      this.mensajesService.createMensaje(this.mensaje).subscribe(() => {
-        this.dialogRef.close(true); // Cierra el modal
-      });
     }
   }
 
   onEnviar(): void {
     this.mensaje.estadoEnviado = true;
-    this.mensaje.estadoLeido = false;   // Asegura que esté no leído cuando se envíe
-    this.guardarMensaje();
+
+    // Verifica si el mensaje tiene un ID para determinar si es edición o creación
+    if (this.mensaje.idMensajes) {
+      // Si tiene ID, se actualiza el mensaje
+      this.mensajesService.updateMensaje(this.mensaje.idMensajes, this.mensaje).subscribe(() => {
+        this.dialogRef.close(true); // Cierra el modal y recarga la lista de mensajes
+      });
+    } else {
+      // Si no tiene ID, crea un nuevo mensaje
+      this.mensajesService.createMensaje(this.mensaje).subscribe(() => {
+        this.dialogRef.close(true); // Cierra el modal y recarga la lista de mensajes
+      });
+    }
   }
-  
+
   onGuardar(): void {
-    this.mensaje.estadoEnviado = false;
-    this.mensaje.estadoLeido = false;   // Puede estar no leído si se guarda como borrador
-    this.guardarMensaje();
+    // Similar a `onEnviar`, pero para guardar como borrador
+    if (this.mensaje.idMensajes) {
+      // Actualiza el mensaje si tiene ID
+      this.mensajesService.updateMensaje(this.mensaje.idMensajes, this.mensaje).subscribe(() => {
+        this.dialogRef.close(true); // Cierra el modal
+      });
+    } else {
+      // Crea un nuevo mensaje como borrador
+      this.mensajesService.createMensaje(this.mensaje).subscribe(() => {
+        this.dialogRef.close(true); // Cierra el modal
+      });
+    }
   }
 
   onNoClick(): void {

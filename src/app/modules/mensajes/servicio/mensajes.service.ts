@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +15,27 @@ export class MensajesService {
   }
 
   createMensaje(mensaje: any): Observable<any> {
-    return this.http.post(this.apiUrlMensajes, mensaje);
+    // Asegúrate de que todos los campos están presentes
+    const data = {
+      ...mensaje,
+      estadoLeido: mensaje.estadoLeido || 0,   // Fija el valor predeterminado en 0
+      estadoRecibido: mensaje.estadoRecibido || 0,
+      estadoFavorito: mensaje.estadoFavorito || 0,
+      estadoPapelera: mensaje.estadoPapelera || 0
+    };
+    return this.http.post(this.apiUrlMensajes, data);
   }
-
+  
   updateMensaje(id: number, mensaje: any): Observable<any> {
-    // Cambia la URL para que incluya el ID directamente en la ruta
-    return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje);
+    return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje)
+      .pipe(
+        catchError(err => {
+          console.error('Error en updateMensaje:', err);
+          return throwError(err);
+        })
+      );
   }
+  
 
   deleteMensaje(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrlMensajes}&id=${id}`);

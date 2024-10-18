@@ -271,24 +271,27 @@ public function createMensaje($data) {
     return json_encode(["error" => "Error al crear el mensaje"]);
 }
 
-    
 // Actualizar un mensaje
 public function updateMensaje($id, $data) {
-    $this->mensajes->emisor = $data->emisor;
-    $this->mensajes->receptor = $data->receptor;
-    $this->mensajes->mensaje = $data->mensaje;
-    $this->mensajes->estadoLeido = $data->estadoLeido;
-    $this->mensajes->estadoEnviado = $data->estadoEnviado;
-    $this->mensajes->estadoFavorito = $data->estadoFavorito;
-    $this->mensajes->estadoPapelera = $data->estadoPapelera;
-    $this->mensajes->estadoRecibido = $data->estadoRecibido;  // Agregar esta línea
-    
-    if ($this->mensajes->update($id)) {
-        return json_encode(["message" => "Mensaje actualizado con éxito"]);
-    }
-    return json_encode(["message" => "Error al actualizar el mensaje"]);
-}
+    // Validar y asignar los campos del mensaje
+    $this->mensajes->emisor = $data->emisor ?? ''; // Asignar valor por defecto si está vacío
+    $this->mensajes->receptor = $data->receptor ?? ''; // Asignar valor por defecto si está vacío
+    $this->mensajes->mensaje = $data->mensaje ?? ''; // Asignar valor por defecto si está vacío
+    $this->mensajes->estadoLeido = $data->estadoLeido ?? 0; // Por defecto no leído
+    $this->mensajes->estadoEnviado = $data->estadoEnviado ?? 0; // Por defecto no enviado
+    $this->mensajes->estadoFavorito = $data->estadoFavorito ?? 0; // Por defecto no es favorito
+    $this->mensajes->estadoPapelera = $data->estadoPapelera ?? 0; // Por defecto no está en papelera
+    $this->mensajes->estadoRecibido = $data->estadoRecibido ?? 0; // Por defecto no recibido
 
+    // Ejecutar la actualización
+    if ($this->mensajes->update($id)) {
+        // Obtener el mensaje actualizado
+        $mensajeActualizado = $this->mensajes->getById($id);
+        return json_encode($mensajeActualizado);
+    }
+    
+    return json_encode(["error" => "Error al actualizar el mensaje"]);
+}
 
     
    // Eliminar un mensaje

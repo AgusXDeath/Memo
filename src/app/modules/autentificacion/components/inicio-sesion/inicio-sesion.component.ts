@@ -29,6 +29,7 @@ export class InicioSesionComponent {
           if (response.status === 'success') {
             // redirigir al usuario y proporcionarle un token
             this.router.navigate(['dashboard']);
+            localStorage.setItem('token', response.token);
           } else {
             console.error('Credenciales invalidas:', response.message);
           }

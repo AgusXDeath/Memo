@@ -12,8 +12,9 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
 })
 export class InicioSesionComponent {
   loginForm: FormGroup;
+  loading = false;
 
-  constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private router: Router) {
+  constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private router: Router, private _snackBar: MatSnackBar) {
     this.loginForm = this.fb.group({
       mail: ['', [Validators.required, Validators.email]],
       clave: ['', Validators.required]
@@ -28,10 +29,13 @@ export class InicioSesionComponent {
           console.log('Respuesta del servidor:', response);
           if (response.status === 'success') {
             // redirigir al usuario y proporcionarle un token
-            this.router.navigate(['dashboard']);
+/*             this.router.navigate(['dashboard']); */
             localStorage.setItem('token', response.token);
+            this.fakeloading();
           } else {
             console.error('Credenciales invalidas:', response.message);
+            this.error();
+            this.loginForm.reset();
           }
         },
         error => {
@@ -43,42 +47,9 @@ export class InicioSesionComponent {
 
 
 
-
-
-
-// LOGICA DEL FORMULARIO ORIGINAL
-/*   form: FormGroup;
-  loading = false;
-
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private router: Router) { */
-    // Inicializando el FormGroup con los controles necesarios
-/*     this.form = this.fb.group({
-      usuario: ['', [Validators.required]], // Control para el usuario
-      password: ['', [Validators.required]] // Control para la contraseña
-    });
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  ingresar() {
-    if (this.form.valid) {
-      const usuario = this.form.value.usuario;
-      const password = this.form.value.password;
-
-      if (usuario === 'admin' && password === 'muni') {
-        this.fakeloading();
-      } else {
-        // Si la validación falla, llamamos al método error
-        this.error();
-        this.form.reset();
-      }
-    }
-  }
- */
+ 
   // Método para mostrar un error
-/*   error() {
+  error() {
     this._snackBar.open('Usuario o contraseña inválidos', '', {
       duration: 3000,
     });
@@ -87,10 +58,10 @@ export class InicioSesionComponent {
   fakeloading() {
 
     this.loading = true;
-    setTimeout(() => { */
+    setTimeout(() => {
 
-      //redireccionamos al tashboard
-/*       this.router.navigate(['dashboard']);
+      //redireccionamos al dashboard
+      this.router.navigate(['dashboard']);
     }, 1500);
-  } */
+  }
 }

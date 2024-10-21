@@ -69,45 +69,21 @@ class Mensajes {
     }
 
     // Actualizar una relación grupo-funciones
-    
     public function update($id) {
-        try {
-            $query = "UPDATE " . $this->table . " 
-                      SET emisor = :emisor, receptor = :receptor, mensaje = :mensaje, estadoLeido = :estadoLeido, estadoEnviado = :estadoEnviado, estadoFavorito = :estadoFavorito, estadoPapelera = :estadoPapelera, estadoRecibido = :estadoRecibido
-                      WHERE idMensajes = :idMensajes";
-            $stmt = $this->conn->prepare($query);
-        // Asegúrate de tener todos los valores necesarios asignados
-$this->mensajes->emisor = $data->emisor ?? ''; // Asigna valor por defecto
-$this->mensajes->receptor = $data->receptor ?? ''; // Asigna valor por defecto
-$this->mensajes->mensaje = $data->mensaje ?? ''; // Asigna valor por defecto
-$this->mensajes->estadoLeido = $data->estadoLeido ?? 0; // Por defecto no leído
-$this->mensajes->estadoEnviado = $data->estadoEnviado ?? 0; // Por defecto no enviado
-$this->mensajes->estadoFavorito = $data->estadoFavorito ?? 0; // Por defecto no es favorito
-$this->mensajes->estadoPapelera = $data->estadoPapelera ?? 0; // Por defecto no está en papelera
-$this->mensajes->estadoRecibido = $data->estadoRecibido ?? 0; // Por defecto no recibido
-
-// Ahora llama al método update
-if ($this->mensajes->update($id)) {
-    // Obtener el mensaje actualizado
-    $mensajeActualizado = $this->mensajes->getById($id);
-    return json_encode($mensajeActualizado);
-}
-            // Ejecutar la consulta
-            if ($stmt->execute()) {
-                return true;
-            } else {
-                // Capturar errores específicos de la consulta
-                $errorInfo = $stmt->errorInfo();
-                echo json_encode(['error' => $errorInfo]);
-                http_response_code(500);
-                return false;
-            }
-        } catch (PDOException $e) {
-            // Captura errores de PDO
-            echo json_encode(['error' => $e->getMessage()]);
-            http_response_code(500);
-            return false;
-        }
+        $query = "UPDATE " . $this->table . " 
+                  SET emisor = :emisor, receptor = :receptor, mensaje = :mensaje, estadoLeido = :estadoLeido, estadoEnviado = :estadoEnviado, estadoFavorito = :estadoFavorito, estadoPapelera = :estadoPapelera, estadoRecibido = :estadoRecibido
+                  WHERE idMensajes = :idMensajes";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':idMensajes', $id);
+        $stmt->bindParam(':emisor', $this->emisor);
+        $stmt->bindParam(':receptor', $this->receptor);
+        $stmt->bindParam(':mensaje', $this->mensaje);
+        $stmt->bindParam(':estadoLeido', $this->estadoLeido);
+        $stmt->bindParam(':estadoEnviado', $this->estadoEnviado);
+        $stmt->bindParam(':estadoFavorito', $this->estadoFavorito);
+        $stmt->bindParam(':estadoPapelera', $this->estadoPapelera);
+        $stmt->bindParam(':estadoRecibido', $this->estadoRecibido);
+        return $stmt->execute();
     }
 
     // Eliminar una relación grupo-funciones

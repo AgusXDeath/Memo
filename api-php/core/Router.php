@@ -42,6 +42,13 @@ if (isset($_GET['resource'])) {
                 $result = $controller->creategrupoFunciones($data);
             } elseif ($resource === 'mensajes') { // Creación de Mensajes
                 $result = $controller->createMensaje($data);
+            } elseif ($resource === 'login') {
+                //obtener los parametros de la solicitud
+                $mail = $data->mail;
+                $clave = $data->clave;
+
+                //llamar al metodo login del controlador
+                $result = $controller->login($mail, $clave);
             }
             View::render($result);
             break;
@@ -88,5 +95,27 @@ if (isset($_GET['resource'])) {
 } else {
     // Manejo del caso en que 'resource' no está presente en la URL
     View::render(json_encode(["message" => "Recurso no especificado en la URL"]));
+}
+// Verificar si el metodo es protegido
+$protected_methods = ['POST', 'PUT', 'DELETE'];
+
+// Si es un metodo protegido, verificar el token JWT
+if (in_array($method, $protected_methods) && $resource !== 'login') {
+    // Obtener el token del header Authorization
+    $headers = getallheaders();
+    if (isset($headers['Authorization'])) {
+        $authHeader = $headers['Authorization'];
+        $token = str_replace('Bearer ', '', $authHeader);  // Extraer el token
+        $verified = $controller->verifyJWT($token);    // Verificar el token
+
+        // Si el token no es valido o expirado, denegar el acceso
+        if (!$verified) {
+            View::render(json_encode(["message" => "Token no valido o expirado"]));
+            exit();
+        }
+    } else {
+        View::render(json_encode(["message" => "Token no proporcionado"]));
+        exit();
+    }
 }
 ?>

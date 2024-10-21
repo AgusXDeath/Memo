@@ -70,10 +70,10 @@ openEditForm(usuario: any): void {
   const dialogRef = this.dialog.open(ModalAgregarUsuarioComponent, {
     width: '300px',
     data: { 
-      nombreUsuario: usuario.NombreUsuario, 
-      mail: usuario.Mail, 
-      clave: usuario.Clave, 
-      idgrupo: usuario.IdGrupo 
+      nombreUsuario: usuario.nombreUsuario, 
+      mail: usuario.mail, 
+      clave: usuario.clave, 
+      idgrupo: usuario.idGrupo 
     }  
   });
 

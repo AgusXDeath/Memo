@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 
@@ -6,15 +6,37 @@ import { Observable, catchError, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class MensajesService {
-  private apiUrlMensajes = 'http://localhost/Memo/api-php/public/index.php?resource=mensajes';
+  private apiUrlMensajes = 'http://localhost/api-actualizada/public/index.php?resource=mensajes';
 
   constructor(private http: HttpClient) { }
 
+  // Obtener el token del localStorage
+  private getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  // Metodo para enviar el token en los headers
+  private createHeaders() {
+    const token = this.getToken();
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+    } else {
+      return new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+    }
+  }
+
   getMensajes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrlMensajes);
+    const headers = this.createHeaders();
+    return this.http.get<any[]>(this.apiUrlMensajes, { headers });
   }
 
   createMensaje(mensaje: any): Observable<any> {
+    const headers = this.createHeaders();
     // Asegúrate de que todos los campos están presentes
     const data = {
       ...mensaje,
@@ -23,11 +45,12 @@ export class MensajesService {
       estadoFavorito: mensaje.estadoFavorito || 0,
       estadoPapelera: mensaje.estadoPapelera || 0
     };
-    return this.http.post(this.apiUrlMensajes, data);
+    return this.http.post(this.apiUrlMensajes, data, { headers });
   }
-  
+
   updateMensaje(id: number, mensaje: any): Observable<any> {
-    return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje)
+    const headers = this.createHeaders();
+    return this.http.put(`${this.apiUrlMensajes}&id=${id}`, mensaje, { headers })
       .pipe(
         catchError(err => {
           console.error('Error en updateMensaje:', err);
@@ -35,9 +58,10 @@ export class MensajesService {
         })
       );
   }
-  
+
 
   deleteMensaje(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrlMensajes}&id=${id}`);
-}
+    const headers = this.createHeaders();
+    return this.http.delete(`${this.apiUrlMensajes}&id=${id}`, { headers });
+  }
 }

@@ -61,7 +61,7 @@ export class TablaGruposComponent implements OnInit {
   openEditForm(grupo: any): void {
     const dialogRef = this.dialog.open(ModalAgregarGrupoComponent, {
       width: '300px',
-      data: { descripcion: grupo.Descripcion }  // Modal con datos del grupo a editar
+      data: { descripcion: grupo.descripcion }  // Modal con datos del grupo a editar
     });
 
     // Suscribirse al cierre del modal y actualizar el grupo si hay cambios

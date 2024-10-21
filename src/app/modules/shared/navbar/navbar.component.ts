@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../../service/menu.service';
 import { Menu } from '../../interfaces/menu';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,7 @@ export class NavbarComponent implements OnInit {
   mostrarSoloItemIndex: number = 0; // Índice del elemento que quieres mostrar en el navbar
   showFiller = false; // Controla si se muestra el texto adicional en el sidenav 
 
-  constructor(private _menuService: MenuService) {  }
+  constructor(private _menuService: MenuService, private authService: AuthService, private router: Router) {  }
 
   ngOnInit(): void {
     this.cargarMenu();
@@ -39,5 +41,11 @@ export class NavbarComponent implements OnInit {
           '/dashboard/borradores'
       };
     });
+  }
+
+  // Método para cerrar sesión
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/inicio-sesion']);
   }
 }

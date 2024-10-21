@@ -9,11 +9,11 @@ import { catchError } from 'rxjs/operators';
 })
 export class UsuariosService {
 
-  private apiUrlUsuarios = 'http://localhost/Memo/api-php/public/index.php?resource=usuarios';
-  private apiUrlGrupos = 'http://localhost/Memo/api-php/public/index.php?resource=grupos';
-  private apiUrlFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=funciones';
-  private apiUrlGrupoFunciones = 'http://localhost/Memo/api-php/public/index.php?resource=gruposfunciones';
-  private apiUrlLogin = 'http://localhost/Memo/api-php/public/index.php?resource=login';
+  private apiUrlUsuarios = 'http://localhost/api-actualizada/public/index.php?resource=usuarios';
+  private apiUrlGrupos = 'http://localhost/api-actualizada/public/index.php?resource=grupos';
+  private apiUrlFunciones = 'http://localhost/api-actualizada/public/index.php?resource=funciones';
+  private apiUrlGrupoFunciones = 'http://localhost/api-actualizada/public/index.php?resource=gruposfunciones';
+  private apiUrlLogin = 'http://localhost/api-actualizada/public/index.php?resource=login';
   
   constructor(private http: HttpClient) { }
 
@@ -126,7 +126,7 @@ export class UsuariosService {
   login(mail: string, clave: string): Observable<any> {
     const headers = this.createHeaders();
     const loginData = { mail, clave };
-    return this.http.post(this.apiUrlLogin, loginData, { headers });
+    return this.http.post(this.apiUrlLogin, loginData, {headers});
   } 
 
   

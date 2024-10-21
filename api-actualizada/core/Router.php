@@ -42,6 +42,13 @@ if (isset($_GET['resource'])) {
                 $result = $controller->creategrupoFunciones($data);
             } elseif ($resource === 'mensajes') { // Creación de Mensajes
                 $result = $controller->createMensaje($data);
+            } elseif ($resource === 'login') {
+                //obtener los parametros de la solicitud
+                $mail = $data->mail;
+                $clave = $data->clave;
+
+                //llamar al metodo login del controlador
+                $result = $controller->login($mail, $clave);
             }
             View::render($result);
             break;

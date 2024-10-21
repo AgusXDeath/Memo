@@ -12,6 +12,8 @@ include_once '../models/mensajes.php'; // Añadir modelo de Mensajes
 include_once '../core/Database.php';
 
 class UsuariosGruposController {
+
+    private $secret_key = "clave_secreta";
     private $db;
     private $usuarios;
     private $grupoUsuario;
@@ -315,6 +317,70 @@ public function moveMessageToTrash($id) {
     }
     return json_encode(["error" => "Error al mover el mensaje a la papelera"]);
 }
+
+    // Método para inicio de sesión 
+    public function login($mail, $clave)
+    {
+        // Obtener el usuario por mail
+        $usuario = $this->usuarios->getByMail($mail);
+
+        // Verificar si el usuario existe y la contraseña es correcta
+        if ($usuario && $usuario['clave'] === $clave) {
+            $token = $this->generateJWT($usuario['idUsuarios'], $usuario['idGrupo']);
+            return json_encode([
+                'status' => 'success',
+                'message' => 'Inicio de sesión exitoso',
+                "token" => $token
+            ]);
+        } else {
+            return json_encode([
+                'status' => 'error',
+                "message" => "Credenciales inválidas"
+            ]);
+        }
+    }
+
+    private function base64UrlEncode($data) {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    private function generateJWT($user_id, $rol) {
+        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+        $payload = json_encode([
+            'iss' => 'localhost',
+            'iat' => time(),
+            'exp' => time() + (60 * 60),  // Expira en 1 hora
+            'sub' => $user_id,
+            'rol' => $rol
+        ]);
+
+        $base64UrlHeader = $this->base64UrlEncode($header);
+        $base64UrlPayload = $this->base64UrlEncode($payload);
+        $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $this->secret_key, true);
+        $base64UrlSignature = $this->base64UrlEncode($signature);
+
+        return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+    }
+
+    public function verifyJWT($jwt) {
+        $parts = explode('.', $jwt);
+        if (count($parts) === 3) {
+            $header = base64_decode($parts[0]);
+            $payload = base64_decode($parts[1]);
+            $signature_provided = $parts[2];
+
+            $signature_valid = $this->base64UrlEncode(hash_hmac('sha256', "$parts[0].$parts[1]", $this->secret_key, true));
+
+            if ($signature_valid === $signature_provided) {
+                $payload_data = json_decode($payload, true);
+                if ($payload_data['exp'] > time()) {
+                    return $payload_data;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
 

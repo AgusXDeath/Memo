@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AutentificacionRoutingModule } from './autentificacion-routing.module';
 import { InicioSesionComponent } from './components/inicio-sesion/inicio-sesion.component';
-import { RegistroComponent } from './components/registro/registro.component';
+
 
 // COMPONENTES DE MATERIAL
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,7 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     InicioSesionComponent,
-    RegistroComponent,
+
   ],
   imports: [
     CommonModule,
@@ -29,7 +29,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,   
   ],
   exports: [
-    RegistroComponent,
+    
     InicioSesionComponent // Exportar también el componente de inicio de sesión si es necesario
   ]
 })

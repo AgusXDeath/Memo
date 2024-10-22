@@ -1,5 +1,5 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="drawer.toggle()">
+<mat-toolbar color="primary" >
+  <button mat-icon-button (click)="drawer.toggle()" matTooltip="menu">
     <mat-icon>menu</mat-icon>
   </button>
   <span>
@@ -8,12 +8,12 @@
 
   <span class="example-spacer"></span>
   <ng-container *ngFor="let item of menu; let i = index">
-    <button mat-button class="toolbar-button" [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex">
+    <button mat-button class="toolbar-button" [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex" matTooltip="inicio">
       {{ item.nombre }}
     </button>
   </ng-container>
 
-  <button mat-button class="toolbar-button" [matMenuTriggerFor]="about">
+  <button mat-button class="toolbar-button" [matMenuTriggerFor]="about" matTooltip="registros de datos">
     <div class="valign-center">
       <span>Seguridad</span>
       <i class="material-icons">arrow_drop_down</i>
@@ -27,20 +27,42 @@
   </mat-menu>
 
   <span class="example-spacer"></span>
-  <button (click)="logout()" routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+  <button (click)="logout()" routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" matTooltip="cerrar sesion">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
 <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="over">
-    <h2 class="sidebar-title">Mensajes</h2>
-    <ng-container *ngFor="let item of filteredMessagesMenu">
-      <button mat-button class="sidebar-button" [routerLink]="item.redirect">{{ item.nombre }}</button>
-    </ng-container>
-    
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/mensajes'">Mensajes</button> <!-- Nuevo botón -->
+  <mat-drawer #drawer class="mat-drawer" mode="over">
+    <header class="sidebar-title">
+     <b> Mensajería</b>
+    </header>
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/mensajes'" matTooltip="Ver mensajes">
+      <mat-icon>email</mat-icon>
+      Mensajes
+    </button>
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/bandejaDeEntrada'" matTooltip="Ver bandeja de entrada">
+      <mat-icon>inbox</mat-icon>
+      Bandeja de Entrada
+    </button>
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/bandejaDeSalida'" matTooltip="Ver bandeja de salida">
+      <mat-icon>upload</mat-icon>
+      Bandeja de Salida
+    </button>
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/borradores'" matTooltip="Ver borradores">
+      <mat-icon>drafts</mat-icon>
+      Borradores
+    </button>
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/favoritos'" matTooltip="Ver mensajes favoritos">
+      <mat-icon>favorite</mat-icon>
+      Favoritos
+    </button>
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/enviarMensaje'" matTooltip="Enviar un mensaje">
+      <mat-icon>send</mat-icon>
+      Enviar un Mensaje
+    </button>
   </mat-drawer>
+
   <div class="example-sidenav-content">
     <router-outlet></router-outlet> <!-- Aquí se renderiza el contenido del dashboard y tablas -->
   </div>

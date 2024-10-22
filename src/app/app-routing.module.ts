@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: "dashboard",loadChildren:()=>import('./modules/autentificacion/components/dashboard/dashboard.module').then(m=>m.DashboardModule),
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: "**", redirectTo: "inicio-sesion", pathMatch: 'full'

@@ -61,10 +61,5 @@ export class MensajesComponent implements OnInit {
     }
   }
 
-  moveToPapelera(mensaje: any): void {
-    mensaje.estadoPapelera = true; // Cambia el estado a papelera
-    this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje).subscribe(() => {
-      this.loadMensajes(); // Vuelve a cargar la lista después de mover a papelera
-    });
-  }
+ 
 }

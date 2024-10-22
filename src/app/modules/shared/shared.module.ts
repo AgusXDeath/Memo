@@ -17,6 +17,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatIconModule,
     HttpClientModule,
     MatMenuModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatTooltipModule
   ],
   exports: [
     SharedRoutingModule,

@@ -12,14 +12,14 @@ import { FormsModule } from '@angular/forms'; // Para manejar formularios
 import { MensajesRoutingModule } from './mensajes-routing.module';
 import { MensajesComponent } from './mensajes.component';
 import { MensajeFormComponent } from './mensaje-form/mensaje-form.component';
-import { PapeleraComponent } from './papelera/papelera.component';
+
 
 
 @NgModule({
   declarations: [
     MensajesComponent,
     MensajeFormComponent,
-    PapeleraComponent,
+    
   ],
   imports: [
     CommonModule,

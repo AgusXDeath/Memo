@@ -23,5 +23,27 @@
     {
         "nombre": "Mensajes",
         "redirect": "/mensajes"
+    },
+    {
+        "nombre": "BandejaDeEntrada",
+        "redirect": "/bandejaDeEntrada"
+    },
+    {
+        "nombre": "BandejaDeSalida",
+        "redirect": "/bandejaDeSalida"
+    },
+    {
+        "nombre": "Borradores",
+        "redirect": "/borradores"
+    },
+    {
+        "nombre": "Favorito",
+        "redirect": "/favoritos"
+    },
+    {
+        "Enviar": "enviarMensaje",
+        "redirect":"/enviarMensaje"
     }
+
+
 ]

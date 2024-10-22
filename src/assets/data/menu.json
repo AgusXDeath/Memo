@@ -1,0 +1,27 @@
+[
+    {
+        "nombre": "Inicio",
+        "redirect": "/dashboard"
+    },
+    {
+        "nombre": "Usuarios",
+        "redirect": "/dashboard/usuarios"
+    },
+    
+    {
+        "nombre": "GrupoUsuarios",
+        "redirect": "/dashboard/grupos"
+    },
+    {
+        "nombre": "Funciones",
+        "redirect": "/dashboard/funciones"
+    },
+    {
+        "nombre": "GrupoFunciones",
+        "redirect": "/dashboard/grupofunciones"
+    },
+    {
+        "nombre": "Mensajes",
+        "redirect": "/mensajes"
+    }
+]

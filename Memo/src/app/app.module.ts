@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
 import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
 import { MensajesModule } from './modules/mensajes/mensajes.module';
+import { BandejaEntradaModule } from './modules/bandeja-entrada/bandeja-entrada.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MensajesModule } from './modules/mensajes/mensajes.module';
     HttpClientModule,
     AdminModule,  // Importando el módulo de administración
     AutentificacionModule,  // Asegúrate de importar el módulo de autenticación
-    MensajesModule
+    MensajesModule,
+    BandejaEntradaModule
     
   ],
   providers: [],

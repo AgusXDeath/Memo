@@ -10,6 +10,7 @@ include_once '../models/funcion.php'; // Añadir modelo de Funciones
 include_once '../models/gruposFunciones.php';
 include_once '../models/mensajes.php'; // Añadir modelo de Mensajes
 include_once '../core/Database.php';
+include_once '../models/bandejaEntrada.php';
 
 class UsuariosGruposController {
 
@@ -20,6 +21,7 @@ class UsuariosGruposController {
     private $funcion; // Añadir objeto para manejar Funciones
     private $gruposFunciones;
     private $mensajes; // Añadir objeto para manejar Mensajes
+    private $bandejaEntrada;
 
     public function __construct() {
         $database = new Database();
@@ -29,6 +31,7 @@ class UsuariosGruposController {
         $this->funcion = new Funcion($this->db); // Instanciar el modelo de Funciones
         $this->gruposFunciones = new GruposFunciones($this->db);
         $this->mensajes = new Mensajes($this->db); // Instanciar el modelo de Mensajes
+        $this->bandejaEntrada = new BandejaEntrada($this->db);
     }
 
     // Métodos para Usuarios
@@ -344,14 +347,14 @@ public function moveMessageToTrash($id) {
         return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
     }
 
-    private function generateJWT($user_id, $rol) {
+    private function generateJWT($idUsuario, $idGrupo) {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
         $payload = json_encode([
             'iss' => 'localhost',
             'iat' => time(),
             'exp' => time() + ( 60 * 60),  // Expira en 1 hora
-            'sub' => $user_id,
-            'rol' => $rol
+            'sub' => $idUsuario,
+            'rol' => $idGrupo
         ]);
 
         $base64UrlHeader = $this->base64UrlEncode($header);
@@ -380,6 +383,34 @@ public function moveMessageToTrash($id) {
         }
         return false;
     }
+
+    // Obtener mensajes de la bandeja de entrada para el usuario logueado
+    public function getBandejaEntrada() {
+        // Obtener el token de la cabecera de la solicitud
+        $headers = apache_request_headers();
+        $token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : null;
+        if ($token) {
+            $decodedToken = $this->verifyJWT($token); // Decodificar el token
+            if ($decodedToken) {
+                $idUsuario = $decodedToken['sub']; // Obtener el idUsuario del token
+
+                // Obtener los mensajes de la bandeja de entrada para el usuario logueado
+                $stmt = $this->bandejaEntrada->getMensajesByReceptor($idUsuario);
+                $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Devolver los mensajes en formato JSON
+                return json_encode($mensajes);
+            } else {
+                return json_encode(["message" => "Token inválido o expirado"]);
+            }
+        } else {
+            return json_encode(["message" => "Token no proporcionado"]);
+        }
+        
+    }
+
+
+
 
 }
 

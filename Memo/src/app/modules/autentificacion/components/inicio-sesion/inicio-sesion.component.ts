@@ -29,7 +29,6 @@ export class InicioSesionComponent {
           console.log('Respuesta del servidor:', response);
           if (response.status === 'success') {
             // redirigir al usuario y proporcionarle un token
-/*             this.router.navigate(['dashboard']); */
             localStorage.setItem('token', response.token);
             this.fakeloading();
           } else {

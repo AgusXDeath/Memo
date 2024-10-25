@@ -8,7 +8,8 @@ import { BandejaEntradaRoutingModule } from './bandeja-entrada-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    BandejaEntradaRoutingModule
+    BandejaEntradaRoutingModule,
+ 
   ]
 })
 export class BandejaEntradaModule { }

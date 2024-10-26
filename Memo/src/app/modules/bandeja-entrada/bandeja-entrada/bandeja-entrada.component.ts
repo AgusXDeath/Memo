@@ -9,7 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class BandejaEntradaComponent implements OnInit {
   mensajes = new MatTableDataSource<any>();
-  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje'];
+  displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje'];
 
   constructor(private servicioBeService: ServicioBeService) {}
 

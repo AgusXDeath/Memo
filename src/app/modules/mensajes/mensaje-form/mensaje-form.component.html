@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>{{ data ? 'Editar Mensaje' : 'Enviar Mensaje' }}</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Emisor</mat-label>
+    <input matInput [(ngModel)]="mensaje.emisor" required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Receptor</mat-label>
+    <input matInput [(ngModel)]="mensaje.receptor" required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Mensaje</mat-label>
+    <textarea matInput [(ngModel)]="mensaje.mensaje" required></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onGuardar()">Guardar Borrador</button>
+  <button mat-button *ngIf="!data" (click)="onEnviar()">Enviar</button> <!-- Solo se muestra si no está editando -->
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+</mat-dialog-actions>

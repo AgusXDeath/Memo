@@ -16,14 +16,23 @@ require_once '../models/Favoritos.php';
 require_once '../models/Papelera.php';
 require_once '../models/EnviarMensaje.php';
 require_once '../models/mensajes.php';
+include_once '../core/Database.php';
 
 class MensajesController {
     private $db; // Conexión a la base de datos
     private $secret_key = 'clave_secreta'; // Usar una clave secreta fuerte y segura
+    private $bandejaEntrada;
+    private $bandejaSalida;
+    private $favoritos;
+    private $papelera;
+    private $enviarMensaje;
+    private $mensajes;
+
 
     // Constructor de la clase
     public function __construct($db) {
-        $this->db = $db; // Asignar la conexión a la propiedad
+            $database = new Database(); // Crear una nueva instancia de la base de datos
+            $this->db = $database->getConnection(); // Obtener la conexión a la base de datos
         // Inicializar los modelos correspondientes
         $this->bandejaEntrada = new BandejaEntrada($db);
         $this->bandejaSalida = new BandejaSalida($db);

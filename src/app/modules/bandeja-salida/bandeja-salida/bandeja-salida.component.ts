@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MensajesService } from 'src/app/services/mensajes.service';
 
-// Definición de la interfaz para un mensaje
 interface Mensaje {
   emisor: string;
   receptor: string;
   mensaje: string;
-  enviado: boolean; // Añadimos el campo 'enviado' para gestionar el estado del mensaje
+  id: number; // Agregado campo id para identificar el mensaje específico
 }
 
 @Component({
@@ -13,24 +13,52 @@ interface Mensaje {
   templateUrl: './bandeja-salida.component.html',
   styleUrls: ['./bandeja-salida.component.css']
 })
-export class BandejaSalidaComponent {
-  // Lista de mensajes enviados
-  mensajes: Mensaje[] = [
-    { emisor: 'Ronaldo', receptor: 'Messi', mensaje: 'Hola Frionel Pessi...', enviado: true },
-    { emisor: 'Prisci', receptor: 'Agus', mensaje: 'Hola Agusss', enviado: true },
-    { emisor: 'Javier', receptor: 'Angie', mensaje: 'hoy no, mañana si', enviado: true }
-  ];
+export class BandejaSalidaComponent implements OnInit {
+  mensajes: Mensaje[] = [];
+  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones'];
 
-  // Columnas que se mostrarán en la tabla
-  displayedColumns: string[] = ['receptor', 'mensaje', 'acciones'];
+  constructor(private mensajesService: MensajesService) { }
 
-  // Función para eliminar un mensaje de la lista
-  deleteMensaje(mensaje: Mensaje): void {
-    this.mensajes = this.mensajes.filter(m => m !== mensaje); // Elimina el mensaje de la lista
+  ngOnInit(): void {
+    this.getMensajesBandejaSalida();
   }
 
-  // Función para abrir un formulario modal para enviar un nuevo mensaje
-  openFormDialog(): void {
-    console.log('Abrir diálogo para enviar nuevo mensaje');
+  // Método para obtener mensajes de la bandeja de salida desde el servicio
+  getMensajesBandejaSalida(): void {
+    this.mensajesService.getBandejaSalida().subscribe(
+      (data: Mensaje[]) => {
+        this.mensajes = data;
+      },
+      (error) => {
+        console.error('Error al obtener los mensajes de la bandeja de salida:', error);
+      }
+    );
+  }
+  marcarComoFavorito(idMensaje: number) {
+    this.mensajesService.agregarAFavorito(idMensaje).subscribe(
+      response => {
+        console.log('Mensaje marcado como favorito:', response);
+        // Aquí puedes agregar lógica para actualizar la vista o mostrar un mensaje al usuario
+      },
+      error => {
+        console.error('Error al agregar a favoritos:', error);
+      }
+    );
+  }
+
+
+  // Método para actualizar un mensaje específico
+  updateMensaje(mensaje: Mensaje): void {
+    this.mensajesService.updateMensaje(mensaje.id, mensaje.mensaje).subscribe(
+      (updatedMensaje: Mensaje) => {
+        const index = this.mensajes.findIndex(m => m.id === mensaje.id);
+        if (index !== -1) {
+          this.mensajes[index] = updatedMensaje;
+        }
+      },
+      (error) => {
+        console.error('Error al actualizar el mensaje:', error);
+      }
+    );
   }
 }

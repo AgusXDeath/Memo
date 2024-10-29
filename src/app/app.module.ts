@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BorradoresModule } from './modules/borradores/borradores.module';
 import { FavoritosModule } from './modules/favoritos/favoritos.module';
+import { PapeleraModule } from './modules/papelera/papelera.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { FavoritosModule } from './modules/favoritos/favoritos.module';
     MatTableModule,
     MatIconModule,
     BorradoresModule,
-    FavoritosModule
+    FavoritosModule,
+    PapeleraModule
     
   ],
   providers: [],

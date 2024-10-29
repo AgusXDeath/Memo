@@ -1,25 +1,30 @@
-<mat-toolbar color="primary" >
+<!-- Barra de herramientas principal -->
+<mat-toolbar color="primary">
+  <!-- Botón del menú que activa el drawer -->
   <button mat-icon-button (click)="drawer.toggle()" matTooltip="menu">
     <mat-icon>menu</mat-icon>
   </button>
   <span>
+    <!-- Logo de la aplicación -->
     <img src="../../../../../assets/img/imagenInicios.png" alt="logo de muni" width="100%">
   </span>
-
   <span class="example-spacer"></span>
+
+  <!-- Iterar sobre el menú y mostrar solo el item correspondiente -->
   <ng-container *ngFor="let item of menu; let i = index">
     <button mat-button class="toolbar-button" [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex" matTooltip="inicio">
       {{ item.nombre }}
     </button>
   </ng-container>
 
+  <!-- Botón del menú desplegable de seguridad -->
   <button mat-button class="toolbar-button" [matMenuTriggerFor]="about" matTooltip="registros de datos">
     <div class="valign-center">
       <span>Seguridad</span>
       <i class="material-icons">arrow_drop_down</i>
     </div>
   </button>
-
+  <!-- Menú desplegable de seguridad -->
   <mat-menu #about="matMenu">
     <button mat-menu-item *ngFor="let item of menu.slice(1, 5)" [routerLink]="item.redirect">
       {{ item.nombre }}
@@ -27,15 +32,19 @@
   </mat-menu>
 
   <span class="example-spacer"></span>
+
+  <!-- Botón de cierre de sesión -->
   <button (click)="logout()" routerLink="logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" matTooltip="cerrar sesion">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
+<!-- Contenedor y drawer -->
 <mat-drawer-container class="example-container" autosize>
+  <!-- Drawer con los elementos del menú -->
   <mat-drawer #drawer class="mat-drawer" mode="over">
     <header class="sidebar-title">
-     <b> Mensajería</b>
+      <b> Mensajería</b>
     </header>
     <button mat-button class="sidebar-button" [routerLink]="'/dashboard/mensajes'" matTooltip="Ver mensajes">
       <mat-icon>email</mat-icon>
@@ -67,6 +76,7 @@
     </button>
   </mat-drawer>
 
+  <!-- Contenido principal que se renderiza con el router -->
   <div class="example-sidenav-content">
     <router-outlet></router-outlet> <!-- Aquí se renderiza el contenido del dashboard y tablas -->
   </div>

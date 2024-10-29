@@ -1,39 +1,41 @@
 <?php
+// Configurar las cabeceras para permitir solicitudes de otros orígenes, métodos y cabeceras específicas.
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
 
-// Incluir archivos de conexión y controladores
-include_once '../core/Database.php'; 
+// Incluir archivos de conexión y controladores necesarios para el funcionamiento de la API.
+include_once '../core/Database.php';
 include_once '../controllers/UsuariosGruposController.php';
 include_once '../controllers/AuthController.php';
 include_once '../controllers/MensajesController.php';
 include_once '../views/View.php';
 
-// Habilitar la visualización de errores para depuración
+// Habilitar la visualización de errores para facilitar la depuración durante el desarrollo.
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Crear conexión a la base de datos
+// Crear una conexión a la base de datos utilizando la clase Database.
 $database = new Database();
 $db = $database->getConnection();
 
-// Verificar si la conexión fue exitosa
+// Verificar si la conexión a la base de datos fue exitosa.
 if (!$db) {
-    echo json_encode(["message" => "Error al conectar a la base de datos."]); 
+    echo json_encode(["message" => "Error al conectar a la base de datos."]);
     exit();
 }
 
-// Crear instancias de controladores
+// Crear instancias de los controladores con la conexión a la base de datos.
 $usuariosGruposController = new UsuariosGruposController($db);
-$authController = new AuthController($db);  
+$authController = new AuthController($db);
 $mensajesController = new MensajesController($db);
 
-$method = $_SERVER['REQUEST_METHOD']; // Obtener el método de la solicitud
-$resource = $_GET['resource'] ?? null; // Obtener el recurso de la URL
+// Obtener el método de la solicitud (GET, POST, PUT, DELETE) y el recurso de la URL.
+$method = $_SERVER['REQUEST_METHOD'];
+$resource = $_GET['resource'] ?? null;
 
-// Método para verificar el token JWT
+// Método para verificar el token JWT (autenticación).
 function verifyToken($authController) {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
@@ -42,30 +44,28 @@ function verifyToken($authController) {
         $verified = $authController->verifyJWT($token);
         
         if (!$verified) {
-            echo json_encode(["message" => "Token no válido o expirado"]); 
+            echo json_encode(["message" => "Token no válido o expirado"]);
             exit();
         }
         return $verified;
     } else {
-        echo json_encode(["message" => "Token no proporcionado"]); 
+        echo json_encode(["message" => "Token no proporcionado"]);
         exit();
     }
 }
 
-// Rutas de recursos según el controlador
+// Rutas de recursos según el controlador especificado.
 if ($resource) {
     switch ($resource) {
-        // Rutas para usuarios, grupos y funciones
+        // Rutas para usuarios, grupos y funciones.
         case 'usuarios':
         case 'grupos':
         case 'funciones':
         case 'gruposfunciones':
             $controller = $usuariosGruposController;
-
             if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
                 verifyToken($authController);
             }
-
             switch ($method) {
                 case 'GET':
                     if ($resource === 'usuarios') {
@@ -78,7 +78,6 @@ if ($resource) {
                         $result = isset($_GET['id']) ? $controller->getgrupoFuncionesById($_GET['id']) : $controller->getAllgrupoFunciones();
                     }
                     break;
-
                 case 'POST':
                     $data = json_decode(file_get_contents("php://input"));
                     if ($resource === 'usuarios') {
@@ -91,7 +90,6 @@ if ($resource) {
                         $result = $controller->creategrupoFunciones($data);
                     }
                     break;
-
                 case 'PUT':
                     $data = json_decode(file_get_contents("php://input"));
                     if (isset($_GET['id'])) {
@@ -106,7 +104,6 @@ if ($resource) {
                         }
                     }
                     break;
-
                 case 'DELETE':
                     if (isset($_GET['id'])) {
                         if ($resource === 'usuarios') {
@@ -120,85 +117,72 @@ if ($resource) {
                         }
                     }
                     break;
-
                 default:
                     $result = json_encode(["message" => "Método no permitido"]);
             }
             break;
-
-        // Ruta para el controlador de mensajes
+        // Ruta para el controlador de mensajes.
         case 'mensajes':
             $controller = $mensajesController;
-
             if (in_array($method, ['POST', 'PUT', 'DELETE'])) {
                 verifyToken($authController);
             }
-
             switch ($method) {
                 case 'GET':
                     $result = isset($_GET['id']) ? $controller->getMensajeById($_GET['id']) : $controller->getAllMensajes();
                     break;
-
                 case 'POST':
-                    $result = $controller->enviarMensaje(); 
+                    $result = $controller->enviarMensaje();
                     break;
-
                 case 'PUT':
                     $result = isset($_GET['id']) ? $controller->updateMensaje() : null;
                     break;
-
                 case 'DELETE':
                     $result = isset($_GET['id']) ? $controller->deleteMensaje() : null;
                     break;
-
                 default:
                     $result = json_encode(["message" => "Método no permitido"]);
             }
             break;
-
+        // Otras rutas protegidas por autenticación.
         case 'favoritos':
             verifyToken($authController);
-            $result = $mensajesController->getFavoritos(); 
+            $result = $mensajesController->getFavoritos();
             break;
-
         case 'papelera':
             verifyToken($authController);
-            $result = $mensajesController->getPapelera(); 
+            $result = $mensajesController->getPapelera();
             break;
-
         case 'bandejaEntrada':
             verifyToken($authController);
             $result = $mensajesController->getBandejaEntrada();
             break;
-
         case 'bandejaSalida':
             verifyToken($authController);
-            $result = $mensajesController->getBandejaSalida(); 
+            $result = $mensajesController->getBandejaSalida();
             break;
-
+        // Ruta para iniciar sesión (login).
         case 'login':
-            // Verificar si el método es POST para iniciar sesión
             if ($method === 'POST') {
                 $data = json_decode(file_get_contents("php://input"));
-                // Verificar si las credenciales están proporcionadas
                 if (isset($data->mail) && isset($data->clave)) {
-                    $result = $authController->login($data->mail, $data->clave); 
+                    $result = $authController->login($data->mail, $data->clave);
                 } else {
-                    $result = json_encode(["message" => "Credenciales no proporcionadas"]); // Mensaje de error si faltan credenciales
+                    $result = json_encode(["message" => "Credenciales no proporcionadas"]);
                 }
             } else {
-                $result = json_encode(["message" => "Método no permitido, use POST para login"]); // Mensaje si el método no es permitido
+                $result = json_encode(["message" => "Método no permitido, use POST para login"]);
             }
             break;
-
         default:
-            $result = json_encode(["message" => "Recurso no especificado o no encontrado"]); // Mensaje si el recurso no está definido
+            $result = json_encode(["message" => "Recurso no especificado o no encontrado"]);
     }
 } else {
-    $result = json_encode(["message" => "Recurso no especificado en la URL"]); // Mensaje si no se especifica el recurso
+    $result = json_encode(["message" => "Recurso no especificado en la URL"]);
 }
 
-http_response_code(200); 
-header('Content-Type: application/json'); 
-echo json_encode($result); 
+// Establecer el código de respuesta HTTP y el tipo de contenido como JSON.
+http_response_code(200);
+header('Content-Type: application/json');
+echo json_encode($result);
 ?>

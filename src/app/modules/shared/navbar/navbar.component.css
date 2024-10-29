@@ -27,7 +27,7 @@
 }
 .mat-drawer {
   width: 220px;
-  background-color: #dad5d4;
+  background-color: #ffffff;
   color: #a8cf45;
   display: flex;
   flex-direction: column;
@@ -63,7 +63,7 @@
   width: 100%;
   max-width: 200px;
   margin: 10px 0;
-  background-color: #dad5d4; /* Mismo color que el fondo del sidebar */
+  background-color: #ffffff; /* Mismo color que el fondo del sidebar */
   color: #002952;
   display: flex;
   justify-content: flex-start; /* Alinear icono y texto a la izquierda */

@@ -26,9 +26,14 @@ if (isset($_GET['resource'])) {
                 $result = isset($_GET['id']) ? $controller->getgrupoFuncionesById($_GET['id']) : $controller->getAllgrupoFunciones();
             } elseif ($resource === 'mensajes') { // Soporte para Mensajes
                 $result = isset($_GET['id']) ? $controller->getMensajeById($_GET['id']) : $controller->getAllMensajes();
+            } elseif ($resource === 'bandejaEntrada') {
+                $result = $controller->getBandejaEntrada();                
+            }elseif ($resource === 'bandejaSalida') {
+                $result = $controller->getBandejaSalida();
             }
-            View::render($result);
-            break;
+             else {  $result = json_encode(["message" => "Recurso no encontrado"]);}
+         /*    View::render($result);
+            break; */
 
         case 'POST':
             $data = json_decode(file_get_contents("php://input"));

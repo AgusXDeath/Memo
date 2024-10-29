@@ -1,1 +1,22 @@
-<p>bandeja-salida works!</p>
+<div>
+  
+    <h2>Mensajes enviados</h2>
+    <table mat-table [dataSource]="mensajes" class="mat-elevation-z8">
+      <ng-container matColumnDef="emisor">
+        <th mat-header-cell *matHeaderCellDef> Emisor </th>
+        <td mat-cell *matCellDef="let mensaje"> {{ mensaje.emisorMail }} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="receptor">
+        <th mat-header-cell *matHeaderCellDef> Receptor </th>
+        <td mat-cell *matCellDef="let mensaje"> {{ mensaje.receptorMail }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="mensaje">
+        <th mat-header-cell *matHeaderCellDef> Mensaje </th>
+        <td mat-cell *matCellDef="let mensaje"> {{ mensaje.mensaje }} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['emisor', 'receptor', 'mensaje']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['emisor', 'receptor', 'mensaje'];"></tr>
+    </table>
+  </div>

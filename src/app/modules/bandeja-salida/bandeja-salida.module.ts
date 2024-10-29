@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatTableModule} from '@angular/material/table';
 
 import { BandejaSalidaRoutingModule } from './bandeja-salida-routing.module';
+import { BandejaSalidaComponent } from './bandeja-salida/bandeja-salida.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    BandejaSalidaComponent
+  ],
   imports: [
     CommonModule,
-    BandejaSalidaRoutingModule
+    BandejaSalidaRoutingModule,
+    MatTableModule
   ]
 })
 export class BandejaSalidaModule { }

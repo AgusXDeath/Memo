@@ -39,7 +39,23 @@ class Mensajes {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Eliminar un mensaje por ID
+    public function deleteMensaje($id) {
+        $query = "DELETE FROM " . $this->table . " WHERE idMensajes = :idMensajes";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":idMensajes", $id);
+        return $stmt->execute();
+    }
+
+    
+   // Editar un mensaje por ID
+public function updateMensaje($id, $contenido) {
+    $query = "UPDATE " . $this->table . " SET mensaje = :mensaje WHERE idMensajes = :idMensajes";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":mensaje", $contenido);
+    $stmt->bindParam(":idMensajes", $id);
+    return $stmt->execute();
 }
 
-
+}
 ?>

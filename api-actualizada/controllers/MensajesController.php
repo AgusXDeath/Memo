@@ -134,4 +134,53 @@ class MensajesController {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
         }
     }
+    // Método para borrar un mensaje por ID
+public function deleteMensaje() {
+    $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
+    if ($idUsuario) {
+        // Obtener el ID del mensaje desde la solicitud
+        $idMensaje = $_GET['id'] ?? null;
+        if ($idMensaje) {
+            // Llamar a la función de eliminar mensaje en el modelo Mensajes
+            $resultado = $this->mensajes->deleteMensaje($idMensaje);
+            if ($resultado) {
+                echo json_encode(["message" => "Mensaje eliminado correctamente"]); // Confirmación de eliminación
+            } else {
+                echo json_encode(["message" => "Error al eliminar el mensaje"]); // Mensaje de error en eliminación
+            }
+        } else {
+            echo json_encode(["message" => "ID de mensaje no proporcionado"]); // Mensaje de error si el ID no se proporciona
+        }
+    } else {
+        echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+    }
+}
+
+// Método para editar un mensaje por ID
+public function updateMensaje() {
+    $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
+    if ($idUsuario) {
+        // Obtener el ID del mensaje desde la solicitud
+        $idMensaje = $_GET['id'] ?? null;
+        // Obtener el contenido del mensaje de la solicitud
+        $data = json_decode(file_get_contents("php://input"));
+        $contenido = $data->mensaje ?? null; // Obtener el contenido del mensaje
+
+        if ($idMensaje && $contenido) {
+            // Llamar a la función de actualización de mensaje en el modelo Mensajes
+            $resultado = $this->mensajes->updateMensaje($idMensaje, $contenido);
+            if ($resultado) {
+                echo json_encode(["message" => "Mensaje actualizado correctamente"]); // Confirmación de actualización
+            } else {
+                echo json_encode(["message" => "Error al actualizar el mensaje"]); // Mensaje de error en actualización
+            }
+        } else {
+            echo json_encode(["message" => "Datos incompletos para actualizar el mensaje"]); // Error si faltan datos
+        }
+    } else {
+        echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+    }
+}
+
+
 }

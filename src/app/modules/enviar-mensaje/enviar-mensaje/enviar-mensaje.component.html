@@ -1,1 +1,40 @@
-<p>enviar-mensaje works!</p>
+
+<div class="mensaje-container">
+    <form (ngSubmit)="enviarMensaje()">
+      <div class="form-group">
+        <label for="destinatario">Para:</label>
+        <input
+          type="email"
+          id="destinatario"
+          [(ngModel)]="destinatario"
+          name="destinatario"
+          required
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="asunto">Asunto:</label>
+        <input
+          type="text"
+          id="asunto"
+          [(ngModel)]="asunto"
+          name="asunto"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label for="mensaje">Mensaje:</label>
+        <textarea
+          id="mensaje"
+          [(ngModel)]="mensaje"
+          name="mensaje"
+          rows="6"
+        ></textarea>
+      </div>
+  
+      <div class="button-container">
+        <button mat-raised-button color="primary" (click)="enviarMensaje()">Enviar</button>
+        <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </div>

@@ -6,19 +6,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 // Módulos propios
 import { AppComponent } from './app.component';
-import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
+import { AdminModule } from './modules/admin/admin.module';
 import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
 import { MensajesModule } from './modules/mensajes/mensajes.module';
 import { BandejaEntradaModule } from './modules/bandeja-entrada/bandeja-entrada.module';
 import { BandejaSalidaModule } from './modules/bandeja-salida/bandeja-salida.module';
-import { EnviarMensajeComponent } from './modules/enviar-mensaje/enviar-mensaje/enviar-mensaje.component';
-
+import { SharedModule } from './modules/shared/shared.module';
+import { EnviarMensajeModule } from './modules/enviar-mensaje/enviar-mensaje.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EnviarMensajeComponent,
-    
     // Otros componentes globales
   ],
   imports: [
@@ -26,12 +24,13 @@ import { EnviarMensajeComponent } from './modules/enviar-mensaje/enviar-mensaje/
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    AdminModule,  // Importando el módulo de administración
-    AutentificacionModule,  // Asegúrate de importar el módulo de autenticación
+    SharedModule, // Importar SharedModule
+    EnviarMensajeModule, // Importar EnviarMensajeModule
+    AdminModule,
+    AutentificacionModule,
     MensajesModule,
     BandejaEntradaModule,
     BandejaSalidaModule
-    
   ],
   providers: [],
   bootstrap: [AppComponent]

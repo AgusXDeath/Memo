@@ -1,254 +1,444 @@
 <?php
-// Permitir solicitudes desde cualquier origen
 header("Access-Control-Allow-Origin: *");
-// Permitir métodos HTTP específicos
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-// Permitir cabeceras específicas en las solicitudes
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
+// app/controllers/UsuariosGruposController.php
 
-// Incluir los modelos necesarios
 include_once '../models/usuarios.php';
 include_once '../models/grupoUsuario.php';
-include_once '../models/funcion.php';
+include_once '../models/funcion.php'; // Añadir modelo de Funciones
 include_once '../models/gruposFunciones.php';
+include_once '../models/mensajes.php'; // Añadir modelo de Mensajes
 include_once '../core/Database.php';
+include_once '../models/bandejaEntrada.php';
+include_once '../models/bandejaSalida.php';
 
 class UsuariosGruposController {
 
-    private $db; // Conexión a la base de datos
-    private $usuarios; // Modelo de usuario
-    private $grupoUsuario; // Modelo de grupo de usuario
-    private $funcion; // Modelo de función
-    private $gruposFunciones; // Modelo de grupos de funciones
+    private $secret_key = "clave_secreta";
+    private $db;
+    private $usuarios;
+    private $grupoUsuario;
+    private $funcion; // Añadir objeto para manejar Funciones
+    private $gruposFunciones;
+    private $mensajes; // Añadir objeto para manejar Mensajes
+    private $bandejaEntrada;
+    private $bandejaSalida;
 
-    // Constructor de la clase
     public function __construct() {
-        $database = new Database(); // Crear una nueva instancia de la base de datos
-        $this->db = $database->getConnection(); // Obtener la conexión a la base de datos
-        // Inicializar los modelos correspondientes
+        $database = new Database();
+        $this->db = $database->getConnection();
         $this->usuarios = new Usuario($this->db);
         $this->grupoUsuario = new GrupoUsuario($this->db);
-        $this->funcion = new Funcion($this->db);
+        $this->funcion = new Funcion($this->db); // Instanciar el modelo de Funciones
         $this->gruposFunciones = new GruposFunciones($this->db);
+        $this->mensajes = new Mensajes($this->db); // Instanciar el modelo de Mensajes
+        $this->bandejaEntrada = new BandejaEntrada($this->db);
+        $this->bandejaSalida = new BandejaSalida($this->db);
     }
 
     // Métodos para Usuarios
 
     // Obtener todos los usuarios
     public function getAllUsuarios() {
-        $stmt = $this->usuarios->getAll(); // Obtener todos los usuarios
-        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($usuarios); // Retornar los usuarios en formato JSON
+        $stmt = $this->usuarios->getAll();
+        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($usuarios);
     }
 
-    // Obtener un usuario por ID
+    // Obtener un usuarios por ID
     public function getUsuarioById($id) {
-        $usuarios = $this->usuarios->getById($id); // Obtener usuario por ID
-        return json_encode($usuarios); // Retornar el usuario en formato JSON
+        $usuarios = $this->usuarios->getById($id);
+        return json_encode($usuarios);
     }
 
-    // Crear un nuevo usuario
+    // Crear un nuevo usuarios
     public function createUsuario($data) {
-        // Asignar propiedades del usuario a partir de los datos recibidos
         $this->usuarios->nombreUsuario = $data->nombreUsuario;
         $this->usuarios->mail = $data->mail;
         $this->usuarios->clave = $data->clave;
         $this->usuarios->idgrupo = $data->idgrupo;
-
-        // Intentar crear el usuario y retornar el resultado
         if ($this->usuarios->create()) {
             return json_encode(["message" => "Usuario creado con éxito"]);
         }
-        return json_encode(["message" => "Error al crear el usuario"]); // Mensaje de error
+        return json_encode(["message" => "Error al crear el usuarios"]);
     }
 
-    // Actualizar un usuario existente
+    // Actualizar un usuarios
     public function updateUsuario($id, $data) {
-        // Asignar propiedades del usuario a partir de los datos recibidos
         $this->usuarios->nombreUsuario = $data->nombreUsuario;
         $this->usuarios->mail = $data->mail;
         $this->usuarios->clave = $data->clave;
         $this->usuarios->idgrupo = $data->idgrupo;
-
-        // Intentar actualizar el usuario y retornar el resultado
         if ($this->usuarios->update($id)) {
             return json_encode(["message" => "Usuario actualizado con éxito"]);
         }
-        return json_encode(["message" => "Error al actualizar el usuario"]); // Mensaje de error
+        return json_encode(["message" => "Error al actualizar el usuarios"]);
     }
 
-    // Eliminar un usuario
+    // Eliminar un usuarios
     public function deleteUsuario($id) {
-        // Intentar eliminar el usuario y retornar el resultado
         if ($this->usuarios->delete($id)) {
             return json_encode(["message" => "Usuario eliminado con éxito"]);
         }
-        return json_encode(["message" => "Error al eliminar el usuario"]); // Mensaje de error
+        return json_encode(["message" => "Error al eliminar el usuarios"]);
     }
 
     // Métodos para Grupos de Usuarios
 
     // Obtener todos los grupos de usuarios
     public function getAllGrupos() {
-        $stmt = $this->grupoUsuario->getAll(); // Obtener todos los grupos
-        $gruposUsuario = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($gruposUsuario); // Retornar grupos en formato JSON
+        $stmt = $this->grupoUsuario->getAll();
+        $gruposUsuario = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($gruposUsuario);
     }
 
     // Obtener un grupo por ID
     public function getGrupoById($id) {
-        $grupoUsuario = $this->grupoUsuario->getById($id); // Obtener grupo por ID
-        return json_encode($grupoUsuario); // Retornar el grupo en formato JSON
+        $grupoUsuario = $this->grupoUsuario->getById($id);
+        return json_encode($grupoUsuario);
     }
 
     // Crear un nuevo grupo de usuarios
     public function createGrupo($data) {
-        $this->grupoUsuario->descripcion = $data->descripcion; // Asignar la descripción del grupo
-
-        // Intentar crear el grupo y retornar el resultado
+        $this->grupoUsuario->descripcion = $data->descripcion;
         if ($this->grupoUsuario->create()) {
             return json_encode(["message" => "Grupo de usuarios creado con éxito"]);
         }
-        return json_encode(["message" => "Error al crear el grupo de usuarios"]); // Mensaje de error
+        return json_encode(["message" => "Error al crear el grupo de usuarios"]);
     }
 
-    // Actualizar un grupo existente
+    // Actualizar un grupo de usuarios
     public function updateGrupo($id, $data) {
+        error_log(print_r($data, true)); // Esto escribirá en el archivo de registro de errores
+        
         if (isset($data->descripcion)) {
-            $this->grupoUsuario->descripcion = $data->descripcion; // Asignar nueva descripción
+            $this->grupoUsuario->descripcion = $data->descripcion;
         } else {
-            return json_encode(["error" => "La propiedad 'descripcion' es requerida"]); // Mensaje de error
+            return json_encode(["error" => "La propiedad 'descripcion' es requerida"]);
         }
-
-        // Intentar actualizar el grupo y retornar el resultado
+    
         if ($this->grupoUsuario->update($id)) {
             return json_encode(["message" => "Grupo de usuarios actualizado con éxito"]);
         }
-        return json_encode(["message" => "Error al actualizar el grupo de usuarios"]); // Mensaje de error
+        return json_encode(["message" => "Error al actualizar el grupo de usuarios"]);
     }
+    
 
-    // Eliminar un grupo
+    // Eliminar un grupo de usuarios
     public function deleteGrupo($id) {
-        // Intentar eliminar el grupo y retornar el resultado
         if ($this->grupoUsuario->delete($id)) {
             return json_encode(["message" => "Grupo de usuarios eliminado con éxito"]);
         }
-        return json_encode(["message" => "Error al eliminar el grupo de usuarios"]); // Mensaje de error
+        return json_encode(["message" => "Error al eliminar el grupo de usuarios"]);
     }
 
     // Métodos para Funciones
 
     // Obtener todas las funciones
     public function getAllFunciones() {
-        $stmt = $this->funcion->getAll(); // Obtener todas las funciones
-        $funciones = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($funciones); // Retornar funciones en formato JSON
+        $stmt = $this->funcion->getAll();
+        $funciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($funciones);
     }
 
     // Obtener una función por ID
     public function getFuncionById($id) {
-        $funcion = $this->funcion->getById($id); // Obtener función por ID
-        return json_encode($funcion); // Retornar la función en formato JSON
+        $funcion = $this->funcion->getById($id);
+        return json_encode($funcion);
     }
 
     // Crear una nueva función
     public function createFuncion($data) {
-        $this->funcion->descripcion = $data->descripcion; // Asignar descripción de la función
-
-        // Intentar crear la función y retornar el resultado
+        $this->funcion->descripcion = $data->descripcion;
         if ($this->funcion->create()) {
             return json_encode(["message" => "Función creada con éxito"]);
         }
-        return json_encode(["message" => "Error al crear la función"]); // Mensaje de error
+        return json_encode(["message" => "Error al crear la función"]);
     }
 
-    // Actualizar una función existente
+    // Actualizar una función
     public function updateFuncion($id, $data) {
-        $this->funcion->descripcion = $data->descripcion; // Asignar nueva descripción
-
-        // Intentar actualizar la función y retornar el resultado
+        $this->funcion->descripcion = $data->descripcion;
         if ($this->funcion->update($id)) {
             return json_encode(["message" => "Función actualizada con éxito"]);
         }
-        return json_encode(["message" => "Error al actualizar la función"]); // Mensaje de error
+        return json_encode(["message" => "Error al actualizar la función"]);
     }
 
     // Eliminar una función
     public function deleteFuncion($id) {
-        // Intentar eliminar la función y retornar el resultado
         if ($this->funcion->delete($id)) {
             return json_encode(["message" => "Función eliminada con éxito"]);
         }
-        return json_encode(["message" => "Error al eliminar la función"]); // Mensaje de error
+        return json_encode(["message" => "Error al eliminar la función"]);
     }
 
     // Métodos para Grupos de Funciones
 
-    // Obtener todos los grupos de funciones
+    // Obtener todas las relaciones grupo-funciones
     public function getAllgrupoFunciones() {
-        $stmt = $this->gruposFunciones->getAll(); // Obtener todos los grupos de funciones
-        $gruposFunciones = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($gruposFunciones); // Retornar grupos de funciones en formato JSON
+        $stmt = $this->gruposFunciones->getAll();
+        $gruposFunciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($gruposFunciones);
     }
 
-    // Obtener un grupo de funciones por ID
+    // Obtener una relación grupo-funciones por ID
     public function getgrupoFuncionesById($id) {
-        $gruposFunciones = $this->gruposFunciones->getById($id); // Obtener grupo de funciones por ID
-        return json_encode($gruposFunciones); // Retornar el grupo de funciones en formato JSON
+        $gruposFunciones = $this->gruposFunciones->getById($id);
+        return json_encode($gruposFunciones);
     }
 
     // Crear una nueva relación grupo-funciones
     public function creategrupoFunciones($data) {
-        // Asignar propiedades de la relación a partir de los datos recibidos
         $this->gruposFunciones->idGrupo = $data->idGrupo;
         $this->gruposFunciones->idFunciones = $data->idFunciones;
         $this->gruposFunciones->ver = $data->ver;
         $this->gruposFunciones->insertar = $data->insertar;
         $this->gruposFunciones->modificar = $data->modificar;
         $this->gruposFunciones->borrar = $data->borrar;
-
-        // Intentar crear la relación y retornar el resultado
         if ($this->gruposFunciones->create()) {
             return json_encode(["message" => "Relación grupo-funciones creada con éxito"]);
         }
-        return json_encode(["message" => "Error al crear la relación grupo-funciones"]); // Mensaje de error
+        return json_encode(["message" => "Error al crear la relación grupo-funciones"]);
     }
 
-    // Actualizar una relación grupo-funciones existente
-    public function updategrupoFunciones($id, $data) {
-        // Asignar campos requeridos
-        if (isset($data->idGrupo)) {
-            $this->gruposFunciones->idGrupo = $data->idGrupo;
-        } else {
-            return json_encode(["error" => "El campo idGrupo es requerido"]); // Mensaje de error
-        }
-
-        if (isset($data->idFunciones)) {
-            $this->gruposFunciones->idFunciones = $data->idFunciones;
-        } else {
-            return json_encode(["error" => "El campo idFunciones es requerido"]); // Mensaje de error
-        }
-
-        // Asignar otros campos, si están definidos, o asignar 0 si no lo están
-        $this->gruposFunciones->ver = isset($data->ver) ? $data->ver : 0;
-        $this->gruposFunciones->insertar = isset($data->insertar) ? $data->insertar : 0;
-        $this->gruposFunciones->modificar = isset($data->modificar) ? $data->modificar : 0;
-        $this->gruposFunciones->borrar = isset($data->borrar) ? $data->borrar : 0;
-
-        // Intentar actualizar la relación y retornar el resultado
-        if ($this->gruposFunciones->update($id)) {
-            return json_encode(["message" => "Relación grupo-funciones actualizada con éxito"]);
-        }
-        return json_encode(["message" => "Error al actualizar la relación grupo-funciones"]); // Mensaje de error
+    // Actualizar una relación grupo-funciones
+public function updategrupoFunciones($id, $data) {
+    if (isset($data->idGrupo)) {
+        $this->gruposFunciones->idGrupo = $data->idGrupo;
+    } else {
+        return json_encode(["error" => "El campo idGrupo es requerido"]);
     }
+
+    if (isset($data->idFunciones)) {
+        $this->gruposFunciones->idFunciones = $data->idFunciones;
+    } else {
+        return json_encode(["error" => "El campo idFunciones es requerido"]);
+    }
+
+    // Continua con las otras propiedades...
+    $this->gruposFunciones->ver = isset($data->ver) ? $data->ver : 0;
+    $this->gruposFunciones->insertar = isset($data->insertar) ? $data->insertar : 0;
+    $this->gruposFunciones->modificar = isset($data->modificar) ? $data->modificar : 0;
+    $this->gruposFunciones->borrar = isset($data->borrar) ? $data->borrar : 0;
+
+    if ($this->gruposFunciones->update($id)) {
+        return json_encode(["message" => "Relación grupo-funciones actualizada con éxito"]);
+    }
+    return json_encode(["message" => "Error al actualizar la relación grupo-funciones"]);
+}
 
     // Eliminar una relación grupo-funciones
     public function deletegrupoFunciones($id) {
-        // Intentar eliminar la relación y retornar el resultado
         if ($this->gruposFunciones->delete($id)) {
             return json_encode(["message" => "Relación grupo-funciones eliminada con éxito"]);
         }
-        return json_encode(["message" => "Error al eliminar la relación grupo-funciones"]); // Mensaje de error
+        return json_encode(["message" => "Error al eliminar la relación grupo-funciones"]);
+
     }
+     // Métodos para Mensajes
+
+
+    // Obtener todos los mensajes
+    public function getAllMensajes() {
+        $stmt = $this->mensajes->getAll();
+        $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($mensajes);
+    }
+
+    // Obtener un mensaje por ID
+    public function getMensajeById($id) {
+        $mensaje = $this->mensajes->getById($id);
+        return json_encode($mensaje);
+    }
+
+    
+    // Crear un nuevo mensaje
+   // Crear un nuevo mensaje
+public function createMensaje($data) {
+    // Validación básica
+    if (empty($data->emisor) || empty($data->receptor) || empty($data->mensaje)) {
+        return json_encode(["error" => "Los campos emisor, receptor y mensaje son requeridos."]);
+    }
+    if (!isset($data->estadoLeido) || $data->estadoLeido === '') {
+        $data->estadoLeido = false; // O un valor predeterminado apropiado
+    }
+
+    $this->mensajes->emisor = $data->emisor;
+    $this->mensajes->receptor = $data->receptor;
+    $this->mensajes->mensaje = $data->mensaje;
+    $this->mensajes->estadoLeido = $data->estadoLeido ?? 0; // Por defecto, se considera no leído
+    $this->mensajes->estadoEnviado = 1; // Se asume que el mensaje fue enviado
+    $this->mensajes->estadoFavorito = $data->estadoFavorito ?? 0; // Por defecto no es favorito
+    $this->mensajes->estadoPapelera = $data->estadoPapelera ?? 0; // Por defecto no está en papelera
+
+    if ($this->mensajes->create($data)) {
+        return json_encode(["message" => "Mensaje creado con éxito"]);
+    }
+    return json_encode(["error" => "Error al crear el mensaje"]);
 }
+
+    
+// Actualizar un mensaje
+public function updateMensaje($id, $data) {
+    $this->mensajes->emisor = $data->emisor;
+    $this->mensajes->receptor = $data->receptor;
+    $this->mensajes->mensaje = $data->mensaje;
+    $this->mensajes->estadoLeido = $data->estadoLeido;
+    $this->mensajes->estadoEnviado = $data->estadoEnviado;
+    $this->mensajes->estadoFavorito = $data->estadoFavorito;
+    $this->mensajes->estadoPapelera = $data->estadoPapelera;
+    $this->mensajes->estadoRecibido = $data->estadoRecibido;  // Agregar esta línea
+    
+    if ($this->mensajes->update($id)) {
+        return json_encode(["message" => "Mensaje actualizado con éxito"]);
+    }
+    return json_encode(["message" => "Error al actualizar el mensaje"]);
+}
+
+
+    
+   // Eliminar un mensaje
+public function deleteMensaje($id) {
+    if ($this->mensajes->delete($id)) {
+        return json_encode(["message" => "Mensaje eliminado con éxito"]);
+    }
+    return json_encode(["message" => "Error al eliminar el mensaje"]);
+}
+
+    // Obtener todos los mensajes no leídos
+
+// Obtener mensajes no leídos
+public function getUnreadMessages() {
+    $stmt = $this->mensajes->getUnreadMessages();
+    $mensajesNoLeidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return json_encode($mensajesNoLeidos);
+}
+
+// Mover un mensaje a la papelera
+public function moveMessageToTrash($id) {
+    if ($this->mensajes->moveToTrash($id)) {
+        return json_encode(["message" => "Mensaje movido a la papelera con éxito"]);
+    }
+    return json_encode(["error" => "Error al mover el mensaje a la papelera"]);
+}
+
+    // Método para inicio de sesión 
+    public function login($mail, $clave)
+    {
+        // Obtener el usuario por mail
+        $usuario = $this->usuarios->getByMail($mail);
+
+        // Verificar si el usuario existe y la contraseña es correcta
+        if ($usuario && $usuario['clave'] === $clave) {
+            $token = $this->generateJWT($usuario['idUsuarios'], $usuario['idGrupo']);
+            return json_encode([
+                'status' => 'success',
+                'message' => 'Inicio de sesión exitoso',
+                "token" => $token
+            ]);
+        } else {
+            return json_encode([
+                'status' => 'error',
+                "message" => "Credenciales inválidas"
+            ]);
+        }
+    }
+
+    private function base64UrlEncode($data) {
+        return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+    }
+
+    private function generateJWT($idUsuario, $idGrupo) {
+        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+        $payload = json_encode([
+            'iss' => 'localhost',
+            'iat' => time(),
+            'exp' => time() + ( 60 * 60),  // Expira en 1 hora
+            'sub' => $idUsuario,
+            'rol' => $idGrupo
+        ]);
+
+        $base64UrlHeader = $this->base64UrlEncode($header);
+        $base64UrlPayload = $this->base64UrlEncode($payload);
+        $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $this->secret_key, true);
+        $base64UrlSignature = $this->base64UrlEncode($signature);
+
+        return $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+    }
+
+    public function verifyJWT($jwt) {
+        $parts = explode('.', $jwt);
+        if (count($parts) === 3) {
+            $header = base64_decode($parts[0]);
+            $payload = base64_decode($parts[1]);
+            $signature_provided = $parts[2];
+
+            $signature_valid = $this->base64UrlEncode(hash_hmac('sha256', "$parts[0].$parts[1]", $this->secret_key, true));
+
+            if ($signature_valid === $signature_provided) {
+                $payload_data = json_decode($payload, true);
+                if ($payload_data['exp'] > time()) {
+                    return $payload_data;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Metodo para btener mensajes de la bandeja de entrada
+    public function getBandejaEntrada() {
+        $idUsuario = $this->getIdUsuarioFromToken();
+        if ($idUsuario) {
+            // Obtener los mensajes de la bandeja de entrada para el usuario logueado
+            $stmt = $this->bandejaEntrada->getMensajesByReceptor($idUsuario);
+            $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Devolver los mensajes en formato JSON
+            return json_encode($mensajes);
+        } else {
+            return json_encode(["message" => "Token inválido o expirado"]);
+        }
+    }
+
+    // Metodo para obtener los mensajes de la bandeja de salida
+    public function getBandejaSalida() {
+        $idUsuario = $this->getIdUsuarioFromToken();
+        if ($idUsuario) {
+            // Obtener los mensajes de la bandeja de salida para el usuario logueado
+            $stmt = $this->bandejaSalida->getMensajesByEmisor($idUsuario);
+            $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Devolver los mensajes en formato JSON
+            return json_encode($mensajes);
+        } else {
+            return json_encode(["message" => "Token inválido o expirado"]);
+        }
+    }
+
+
+    // Metodo para decodificar el token y extraer el ID del usuario
+    private function getIdUsuarioFromToken() {
+        // Obtener el token de la cabecera de la solicitud
+        $headers = apache_request_headers();
+        $token = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : null;
+        if ($token) {
+            $decodedToken = $this->verifyJWT($token); // Decodificar el token
+            if ($decodedToken) {
+                return $decodedToken['sub']; // Obtener el idUsuario del token
+            }
+        } else {
+            return json_encode(["message" => "Token no proporcionado"]);
+        }
+        return null;
+    } 
+
+
+
+
+}
+
+
+
 ?>

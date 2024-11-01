@@ -3,24 +3,37 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
 
-// Clase para manejar la bandeja de entrada
 class BandejaEntrada {
-    private $conn; // Conexión a la base de datos
-    private $table = "mensajes"; // Nombre de la tabla
+    private $conn;
+    private $table = "mensajes";
 
-    // Constructor que recibe la conexión a la base de datos
+    public $idMensajes;
+    public $emisor;
+    public $receptor;
+    public $mensaje;
+    public $estadoLeido;
+    public $estadoEnviado;
+    public $estadoFavorito;
+    public $estadoRecibido;
+
     public function __construct($db) {
-        $this->conn = $db; // Asignar conexión a la propiedad
+        $this->conn = $db;
     }
 
-    // Método para obtener mensajes de un receptor específico
+    // Obtener mensajes de la bandeja de entrada para un usuario específico
     public function getMensajesByReceptor($idUsuario) {
-        // Consulta para seleccionar mensajes donde el receptor es igual al ID de usuario y no esté en la papelera
-        $query = "SELECT * FROM " . $this->table . " WHERE receptor = :receptor AND estadoPapelera = 0";
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->bindParam(':receptor', $idUsuario); // Asignar valor al parámetro
-        $stmt->execute(); // Ejecutar consulta
-        return $stmt; // Retornar el resultado
-    }
+        $query = "SELECT m.*, 
+                         ue.mail as emisorMail, 
+                         ur.mail as receptorMail 
+                  FROM " . $this->table . " m
+                  JOIN usuarios ue ON m.emisor = ue.idUsuarios
+                  JOIN usuarios ur ON m.receptor = ur.idUsuarios
+                  WHERE m.receptor = :receptor";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":receptor", $idUsuario);
+        $stmt->execute();
+        return $stmt;
+    }   
+
+
 }
-?>

@@ -2,68 +2,65 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization");
+// app/models/grupoUsuarios.php
 
-// Clase para manejar grupos de usuarios
 class GrupoUsuario {
-    private $conn; // Conexión a la base de datos
-    private $table = "gruposusuarios"; // Nombre de la tabla
+    private $conn;
+    private $table = "gruposusuarios";
 
-    public $idGrupo; // ID del grupo
-    public $descripcion; // Descripción del grupo
+    public $idGrupo;
+    public $descripcion;
+ 
 
-    // Constructor que recibe la conexión a la base de datos
     public function __construct($db) {
-        $this->conn = $db; // Asignar conexión a la propiedad
+        $this->conn = $db;
     }
 
-    // Obtener todos los grupos de usuarios
+    // Obtener todos los usuarios
     public function getAll() {
-        // Consulta para seleccionar todos los grupos con el conteo de usuarios
         $query = "SELECT g.*, COUNT(u.idUsuarios) as totalUsuarios 
                   FROM " . $this->table . " g 
                   LEFT JOIN usuarios u ON g.idGrupo = u.idgrupo 
                   GROUP BY g.idGrupo";
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->execute(); // Ejecutar consulta
-        return $stmt; // Retornar el resultado
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
     }
 
-    // Obtener un grupo de usuarios por ID
+    // Obtener un solo usuario por ID
     public function getById($id) {
-        // Consulta para seleccionar un grupo específico por ID
         $query = "SELECT * FROM " . $this->table . " WHERE idGrupo = :idGrupo";
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->bindParam(":idGrupo", $id); // Asignar valor al parámetro
-        $stmt->execute(); // Ejecutar consulta
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Retornar el resultado
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":idGrupo", $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Crear un nuevo grupo de usuarios
+    // Crear un usuario nuevo
     public function create() {
-        // Consulta para insertar un nuevo grupo
         $query = "INSERT INTO " . $this->table . " (descripcion) VALUES (:descripcion)";
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->bindParam(':descripcion', $this->descripcion); // Asignar valor al parámetro
-        return $stmt->execute(); // Ejecutar consulta y retornar el resultado
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':descripcion', $this->descripcion);
+        return $stmt->execute();
     }
 
-    // Actualizar un grupo de usuarios
-    public function update($id) {
-        // Consulta para actualizar un grupo específico
-        $query = "UPDATE " . $this->table . " SET descripcion = :descripcion WHERE idGrupo = :idGrupo";       
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->bindParam(':idGrupo', $id); // Asignar valor al parámetro
-        $stmt->bindParam(':descripcion', $this->descripcion); // Asignar valor al parámetro
-        return $stmt->execute(); // Ejecutar consulta y retornar el resultado
-    }
 
-    // Eliminar un grupo de usuarios
+// Actualizar un usuario
+public function update($id) {
+    $query = "UPDATE " . $this->table . " SET descripcion = :descripcion WHERE idGrupo = :idGrupo";       
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':idGrupo', $id);
+    $stmt->bindParam(':descripcion', $this->descripcion);
+    return $stmt->execute();
+}
+
+
+    // Eliminar un usuario
     public function delete($id) {
-        // Consulta para eliminar un grupo específico
         $query = "DELETE FROM " . $this->table . " WHERE idGrupo = :idGrupo";
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->bindParam(':idGrupo', $id); // Asignar valor al parámetro
-        return $stmt->execute(); // Ejecutar consulta y retornar el resultado
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':idGrupo', $id);
+        return $stmt->execute();
     }
 }
 ?>

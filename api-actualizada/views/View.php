@@ -1,10 +1,10 @@
 <?php
-// Clase View para manejar la respuesta en formato JSON
+// app/views/View.php
+
 class View {
-    // Método estático para renderizar la respuesta
     public static function render($data) {
-        header("Content-Type: application/json; charset=UTF-8"); // Establecer tipo de contenido a JSON
-        echo $data; // Imprimir los datos JSON
+        header("Content-Type: application/json; charset=UTF-8");
+        echo $data;
     }
 }
 ?>

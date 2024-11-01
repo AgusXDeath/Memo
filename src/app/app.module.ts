@@ -7,11 +7,13 @@ import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya c
 import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
 import { MensajesModule } from './modules/mensajes/mensajes.module';
 
+
 // Módulos propios
 import { AppComponent } from './app.component';
 import { BandejaEntradaComponent } from './modules/bandeja-entrada/bandeja-entrada/bandeja-entrada.component';
 import { BandejaSalidaComponent } from './modules/bandeja-salida/bandeja-salida/bandeja-salida.component';
-import { EnviarMensajeComponent } from './modules/enviar-mensaje/enviar-mensaje/enviar-mensaje.component';
+
+
 
 
 //angular material
@@ -22,13 +24,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { BorradoresModule } from './modules/borradores/borradores.module';
 import { FavoritosModule } from './modules/favoritos/favoritos.module';
 import { PapeleraModule } from './modules/papelera/papelera.module';
+import { EnviarMensajeModule } from './modules/enviar-mensaje/enviar-mensaje.module';
+import { SharedModule } from './modules/shared/shared.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     BandejaEntradaComponent,
     BandejaSalidaComponent,
-    EnviarMensajeComponent,
+
     
     // Otros componentes globales
   ],
@@ -45,7 +50,9 @@ import { PapeleraModule } from './modules/papelera/papelera.module';
     MatIconModule,
     BorradoresModule,
     FavoritosModule,
-    PapeleraModule
+    PapeleraModule,
+    EnviarMensajeModule,
+    SharedModule
     
   ],
   providers: [],

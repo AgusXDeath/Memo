@@ -1,8 +1,11 @@
 // Importar decoradores y módulos necesarios desde Angular core.
 import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 
 // Importar el servicio de mensajes que se usará para interactuar con la API.
 import { MensajesService } from 'src/app/services/mensajes.service';
+
+
 
 // Definir una interfaz para representar la estructura de un mensaje.
 interface Mensaje {
@@ -19,7 +22,7 @@ interface Mensaje {
   styleUrls: ['./bandeja-salida.component.css']
 })
 export class BandejaSalidaComponent implements OnInit {
-  mensajes: Mensaje[] = []; // Array para almacenar los mensajes.
+  mensajes = new MatTableDataSource<Mensaje>; // Array para almacenar los mensajes.
   displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones']; // Columnas que se mostrarán en la tabla.
 
   // Constructor que inyecta el servicio de mensajes.
@@ -34,7 +37,7 @@ export class BandejaSalidaComponent implements OnInit {
   getMensajesBandejaSalida(): void {
     this.mensajesService.getBandejaSalida().subscribe(
       (data: Mensaje[]) => {
-        this.mensajes = data; // Asignar los datos recibidos al array de mensajes.
+        this.mensajes.data = data; // Asignar los datos recibidos al array de mensajes.
       },
       (error) => {
         console.error('Error al obtener los mensajes de la bandeja de salida:', error); // Manejar errores al obtener los mensajes.
@@ -59,9 +62,9 @@ export class BandejaSalidaComponent implements OnInit {
   updateMensaje(mensaje: Mensaje): void {
     this.mensajesService.updateMensaje(mensaje.id, mensaje.mensaje).subscribe(
       (updatedMensaje: Mensaje) => {
-        const index = this.mensajes.findIndex(m => m.id === mensaje.id); // Encontrar el índice del mensaje actualizado.
+        const index = this.mensajes.data.findIndex(m => m.id === mensaje.id); // Encontrar el índice del mensaje actualizado.
         if (index !== -1) {
-          this.mensajes[index] = updatedMensaje; // Actualizar el mensaje en el array.
+          this.mensajes.data[index] = updatedMensaje; // Actualizar el mensaje en el array.
         }
       },
       (error) => {

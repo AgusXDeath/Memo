@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
 import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
-import { MensajesModule } from './modules/mensajes/mensajes.module';
+
 
 
 // Módulos propios
@@ -44,7 +44,7 @@ import { SharedModule } from './modules/shared/shared.module';
     HttpClientModule,
     AdminModule,  // Importando el módulo de administración
     AutentificacionModule,  // Asegúrate de importar el módulo de autenticación
-    MensajesModule,
+
     MatButtonModule,
     MatTableModule,
     MatIconModule,

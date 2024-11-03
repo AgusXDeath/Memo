@@ -9,7 +9,6 @@ import { TablaUsuariosComponent } from 'src/app/modules/admin/tabla-usuarios/tab
 import { TablaGruposComponent } from 'src/app/modules/admin/tabla-grupos/tabla-grupos.component';
 import { TablaGruposFuncionesComponent } from 'src/app/modules/admin/table-grupo-funciones/table-grupo-funciones.component';
 import { TablaFuncionesComponent } from 'src/app/modules/admin/table-funciones/table-funciones.component';
-import { MensajesComponent } from 'src/app/modules/mensajes/mensajes.component';
 import { FavoritosComponent } from 'src/app/modules/favoritos/favoritos/favoritos.component';
 import { BorradoresComponent } from 'src/app/modules/borradores/borradores/borradores.component';
 import { BandejaSalidaComponent } from 'src/app/modules/bandeja-salida/bandeja-salida/bandeja-salida.component';
@@ -26,7 +25,6 @@ const routes: Routes = [
       { path: "grupos", component: TablaGruposComponent }, // Ruta para la tabla de grupos.
       { path: "grupofunciones", component: TablaGruposFuncionesComponent }, // Ruta para la tabla de funciones de grupo.
       { path: "funciones", component: TablaFuncionesComponent }, // Ruta para la tabla de funciones.
-      { path: "mensajes", component: MensajesComponent }, // Ruta para la sección de mensajes.
       { path: "bandejaDeEntrada", component: BandejaEntradaComponent }, // Ruta para la bandeja de entrada.
       { path: "bandejaDeSalida", component: BandejaSalidaComponent }, // Ruta para la bandeja de salida.
       { path: "borradores", component: BorradoresComponent }, // Ruta para los borradores.

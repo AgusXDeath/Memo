@@ -1,4 +1,4 @@
-<div class="mensaje-container">
+  <div class="mensaje-container">
     <form (ngSubmit)="enviarMensaje()">
       <div class="form-group">
         <label for="destinatario">Para:</label>
@@ -11,6 +11,7 @@
         />
       </div>
   
+
  <!--      <div class="form-group">
         <label for="asunto">Asunto:</label>
         <input
@@ -20,7 +21,7 @@
           name="asunto"
         />
       </div> -->
-  
+
       <div class="form-group">
         <label for="mensaje">Mensaje:</label>
         <textarea
@@ -32,8 +33,8 @@
       </div>
   
       <div class="button-container">
-        <button mat-raised-button color="primary" (click)="enviarMensaje()">Enviar</button>
-        <button mat-button color="warn" (click)="cancelar()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Enviar</button>
+        <button mat-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
       </div>
     </form>
   </div>

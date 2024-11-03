@@ -11,11 +11,11 @@ import { catchError } from 'rxjs/operators';
 // Definición de la clase UsuariosService que gestionará las operaciones relacionadas con usuarios, grupos, funciones y autenticación.
 export class UsuariosService {
   // URLs base para diferentes recursos de la API.
-  private apiUrlUsuarios = 'http://localhost/api-actualizada/public/index.php?resource=usuarios';
-  private apiUrlGrupos = 'http://localhost/api-actualizada/public/index.php?resource=grupos';
-  private apiUrlFunciones = 'http://localhost/api-actualizada/public/index.php?resource=funciones';
-  private apiUrlGrupoFunciones = 'http://localhost/api-actualizada/public/index.php?resource=gruposfunciones';
-  private apiUrlLogin = 'http://localhost/api-actualizada/public/index.php?resource=login';
+  private apiUrlUsuarios = 'http://localhost/api-actualizada2/public/index.php?resource=usuarios';
+  private apiUrlGrupos = 'http://localhost/api-actualizada2/public/index.php?resource=grupos';
+  private apiUrlFunciones = 'http://localhost/api-actualizada2/public/index.php?resource=funciones';
+  private apiUrlGrupoFunciones = 'http://localhost/api-actualizada2/public/index.php?resource=gruposfunciones';
+  private apiUrlLogin = 'http://localhost/api-actualizada2/public/index.php?resource=login';
 
   // Constructor que inyecta el servicio HttpClient.
   constructor(private http: HttpClient) { }

@@ -10,8 +10,8 @@ import { Observable, retry } from 'rxjs';
 // Definición de la clase MensajesService que gestionará las operaciones relacionadas con los mensajes.
 export class MensajesService {
   // URL base de la API.
-  private apiUrl = 'http://localhost/api-actualizada/public/index.php';
-  private URLenviarMensaje = 'http://localhost/api-actualizada2/public/index.php?resource=mensajes';
+  private apiUrl = 'http://localhost/api-actualizada2/public/index.php';
+
 
   // Constructor que inyecta el servicio HttpClient.
   constructor(private http: HttpClient) {}
@@ -48,8 +48,7 @@ export class MensajesService {
   // Método para enviar un mensaje.
   enviarMensaje(receptormail: string, mensaje: string): Observable<any> {
     const body = { receptormail, mensaje }; // Datos a enviar en el cuerpo de la solicitud.
-  /*   return this.http.post(`${this.apiUrl}?resource=mensajes`, body, { headers: this.getHeaders() }); */
-  return this.http.post(this.URLenviarMensaje, body, { headers: this.getHeaders() });
+    return this.http.post(`${this.apiUrl}?resource=mensajes`, body, { headers: this.getHeaders() });
   }
 
   // Método para borrar un mensaje.

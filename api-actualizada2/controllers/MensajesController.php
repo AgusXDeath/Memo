@@ -88,8 +88,10 @@ class MensajesController {
             $stmt = $this->bandejaEntrada->getMensajesByReceptor($idUsuario); // Obtener mensajes de la bandeja de entrada
             $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todos los mensajes como un arreglo asociativo
             echo json_encode($mensajes); // Retornar los mensajes en formato JSON
+            exit(); // Asegura que no haya mas salidas que provoquen el "null" al final del array
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+            exit();
         }
     }
 
@@ -100,8 +102,10 @@ class MensajesController {
             $stmt = $this->bandejaSalida->getMensajesByEmisor($idUsuario); // Obtener mensajes de la bandeja de salida
             $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todos los mensajes como un arreglo asociativo
             echo json_encode($mensajes); // Retornar los mensajes en formato JSON
+            exit();
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+            exit();
         }
     }
 
@@ -112,8 +116,10 @@ class MensajesController {
             $stmt = $this->favoritos->getFavoritos($idUsuario); // Obtener mensajes favoritos
             $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todos los mensajes como un arreglo asociativo
             echo json_encode($mensajes); // Retornar los mensajes en formato JSON
+            exit();
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+            exit();
         }
     }
 
@@ -124,8 +130,10 @@ class MensajesController {
             $stmt = $this->papelera->getPapelera($idUsuario); // Obtener mensajes en la papelera
             $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todos los mensajes como un arreglo asociativo
             echo json_encode($mensajes); // Retornar los mensajes en formato JSON
+            exit();
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+            exit();
         }
     }
 
@@ -139,8 +147,10 @@ class MensajesController {
             $mensaje = $data->mensaje; // Obtener el contenido del mensaje
             // Llamar al método de enviar mensaje del modelo
             echo $this->enviarMensaje->createMensaje($idUsuario, $receptormail, $mensaje); // Retornar el resultado de la operación
+            exit();
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+            exit();
         }
     }
     // Método para borrar un mensaje por ID
@@ -159,9 +169,11 @@ public function deleteMensaje() {
             }
         } else {
             echo json_encode(["message" => "ID de mensaje no proporcionado"]); // Mensaje de error si el ID no se proporciona
+            exit();
         }
     } else {
         echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+        exit();
     }
 }
 
@@ -180,14 +192,18 @@ public function updateMensaje() {
             $resultado = $this->mensajes->updateMensaje($idMensaje, $contenido);
             if ($resultado) {
                 echo json_encode(["message" => "Mensaje actualizado correctamente"]); // Confirmación de actualización
+                exit();
             } else {
                 echo json_encode(["message" => "Error al actualizar el mensaje"]); // Mensaje de error en actualización
+                exit();
             }
         } else {
             echo json_encode(["message" => "Datos incompletos para actualizar el mensaje"]); // Error si faltan datos
+            exit();
         }
     } else {
         echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+        exit();
     }
 }
 

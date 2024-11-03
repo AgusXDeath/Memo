@@ -52,6 +52,7 @@ class AuthController {
                 'message' => 'Datos incompletos'
             ]);
         }
+        exit();
     }
 
     // Método privado para generar el token JWT
@@ -127,4 +128,4 @@ class AuthController {
         return null; // Retornar nulo si no se encuentra el usuario
     }
 }
-?>
+

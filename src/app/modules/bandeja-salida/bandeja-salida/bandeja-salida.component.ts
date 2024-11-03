@@ -9,8 +9,8 @@ import { MensajesService } from 'src/app/services/mensajes.service';
 
 // Definir una interfaz para representar la estructura de un mensaje.
 interface Mensaje {
-  emisor: string;
-  receptor: string;
+  emisorMail: string;
+  receptorMail: string;
   mensaje: string;
   id: number; // Agregado campo id para identificar el mensaje específico.
 }

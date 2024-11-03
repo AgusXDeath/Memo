@@ -21,8 +21,7 @@ class BandejaSalida {
                          ur.mail as receptorMail 
                   FROM " . $this->table . " m
                   JOIN usuarios ue ON m.emisor = ue.idUsuarios
-                  JOIN usuarios ur ON m.receptor = ur.idUsuarios 
-                  WHERE emisor = :emisor AND estadoPapelera = 0";
+                  JOIN usuarios ur ON m.receptor = ur.idUsuarios WHERE emisor = :emisor AND estadoPapelera = 0";
         $stmt = $this->conn->prepare($query); // Preparar consulta
         $stmt->bindParam(':emisor', $idUsuario); // Asignar valor al parámetro
         $stmt->execute(); // Ejecutar consulta

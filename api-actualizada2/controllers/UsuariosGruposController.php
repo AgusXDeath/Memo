@@ -38,13 +38,15 @@ class UsuariosGruposController {
     public function getAllUsuarios() {
         $stmt = $this->usuarios->getAll(); // Obtener todos los usuarios
         $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($usuarios); // Retornar los usuarios en formato JSON
+        echo json_encode($usuarios); // Retornar los usuarios en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Obtener un usuario por ID
     public function getUsuarioById($id) {
         $usuarios = $this->usuarios->getById($id); // Obtener usuario por ID
-        return json_encode($usuarios); // Retornar el usuario en formato JSON
+        echo json_encode($usuarios); // Retornar el usuario en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Crear un nuevo usuario
@@ -57,9 +59,11 @@ class UsuariosGruposController {
 
         // Intentar crear el usuario y retornar el resultado
         if ($this->usuarios->create()) {
-            return json_encode(["message" => "Usuario creado con éxito"]);
+            echo json_encode(["message" => "Usuario creado con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al crear el usuario"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al crear el usuario"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Actualizar un usuario existente
@@ -72,18 +76,22 @@ class UsuariosGruposController {
 
         // Intentar actualizar el usuario y retornar el resultado
         if ($this->usuarios->update($id)) {
-            return json_encode(["message" => "Usuario actualizado con éxito"]);
+            echo json_encode(["message" => "Usuario actualizado con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al actualizar el usuario"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al actualizar el usuario"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Eliminar un usuario
     public function deleteUsuario($id) {
         // Intentar eliminar el usuario y retornar el resultado
         if ($this->usuarios->delete($id)) {
-            return json_encode(["message" => "Usuario eliminado con éxito"]);
+            echo json_encode(["message" => "Usuario eliminado con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al eliminar el usuario"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al eliminar el usuario"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Métodos para Grupos de Usuarios
@@ -92,13 +100,15 @@ class UsuariosGruposController {
     public function getAllGrupos() {
         $stmt = $this->grupoUsuario->getAll(); // Obtener todos los grupos
         $gruposUsuario = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($gruposUsuario); // Retornar grupos en formato JSON
+        echo json_encode($gruposUsuario); // Retornar grupos en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Obtener un grupo por ID
     public function getGrupoById($id) {
         $grupoUsuario = $this->grupoUsuario->getById($id); // Obtener grupo por ID
-        return json_encode($grupoUsuario); // Retornar el grupo en formato JSON
+        echo json_encode($grupoUsuario); // Retornar el grupo en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Crear un nuevo grupo de usuarios
@@ -107,9 +117,11 @@ class UsuariosGruposController {
 
         // Intentar crear el grupo y retornar el resultado
         if ($this->grupoUsuario->create()) {
-            return json_encode(["message" => "Grupo de usuarios creado con éxito"]);
+            echo json_encode(["message" => "Grupo de usuarios creado con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al crear el grupo de usuarios"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al crear el grupo de usuarios"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Actualizar un grupo existente
@@ -117,23 +129,28 @@ class UsuariosGruposController {
         if (isset($data->descripcion)) {
             $this->grupoUsuario->descripcion = $data->descripcion; // Asignar nueva descripción
         } else {
-            return json_encode(["error" => "La propiedad 'descripcion' es requerida"]); // Mensaje de error
+            echo json_encode(["error" => "La propiedad 'descripcion' es requerida"]); // Mensaje de error
+            exit(); // Asegúrate de que no haya más salida
         }
 
         // Intentar actualizar el grupo y retornar el resultado
         if ($this->grupoUsuario->update($id)) {
-            return json_encode(["message" => "Grupo de usuarios actualizado con éxito"]);
+            echo json_encode(["message" => "Grupo de usuarios actualizado con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al actualizar el grupo de usuarios"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al actualizar el grupo de usuarios"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Eliminar un grupo
     public function deleteGrupo($id) {
         // Intentar eliminar el grupo y retornar el resultado
         if ($this->grupoUsuario->delete($id)) {
-            return json_encode(["message" => "Grupo de usuarios eliminado con éxito"]);
+            echo json_encode(["message" => "Grupo de usuarios eliminado con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al eliminar el grupo de usuarios"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al eliminar el grupo de usuarios"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Métodos para Funciones
@@ -142,13 +159,15 @@ class UsuariosGruposController {
     public function getAllFunciones() {
         $stmt = $this->funcion->getAll(); // Obtener todas las funciones
         $funciones = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($funciones); // Retornar funciones en formato JSON
+        echo json_encode($funciones); // Retornar funciones en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Obtener una función por ID
     public function getFuncionById($id) {
         $funcion = $this->funcion->getById($id); // Obtener función por ID
-        return json_encode($funcion); // Retornar la función en formato JSON
+        echo json_encode($funcion); // Retornar la función en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Crear una nueva función
@@ -157,9 +176,11 @@ class UsuariosGruposController {
 
         // Intentar crear la función y retornar el resultado
         if ($this->funcion->create()) {
-            return json_encode(["message" => "Función creada con éxito"]);
+            echo json_encode(["message" => "Función creada con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al crear la función"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al crear la función"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Actualizar una función existente
@@ -168,18 +189,22 @@ class UsuariosGruposController {
 
         // Intentar actualizar la función y retornar el resultado
         if ($this->funcion->update($id)) {
-            return json_encode(["message" => "Función actualizada con éxito"]);
+            echo json_encode(["message" => "Función actualizada con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al actualizar la función"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al actualizar la función"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Eliminar una función
     public function deleteFuncion($id) {
         // Intentar eliminar la función y retornar el resultado
         if ($this->funcion->delete($id)) {
-            return json_encode(["message" => "Función eliminada con éxito"]);
+            echo json_encode(["message" => "Función eliminada con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al eliminar la función"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al eliminar la función"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Métodos para Grupos de Funciones
@@ -188,13 +213,15 @@ class UsuariosGruposController {
     public function getAllgrupoFunciones() {
         $stmt = $this->gruposFunciones->getAll(); // Obtener todos los grupos de funciones
         $gruposFunciones = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener resultados como un arreglo asociativo
-        return json_encode($gruposFunciones); // Retornar grupos de funciones en formato JSON
+        echo json_encode($gruposFunciones); // Retornar grupos de funciones en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Obtener un grupo de funciones por ID
     public function getgrupoFuncionesById($id) {
         $gruposFunciones = $this->gruposFunciones->getById($id); // Obtener grupo de funciones por ID
-        return json_encode($gruposFunciones); // Retornar el grupo de funciones en formato JSON
+        echo json_encode($gruposFunciones); // Retornar el grupo de funciones en formato JSON
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Crear una nueva relación grupo-funciones
@@ -209,9 +236,11 @@ class UsuariosGruposController {
 
         // Intentar crear la relación y retornar el resultado
         if ($this->gruposFunciones->create()) {
-            return json_encode(["message" => "Relación grupo-funciones creada con éxito"]);
+            echo json_encode(["message" => "Relación grupo-funciones creada con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al crear la relación grupo-funciones"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al crear la relación grupo-funciones"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Actualizar una relación grupo-funciones existente
@@ -220,13 +249,15 @@ class UsuariosGruposController {
         if (isset($data->idGrupo)) {
             $this->gruposFunciones->idGrupo = $data->idGrupo;
         } else {
-            return json_encode(["error" => "El campo idGrupo es requerido"]); // Mensaje de error
+            echo json_encode(["error" => "El campo idGrupo es requerido"]); // Mensaje de error
+            exit(); // Asegúrate de que no haya más salida
         }
 
         if (isset($data->idFunciones)) {
             $this->gruposFunciones->idFunciones = $data->idFunciones;
         } else {
-            return json_encode(["error" => "El campo idFunciones es requerido"]); // Mensaje de error
+            echo json_encode(["error" => "El campo idFunciones es requerido"]); // Mensaje de error
+            exit(); // Asegúrate de que no haya más salida
         }
 
         // Asignar otros campos, si están definidos, o asignar 0 si no lo están
@@ -237,18 +268,21 @@ class UsuariosGruposController {
 
         // Intentar actualizar la relación y retornar el resultado
         if ($this->gruposFunciones->update($id)) {
-            return json_encode(["message" => "Relación grupo-funciones actualizada con éxito"]);
+            echo json_encode(["message" => "Relación grupo-funciones actualizada con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al actualizar la relación grupo-funciones"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al actualizar la relación grupo-funciones"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 
     // Eliminar una relación grupo-funciones
     public function deletegrupoFunciones($id) {
         // Intentar eliminar la relación y retornar el resultado
         if ($this->gruposFunciones->delete($id)) {
-            return json_encode(["message" => "Relación grupo-funciones eliminada con éxito"]);
+            echo json_encode(["message" => "Relación grupo-funciones eliminada con éxito"]);
+        } else {
+            echo json_encode(["message" => "Error al eliminar la relación grupo-funciones"]); // Mensaje de error
         }
-        return json_encode(["message" => "Error al eliminar la relación grupo-funciones"]); // Mensaje de error
+        exit(); // Asegúrate de que no haya más salida
     }
 }
-?>

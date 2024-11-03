@@ -6,9 +6,10 @@ import { MensajesService } from 'src/app/services/mensajes.service';
 
 // Definición de la interfaz para un mensaje.
 interface Mensaje {
-  emisor: string;
-  receptor: string;
+  emisorMail: string;
+  receptorMail: string;
   mensaje: string;
+  id: number;
 }
 
 // Definir el componente Favoritos y sus metadatos.

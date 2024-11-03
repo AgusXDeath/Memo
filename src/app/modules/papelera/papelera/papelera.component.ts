@@ -7,8 +7,8 @@ import { MensajesService } from 'src/app/services/mensajes.service';
 // Definición de la interfaz para un mensaje.
 interface Mensaje {
   id: number;
-  emisor: string;
-  receptor: string;
+  emisorMail: string; // Actualizado para reflejar el correo del emisor
+  receptorMail: string; // Actualizado para reflejar el correo del receptor
   mensaje: string;
 }
 
@@ -20,7 +20,7 @@ interface Mensaje {
 })
 export class PapeleraComponent implements OnInit {
   mensajes: Mensaje[] = []; // Array para almacenar los mensajes.
-  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones']; // Columnas que se mostrarán en la tabla.
+  displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje', 'acciones']; // Columnas que se mostrarán en la tabla.
 
   // Constructor que inyecta el servicio de mensajes.
   constructor(private mensajesService: MensajesService) {}

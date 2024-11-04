@@ -56,15 +56,15 @@ export class MensajesService {
     return this.http.delete(`${this.apiUrl}?resource=mensajes&id=${id}`, { headers: this.getHeaders() });
   }
 
-  // Método para actualizar un mensaje.
-  updateMensaje(id: number, mensaje: string): Observable<any> {
-    const body = { mensaje }; // Datos a enviar en el cuerpo de la solicitud.
-    return this.http.put(`${this.apiUrl}?resource=mensajes&id=${id}`, body, { headers: this.getHeaders() });
-  }
+ // Método para actualizar un mensaje.
+updateMensaje(id: number, mensaje: string, estadoFavorito: number, estadoPapelera: number): Observable<any> {
+  const body = { 
+    mensaje, 
+    estadoFavorito, 
+    estadoPapelera 
+  }; // Datos a enviar en el cuerpo de la solicitud.
+  
+  return this.http.put(`${this.apiUrl}?resource=mensajes&id=${id}`, body, { headers: this.getHeaders() });
+}
 
-  // Método para agregar un mensaje a favoritos.
-  agregarAFavorito(id: number): Observable<any> {
-    const body = { estadoFavorito: true }; // Datos a enviar para actualizar el estado.
-    return this.http.put(`${this.apiUrl}?resource=mensajes&id=${id}`, body, { headers: this.getHeaders() });
-  }
 }

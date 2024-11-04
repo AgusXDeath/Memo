@@ -1,73 +1,85 @@
-// Importar decoradores y módulos necesarios desde Angular core.
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-
-// Importar el servicio de mensajes que se usará para interactuar con la API.
 import { MensajesService } from 'src/app/services/mensajes.service';
 
-// Definir una interfaz para representar la estructura de un mensaje.
 interface Mensaje {
-  emisor: string;
-  receptor: string;
+  emisorMail: string; // Cambiado de `emisor` a `emisorMail`
+  receptorMail: string; // Cambiado de `receptor` a `receptorMail`
   mensaje: string;
-  id: number; // Agregado campo id para identificar el mensaje específico.
+  idMensajes: number; 
+  estadoFavorito: number; 
+  estadoPapelera: number; 
 }
 
-// Definir el componente BandejaEntrada y sus metadatos.
 @Component({
   selector: 'app-bandeja-entrada',
   templateUrl: './bandeja-entrada.component.html',
   styleUrls: ['./bandeja-entrada.component.css']
 })
 export class BandejaEntradaComponent implements OnInit {
-  mensajes= new MatTableDataSource<Mensaje>(); // Array para almacenar los mensajes.
-  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones']; // Columnas que se mostrarán en la tabla.
+  mensajes = new MatTableDataSource<Mensaje>();
+  displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje', 'acciones'];
 
-  // Constructor que inyecta el servicio de mensajes.
   constructor(private mensajesService: MensajesService) {}
 
-  // Método del ciclo de vida de Angular que se ejecuta al inicializar el componente.
   ngOnInit(): void {
-    this.getMensajes(); // Llamar al método para obtener mensajes al inicializar.
+    this.getMensajes();
   }
 
-  // Método privado para obtener los mensajes de la bandeja de entrada desde el servicio.
   private getMensajes(): void {
     this.mensajesService.getBandejaEntrada().subscribe(
       (data: Mensaje[]) => {
-        this.mensajes.data = data; // Asignar los datos recibidos al array de mensajes.
+        console.log('Mensajes recibidos:', data);
+        this.mensajes.data = data;
       },
       (error) => {
-        console.error('Error al obtener mensajes', error); // Manejar errores al obtener los mensajes.
+        console.error('Error al obtener mensajes', error);
       }
     );
   }
 
-  // Método para marcar un mensaje como favorito.
-  marcarComoFavorito(idMensaje: number) {
-    this.mensajesService.agregarAFavorito(idMensaje).subscribe(
-      response => {
-        console.log('Mensaje marcado como favorito:', response); // Registrar la respuesta.
-        // Aquí puedes agregar lógica para actualizar la vista o mostrar un mensaje al usuario.
-      },
-      error => {
-        console.error('Error al agregar a favoritos:', error); // Manejar errores al marcar como favorito.
-      }
-    );
-  }
-
-  // Método para actualizar un mensaje específico.
-  updateMensaje(mensaje: Mensaje): void {
-    this.mensajesService.updateMensaje(mensaje.id, mensaje.mensaje).subscribe(
-      (updatedMensaje: Mensaje) => {
-        const index = this.mensajes.data.findIndex(m => m.id === mensaje.id); // Encontrar el índice del mensaje actualizado.
-        if (index !== -1) {
-          this.mensajes.data[index] = updatedMensaje; // Actualizar el mensaje en el array.
+  toggleEstadoFavorito(mensaje: Mensaje): void {
+    console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes);
+    if (mensaje.idMensajes) {
+      const nuevoEstadoFavorito = mensaje.estadoFavorito === 1 ? 0 : 1;
+      mensaje.estadoFavorito = nuevoEstadoFavorito;
+  
+      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, nuevoEstadoFavorito, mensaje.estadoPapelera).subscribe(
+        (updatedMensaje: any) => {
+          console.log('Respuesta de la API:', updatedMensaje);
+          const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
+          if (index !== -1) {
+            this.mensajes.data[index] = updatedMensaje;
+          }
+        },
+        (error) => {
+          console.error('Error al actualizar el estadoFavorito del mensaje:', error);
         }
-      },
-      (error) => {
-        console.error('Error al actualizar el mensaje:', error); // Manejar errores al actualizar el mensaje.
-      }
-    );
+      );
+    } else {
+      console.error('ID del mensaje es undefined');
+    }
+  }
+
+  toggleEstadoPapelera(mensaje: Mensaje): void {
+    if (mensaje.idMensajes) {
+      const nuevoEstadoPapelera = mensaje.estadoPapelera === 1 ? 0 : 1;
+      mensaje.estadoPapelera = nuevoEstadoPapelera;
+  
+      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, mensaje.estadoFavorito, nuevoEstadoPapelera).subscribe(
+        (updatedMensaje: any) => {
+          console.log('Respuesta de la API:', updatedMensaje);
+          const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
+          if (index !== -1) {
+            this.mensajes.data[index] = updatedMensaje;
+          }
+        },
+        (error) => {
+          console.error('Error al actualizar el estadoPapelera del mensaje:', error);
+        }
+      );
+    } else {
+      console.error('ID del mensaje es undefined');
+    }
   }
 }

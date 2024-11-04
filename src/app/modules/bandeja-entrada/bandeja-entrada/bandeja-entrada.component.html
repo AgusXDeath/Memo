@@ -2,35 +2,34 @@
   <h2>Bandeja de Entrada</h2>
   <table mat-table [dataSource]="mensajes" class="mat-elevation-z8 inbox-table">
     
-    <!-- Definición de la columna "Emisor" -->
-    <ng-container matColumnDef="emisor">
+    <!-- Columna Emisor -->
+    <ng-container matColumnDef="emisorMail">
       <th mat-header-cell *matHeaderCellDef> Emisor </th>
       <td mat-cell *matCellDef="let mensaje"> {{ mensaje.emisorMail }} </td>
     </ng-container>
     
-    <!-- Definición de la columna "Receptor" -->
-    <ng-container matColumnDef="receptor">
-      <th mat-header-cell *matHeaderCellDef> Para: </th>
+    <!-- Columna Receptor -->
+    <ng-container matColumnDef="receptorMail">
+      <th mat-header-cell *matHeaderCellDef> Para </th>
       <td mat-cell *matCellDef="let mensaje"> {{ mensaje.receptorMail }} </td>
     </ng-container>
     
-    <!-- Definición de la columna "Mensaje" -->
+    <!-- Columna Mensaje -->
     <ng-container matColumnDef="mensaje">
       <th mat-header-cell *matHeaderCellDef> Mensaje </th>
       <td mat-cell *matCellDef="let mensaje"> {{ mensaje.mensaje }} </td>
     </ng-container>
     
-    <!-- Definición de la columna "Acciones" -->
+    <!-- Columna Acciones -->
     <ng-container matColumnDef="acciones">
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let mensaje">
-        <button (click)="marcarComoFavorito(mensaje.id)">Agregar a Favoritos</button>
+        <button (click)="toggleEstadoFavorito(mensaje)">Toggle Favorito</button>
+        <button (click)="toggleEstadoPapelera(mensaje)">Toggle Papelera</button>
       </td>
     </ng-container>
     
-    <!-- Fila de cabecera -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <!-- Fila de datos -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>

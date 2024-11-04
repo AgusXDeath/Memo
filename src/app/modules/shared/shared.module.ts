@@ -7,23 +7,22 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { NavbarComponent } from './navbar/navbar.component';
 
-//angular material
+// Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 
-
 @NgModule({
   declarations: [
-    NavbarComponent
+    NavbarComponent // Componentes compartidos
   ],
   imports: [
     CommonModule,
@@ -50,13 +49,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
-    NavbarComponent,
+    NavbarComponent, // Exporta NavbarComponent para uso en otros módulos
     MatIconModule,
     HttpClientModule,
     MatMenuModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatTooltipModule
   ]
 })
-export class SharedModule {
-  showFiller = false;
- }
+export class SharedModule {}

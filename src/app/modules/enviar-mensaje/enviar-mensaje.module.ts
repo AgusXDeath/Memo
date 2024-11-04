@@ -15,6 +15,7 @@ import { EnviarMensajeComponent } from './enviar-mensaje/enviar-mensaje.componen
     CommonModule,
     EnviarMensajeRoutingModule,
     FormsModule
+
   ]
 })
 export class EnviarMensajeModule { }

@@ -6,18 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AdminModule } from './modules/admin/admin.module';  // AdminModule ya contiene lo que necesitas
 import { AutentificacionModule } from './modules/autentificacion/autentificacion.module';
 
-
-
 // Módulos propios
 import { AppComponent } from './app.component';
 import { BandejaEntradaComponent } from './modules/bandeja-entrada/bandeja-entrada/bandeja-entrada.component';
 import { BandejaSalidaComponent } from './modules/bandeja-salida/bandeja-salida/bandeja-salida.component';
 
-
-
-
 //angular material
-
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,13 +23,13 @@ import { SharedModule } from './modules/shared/shared.module';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     BandejaEntradaComponent,
     BandejaSalidaComponent,
 
-    
     // Otros componentes globales
   ],
   imports: [

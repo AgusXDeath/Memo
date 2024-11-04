@@ -9,11 +9,11 @@ import { catchError } from 'rxjs/operators';
 })
 export class UsuariosService {
 
-  private apiUrlUsuarios = 'http://localhost/api-actualizada/public/index.php?resource=usuarios';
-  private apiUrlGrupos = 'http://localhost/api-actualizada/public/index.php?resource=grupos';
-  private apiUrlFunciones = 'http://localhost/api-actualizada/public/index.php?resource=funciones';
-  private apiUrlGrupoFunciones = 'http://localhost/api-actualizada/public/index.php?resource=gruposfunciones';
-  private apiUrlLogin = 'http://localhost/api-actualizada/public/index.php?resource=login';
+  private apiUrlUsuarios = 'http://localhost/api-antigua/public/index.php?resource=usuarios';
+  private apiUrlGrupos = 'http://localhost/api-antigua/public/index.php?resource=grupos';
+  private apiUrlFunciones = 'http://localhost/api-antigua/public/index.php?resource=funciones';
+  private apiUrlGrupoFunciones = 'http://localhost/api-antigua/public/index.php?resource=gruposfunciones';
+  private apiUrlLogin = 'http://localhost/api-antigua/public/index.php?resource=login';
   
   constructor(private http: HttpClient) { }
 

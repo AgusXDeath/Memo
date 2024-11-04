@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FavoritosRoutingModule } from './favoritos-routing.module';
-import { FavoritosComponent } from './favoritos/favoritos.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
+import { PapeleraRoutingModule } from './papelera-routing.module';
+import { PapeleraComponent } from './papelera/papelera.component';
+
+
 @NgModule({
   declarations: [
-    FavoritosComponent
+    PapeleraComponent
   ],
   imports: [
     CommonModule,
-    FavoritosRoutingModule,
-    MatButtonModule,
-    MatTableModule
+    PapeleraRoutingModule,
+    MatTableModule,
+    MatButtonModule
+    
   ]
 })
-export class FavoritosModule { }
+export class PapeleraModule { }

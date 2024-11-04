@@ -1,0 +1,13 @@
+.unread {
+    font-weight: bold;
+    color: #d32f2f; /* Color rojo para resaltar los no leídos */
+  }
+  
+  .inbox-table {
+    width: 100%;
+  }
+  
+  table {
+    margin-top: 15px;
+  }
+  

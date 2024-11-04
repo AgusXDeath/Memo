@@ -16,11 +16,8 @@ import { BandejaEntradaComponent } from './bandeja-entrada/bandeja-entrada.compo
   imports: [
     CommonModule,
     BandejaEntradaRoutingModule,
-    MatTableModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule
+
+
   ]
 })
 export class BandejaEntradaModule { }

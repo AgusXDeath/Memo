@@ -49,10 +49,12 @@ class Mensajes {
 
     
    // Editar un mensaje por ID
-public function updateMensaje($id, $contenido) {
-    $query = "UPDATE " . $this->table . " SET mensaje = :mensaje WHERE idMensajes = :idMensajes";
+   public function updateMensaje($id, $contenido, $estadoFavorito, $estadoPapelera) {
+    $query = "UPDATE " . $this->table . " SET mensaje = :mensaje, estadoFavorito = :estadoFavorito, estadoPapelera = :estadoPapelera WHERE idMensajes = :idMensajes";
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(":mensaje", $contenido);
+    $stmt->bindParam(":estadoFavorito", $estadoFavorito, PDO::PARAM_INT);
+    $stmt->bindParam(":estadoPapelera", $estadoPapelera, PDO::PARAM_INT);
     $stmt->bindParam(":idMensajes", $id);
     return $stmt->execute();
 }

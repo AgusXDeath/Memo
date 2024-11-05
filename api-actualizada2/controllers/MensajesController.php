@@ -186,10 +186,12 @@ public function updateMensaje() {
         // Obtener el contenido del mensaje de la solicitud
         $data = json_decode(file_get_contents("php://input"));
         $contenido = $data->mensaje ?? null; // Obtener el contenido del mensaje
+        $estadoFavorito = $data->estadoFavorito ?? null; // Obtener el estado favorito
+        $estadoPapelera = $data->estadoPapelera ?? null; // Obtener el estado papelera
 
-        if ($idMensaje && $contenido) {
+        if ($idMensaje && $contenido !== null && $estadoFavorito !== null && $estadoPapelera !== null) {
             // Llamar a la función de actualización de mensaje en el modelo Mensajes
-            $resultado = $this->mensajes->updateMensaje($idMensaje, $contenido);
+            $resultado = $this->mensajes->updateMensaje($idMensaje, $contenido, $estadoFavorito, $estadoPapelera);
             if ($resultado) {
                 echo json_encode(["message" => "Mensaje actualizado correctamente"]); // Confirmación de actualización
                 exit();
@@ -206,6 +208,7 @@ public function updateMensaje() {
         exit();
     }
 }
+
 
 
 }

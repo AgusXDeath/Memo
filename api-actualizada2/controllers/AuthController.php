@@ -63,7 +63,7 @@ class AuthController {
         $payload = json_encode([
             'iss' => 'localhost', // Emisor del token
             'iat' => time(), // Fecha de emisión
-            'exp' => time() + (60 * 60), // Expira en 1 hora
+            'exp' => time() + (2 * 60 * 60), // Expira en 2 horas
             'sub' => $idUsuario, // Sujeto (ID del usuario)
             'rol' => $idGrupo // Rol del usuario (ID del grupo)
         ]);

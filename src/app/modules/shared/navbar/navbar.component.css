@@ -15,17 +15,18 @@
 }
 
 .example-sidenav-content {
-  margin-top: 64px; /* Altura del navbar */
-  padding: 20px;
+/*   margin-top: 64px; */ /* Altura del navbar */
+
   flex: 1;
 }
 
 .mat-drawer-container {
   flex: 1;
   display: flex;
-  margin-top: 64px; /* Igual a la altura del navbar */
+/*   margin-top: 64px; */ /* Igual a la altura del navbar */
 }
 .mat-drawer {
+  margin-top: 64px;
   width: 220px;
   background-color: #ffffff;
   color: #a8cf45;

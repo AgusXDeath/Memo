@@ -5,7 +5,7 @@
     <div class="login">
       <mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form class="img" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <img src="../../../../../assets/img/logo1.png" width="50%">
         <h1>Iniciar sesión</h1>
         <mat-form-field class="ancho">
@@ -21,4 +21,4 @@
         <br>
       </form>
     </div>
-  </div>
+  

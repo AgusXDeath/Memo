@@ -153,29 +153,34 @@ class MensajesController {
             exit();
         }
     }
-    // Método para borrar un mensaje por ID
+// Método para borrar un mensaje por ID
 public function deleteMensaje() {
-    $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
+    $idUsuario = $this->getUsuarioIdFromToken(); 
     if ($idUsuario) {
-        // Obtener el ID del mensaje desde la solicitud
         $idMensaje = $_GET['id'] ?? null;
         if ($idMensaje) {
-            // Llamar a la función de eliminar mensaje en el modelo Mensajes
-            $resultado = $this->mensajes->deleteMensaje($idMensaje);
-            if ($resultado) {
-                echo json_encode(["message" => "Mensaje eliminado correctamente"]); // Confirmación de eliminación
-            } else {
-                echo json_encode(["message" => "Error al eliminar el mensaje"]); // Mensaje de error en eliminación
+            try {
+                $resultado = $this->mensajes->deleteMensaje($idMensaje);
+                if ($resultado) {
+                    echo json_encode(["message" => "Mensaje eliminado correctamente"]);
+                } else {
+                    echo json_encode(["message" => "Error al eliminar el mensaje"]);
+                }
+            } catch (Exception $e) {
+                echo json_encode(["message" => "Error interno del servidor: " . $e->getMessage()]);
+                http_response_code(500);
             }
         } else {
-            echo json_encode(["message" => "ID de mensaje no proporcionado"]); // Mensaje de error si el ID no se proporciona
-            exit();
+            echo json_encode(["message" => "ID de mensaje no proporcionado"]);
+            http_response_code(400); // Bad Request
         }
     } else {
-        echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
-        exit();
+        echo json_encode(["message" => "Token inválido o expirado"]);
+        http_response_code(401); // Unauthorized
     }
 }
+
+
 
 // Método para editar un mensaje por ID
 public function updateMensaje() {

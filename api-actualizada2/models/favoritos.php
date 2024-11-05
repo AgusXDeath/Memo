@@ -13,20 +13,22 @@ class Favoritos {
         $this->conn = $db; // Asignar conexión a la propiedad
     }
 
-    // Método para obtener los mensajes favoritos de un usuario
-    public function getFavoritos($idUsuario) {
-        // Consulta para seleccionar mensajes donde el receptor es igual al ID de usuario y sea favorito
-        $query = "SELECT m.*, 
+  // Método para obtener los mensajes favoritos de un usuario
+public function getFavoritos($idUsuario) {
+    // Consulta para seleccionar mensajes donde el usuario es el receptor o el emisor y el mensaje sea favorito
+    $query = "SELECT m.*, 
         ue.mail as emisorMail, 
         ur.mail as receptorMail 
- FROM " . $this->table . " m
- JOIN usuarios ue ON m.emisor = ue.idUsuarios
- JOIN usuarios ur ON m.receptor = ur.idUsuarios
- WHERE m.receptor = :receptor AND m.estadoFavorito = 1";
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        $stmt->bindParam(':receptor', $idUsuario); // Asignar valor al parámetro
-        $stmt->execute(); // Ejecutar consulta
-        return $stmt; // Retornar el resultado
-    }
+    FROM " . $this->table . " m
+    JOIN usuarios ue ON m.emisor = ue.idUsuarios
+    JOIN usuarios ur ON m.receptor = ur.idUsuarios
+    WHERE (m.receptor = :idUsuario OR m.emisor = :idUsuario) AND m.estadoFavorito = 1";
+    
+    $stmt = $this->conn->prepare($query); // Preparar consulta
+    $stmt->bindParam(':idUsuario', $idUsuario); // Asignar valor al parámetro
+    $stmt->execute(); // Ejecutar consulta
+    return $stmt; // Retornar el resultado
+}
+
 }
 ?>

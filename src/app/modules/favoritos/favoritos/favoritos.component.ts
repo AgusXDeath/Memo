@@ -1,7 +1,4 @@
-// Importar decoradores y módulos necesarios desde Angular core.
 import { Component, OnInit } from '@angular/core';
-
-// Importar el servicio de mensajes que se usará para interactuar con la API.
 import { MensajesService } from 'src/app/services/mensajes.service';
 
 // Definición de la interfaz para un mensaje.
@@ -9,10 +6,11 @@ interface Mensaje {
   emisorMail: string;
   receptorMail: string;
   mensaje: string;
-  id: number;
+  idMensajes: number; // Asegúrate de que el ID sea coherente
+  estadoFavorito: number; // Agregar estadoFavorito
+  estadoPapelera: number; 
 }
 
-// Definir el componente Favoritos y sus metadatos.
 @Component({
   selector: 'app-favoritos',
   templateUrl: './favoritos.component.html',
@@ -20,7 +18,7 @@ interface Mensaje {
 })
 export class FavoritosComponent implements OnInit {
   mensajes: Mensaje[] = []; // Array para almacenar los mensajes.
-  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje']; // Columnas que se mostrarán en la tabla.
+  displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje', 'acciones']; // Añadir 'acciones'.
 
   // Constructor que inyecta el servicio de mensajes.
   constructor(private mensajesService: MensajesService) {}
@@ -40,5 +38,29 @@ export class FavoritosComponent implements OnInit {
         console.error('Error al obtener los mensajes de favoritos:', error); // Manejar errores al obtener los mensajes.
       }
     );
+  }
+
+  // Método para alternar el estado de favorito de un mensaje.
+  toggleEstadoFavorito(mensaje: Mensaje): void {
+    console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes);
+    if (mensaje.idMensajes) {
+      const nuevoEstadoFavorito = mensaje.estadoFavorito === 1 ? 0 : 1; // Alternar entre 1 y 0
+      mensaje.estadoFavorito = nuevoEstadoFavorito;
+
+      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, nuevoEstadoFavorito, mensaje.estadoPapelera).subscribe(
+        (updatedMensaje: any) => {
+          console.log('Respuesta de la API:', updatedMensaje);
+          const index = this.mensajes.findIndex(m => m.idMensajes === mensaje.idMensajes);
+          if (index !== -1) {
+            this.mensajes[index] = updatedMensaje; // Actualiza el mensaje en el array
+          }
+        },
+        (error) => {
+          console.error('Error al actualizar el estadoFavorito del mensaje:', error);
+        }
+      );
+    } else {
+      console.error('ID del mensaje es undefined');
+    }
   }
 }

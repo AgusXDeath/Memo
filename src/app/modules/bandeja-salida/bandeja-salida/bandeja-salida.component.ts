@@ -90,7 +90,7 @@ export class BandejaSalidaComponent implements OnInit {
   toggleEstadoPapelera(mensaje: Mensaje): void {
     if (mensaje.idMensajes) {
       console.log('Estado actual de papelera:', mensaje.estadoPapelera); // Log del estado actual
-      const nuevoEstadoPapelera = mensaje.estadoPapelera === 1 ? 0 : 1; // Alternar entre 0 y 1
+      const nuevoEstadoPapelera = 1; // Establecer siempre a 1
       console.log('Nuevo estado papelera:', nuevoEstadoPapelera); // Log del nuevo estado
       console.log('Tipo de nuevo estado papelera:', typeof nuevoEstadoPapelera); // Log del tipo del nuevo estado
   
@@ -104,6 +104,7 @@ export class BandejaSalidaComponent implements OnInit {
           if (index !== -1) {
             this.mensajes.data[index] = updatedMensaje; // Actualiza el mensaje en el array
           }
+          this.getMensajesBandejaSalida();
         },
         (error) => {
           console.error('Error al actualizar el estadoPapelera del mensaje:', error);

@@ -1,7 +1,7 @@
 // Importar decoradores y módulos necesarios desde Angular core.
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, retry } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // Decorador Injectable que define que este servicio se proporciona en la raíz del módulo.
 @Injectable({
@@ -51,10 +51,10 @@ export class MensajesService {
     return this.http.post(`${this.apiUrl}?resource=mensajes`, body, { headers: this.getHeaders() });
   }
 
-  // Método para borrar un mensaje.
   deleteMensaje(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}?resource=mensajes&id=${id}`, { headers: this.getHeaders() });
-  }
+}
+
 
  // Método para actualizar un mensaje.
 updateMensaje(id: number, mensaje: string, estadoFavorito: number, estadoPapelera: number): Observable<any> {

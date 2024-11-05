@@ -63,7 +63,7 @@ export class BandejaEntradaComponent implements OnInit {
 
   toggleEstadoPapelera(mensaje: Mensaje): void {
     if (mensaje.idMensajes) {
-      const nuevoEstadoPapelera = mensaje.estadoPapelera === 1 ? 0 : 1;
+      const nuevoEstadoPapelera = 1; // Establecer siempre a 1
       mensaje.estadoPapelera = nuevoEstadoPapelera;
   
       this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, mensaje.estadoFavorito, nuevoEstadoPapelera).subscribe(
@@ -73,7 +73,9 @@ export class BandejaEntradaComponent implements OnInit {
           if (index !== -1) {
             this.mensajes.data[index] = updatedMensaje;
           }
+          this.getMensajes();
         },
+         
         (error) => {
           console.error('Error al actualizar el estadoPapelera del mensaje:', error);
         }

@@ -13,10 +13,10 @@ export class EnviarMensajeComponent {
   constructor(private mensajesService: MensajesService) {}
 
 
-  enviarMensaje(): void {
-    this.mensajesService.enviarMensaje(this.destinatario, this.mensaje).subscribe(
+  enviarMensaje(esBorrador: boolean = false): void {
+    this.mensajesService.enviarMensaje(this.destinatario, this.mensaje, esBorrador).subscribe(
       response => {
-        console.log('Mensaje enviado:', response);
+        console.log(esBorrador ? 'Mensaje guardado como borrador' : 'Mensaje enviado:', response);
         // Aquí puedes agregar lógica para actualizar la vista o mostrar un mensaje al usuario.
         this.limpiarFormulario();
       },

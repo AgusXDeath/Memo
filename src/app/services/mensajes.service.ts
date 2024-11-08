@@ -46,8 +46,8 @@ export class MensajesService {
   }
 
   // Método para enviar un mensaje.
-  enviarMensaje(receptormail: string, mensaje: string): Observable<any> {
-    const body = { receptormail, mensaje }; // Datos a enviar en el cuerpo de la solicitud.
+  enviarMensaje(receptormail: string, mensaje: string, esBorrador: boolean): Observable<any> {
+    const body = { receptormail, mensaje, esBorrador }; // Datos a enviar en el cuerpo de la solicitud.
     return this.http.post(`${this.apiUrl}?resource=mensajes`, body, { headers: this.getHeaders() });
   }
 

@@ -3,7 +3,7 @@
     max-width: 500px;
     margin: 0 auto;
     padding: 16px;
-    
+    margin-top: 64px;
     border-radius: 8px;
     
   }
@@ -443,6 +443,8 @@ textarea.input {
   gap: 5px;
   padding: 15px 20px;
   background-color: #a8cf45;
+  width: 150%;
+  height: 70px;
   border: none;
   font: inherit;
   color: #001780;
@@ -507,4 +509,89 @@ textarea.input {
   100% {
     rotate: 10deg;
   }
+}
+
+/* From Uiverse.io by Naefu */ 
+.archiveBtn {
+  width: 760px;
+  height: 75px;
+  border-radius: 22.1px;
+  background-color:#96b93e;
+  border: 5.1px solid #81a12f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 8.5px 17px rgba(0, 0, 0, 0.123);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s;
+  position: relative;
+}
+.archiveBtn::before {
+  content: "";
+  width: 340%;
+  height: 340%;
+  background-color: #96b93e;
+  position: absolute;
+  z-index: 1;
+  transform: scale(0);
+  transition: all 0.3s;
+  border-radius: 50%;
+  filter: blur(17px);
+}
+.archiveBtn:hover::before {
+  transform: scale(1);
+}
+.archiveBtn:hover {
+  box-shadow: 0px 8.5px 17px rgba(0, 0, 0, 0.336);
+  background-color: #0B2447;
+}
+
+.archiveBtn svg {
+  height: 3.1875em;
+  width: 3.1875em;
+  fill: #001780;
+  z-index: 3;
+  transition: all 0.2s;
+  transform-origin: bottom;
+}
+
+.archiveBtn svg .toshrink {
+  transform: translateX(28%) translateY(37%) scale(0.788);
+  transition: transform 0.3s ease-in-out;
+}
+
+.archiveBtn:hover svg .toshrink {
+  transform: translateX(22%) translateY(55%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.archiveBtn svg .tocome {
+  transform: scale(0);
+  transition: transform 0.45s ease-in-out;
+}
+
+.archiveBtn:hover svg .tocome {
+  transform: translateX(35.5%) translateY(37%);
+  transition: transform 0.45s ease-in-out;
+}
+
+.archiveBtn svg .tocome2 {
+  transform: scale(0);
+  transition: transform 0.45s ease-in-out;
+}
+
+.archiveBtn:hover svg .tocome2 {
+  transform: translateX(30.8%) translateY(45%);
+  transition: transform 0.4s ease-in-out;
+}
+
+.archiveBtn svg .toremainasis {
+  transform: translateX(28%) translateY(37%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.archiveBtn:hover svg .toremainasis {
+  transform: translateX(28%) translateY(22%);
+  transition: transform 0.3s ease-in-out;
 }

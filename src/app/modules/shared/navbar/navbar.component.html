@@ -16,15 +16,14 @@
   <!-- Iterar sobre el menú y mostrar solo el item correspondiente -->
   <ng-container *ngFor="let item of menu; let i = index">
     <button mat-button class="toolbar-button" [routerLink]="item.redirect" *ngIf="i === mostrarSoloItemIndex" matTooltip="inicio">
-      {{ item.nombre }}
+      <i class="material-icons"> home</i>
     </button>
   </ng-container>
 
   <!-- Botón del menú desplegable de seguridad -->
-  <button mat-button class="toolbar-button" [matMenuTriggerFor]="about" matTooltip="registros de datos">
+  <button mat-button class="toolbar-button" [matMenuTriggerFor]="about" matTooltip="gestion de usuarios">
     <div class="valign-center">
-      <span>Seguridad</span>
-      <i class="material-icons">arrow_drop_down</i>
+      <i class="material-icons"> manage_accounts arrow_drop_down</i>
     </div>
   </button>
   <!-- Menú desplegable de seguridad -->
@@ -60,27 +59,27 @@
     <header class="sidebar-title">
       <b> Mensajería</b>
     </header>
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/bandejaDeEntrada'" matTooltip="Ver bandeja de entrada">
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/bandejaDeEntrada'" >
       <mat-icon>inbox</mat-icon>
       Bandeja de Entrada
     </button>
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/bandejaDeSalida'" matTooltip="Ver bandeja de salida">
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/bandejaDeSalida'" >
       <mat-icon>upload</mat-icon>
       Bandeja de Salida
     </button>
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/borradores'" matTooltip="Ver borradores">
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/borradores'">
       <mat-icon>drafts</mat-icon>
       Borradores
     </button>
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/favoritos'" matTooltip="Ver mensajes favoritos">
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/favoritos'" >
       <mat-icon>favorite</mat-icon>
       Favoritos
     </button>
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/papelera'" matTooltip="Ver papelera">
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/papelera'" >
       <mat-icon>delete</mat-icon>
       Papelera
     </button>
-    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/enviarMensaje'" matTooltip="Enviar un mensaje">
+    <button mat-button class="sidebar-button" [routerLink]="'/dashboard/enviarMensaje'" >
       <mat-icon>send</mat-icon>
       Enviar un Mensaje
     </button>

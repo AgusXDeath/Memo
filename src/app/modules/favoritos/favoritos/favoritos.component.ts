@@ -44,7 +44,7 @@ export class FavoritosComponent implements OnInit {
   toggleEstadoFavorito(mensaje: Mensaje): void {
     console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes);
     if (mensaje.idMensajes) {
-      const nuevoEstadoFavorito = mensaje.estadoFavorito === 1 ? 0 : 1; // Alternar entre 1 y 0
+      const nuevoEstadoFavorito = mensaje.estadoFavorito = 0; // Alternar entre 1 y 0
       mensaje.estadoFavorito = nuevoEstadoFavorito;
 
       this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, nuevoEstadoFavorito, mensaje.estadoPapelera).subscribe(
@@ -54,6 +54,7 @@ export class FavoritosComponent implements OnInit {
           if (index !== -1) {
             this.mensajes[index] = updatedMensaje; // Actualiza el mensaje en el array
           }
+         this.getMensajesFavoritos()
         },
         (error) => {
           console.error('Error al actualizar el estadoFavorito del mensaje:', error);

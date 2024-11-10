@@ -5,6 +5,8 @@ import { FavoritosRoutingModule } from './favoritos-routing.module';
 import { FavoritosComponent } from './favoritos/favoritos.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     FavoritosRoutingModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule
   ]
 })
 export class FavoritosModule { }

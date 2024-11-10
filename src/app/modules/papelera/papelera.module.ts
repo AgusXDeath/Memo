@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { PapeleraRoutingModule } from './papelera-routing.module';
 import { PapeleraComponent } from './papelera/papelera.component';
@@ -16,7 +17,8 @@ import { PapeleraComponent } from './papelera/papelera.component';
     CommonModule,
     PapeleraRoutingModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule
     
   ]
 })

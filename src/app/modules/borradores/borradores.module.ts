@@ -5,6 +5,7 @@ import { BorradoresRoutingModule } from './borradores-routing.module';
 import { BorradoresComponent } from './borradores/borradores.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     BorradoresRoutingModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule
   ]
 })
 export class BorradoresModule { }

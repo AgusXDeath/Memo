@@ -16,6 +16,7 @@ require_once '../models/Favoritos.php';
 require_once '../models/Papelera.php';
 require_once '../models/EnviarMensaje.php';
 require_once '../models/mensajes.php';
+require_once '../models/borrador.php';
 include_once '../core/Database.php';
 
 class MensajesController {
@@ -27,6 +28,7 @@ class MensajesController {
     private $papelera;
     private $enviarMensaje;
     private $mensajes;
+    private $borrador;
 
 
     // Constructor de la clase
@@ -40,6 +42,7 @@ class MensajesController {
         $this->papelera = new Papelera($db);
         $this->enviarMensaje = new EnviarMensaje($db);
         $this->mensajes = new Mensajes($db); // Inicializar el modelo Mensajes
+        $this->borrador = new Borrador($db); // Inicializar el modelo Borrador
     }
 
     // Obtener el ID del usuario a partir del token
@@ -109,6 +112,20 @@ class MensajesController {
         }
     }
 
+    // Método para manejar los borradores
+    public function getBorradores() {
+        $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
+        if ($idUsuario) {
+            $stmt = $this->borrador->getMensajesByEmisor($idUsuario); // Obtener mensajes borradores
+            $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todos los mensajes como un arreglo asociativo
+            echo json_encode($mensajes); // Retornar los mensajes en formato JSON
+            exit();
+        } else {
+            echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
+            exit();
+        }
+    } 
+
     // Método para obtener mensajes favoritos
     public function getFavoritos() {
         $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
@@ -147,8 +164,9 @@ class MensajesController {
             $data = json_decode(file_get_contents("php://input")); // Decodificar el JSON de la solicitud
             $receptormail = $data->receptormail; // Obtener el correo del receptor
             $mensaje = $data->mensaje; // Obtener el contenido del mensaje
+            $esBorrador = $data->esBorrador; // Obtener el estado de borrador
             // Llamar al método de enviar mensaje del modelo
-            echo $this->enviarMensaje->createMensaje($idUsuario, $receptormail, $mensaje); // Retornar el resultado de la operación
+            echo $this->enviarMensaje->createMensaje($idUsuario, $receptormail, $mensaje, $esBorrador); // Retornar el resultado de la operación
             exit();
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido

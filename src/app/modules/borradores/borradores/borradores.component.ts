@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+// src/app/components/borradores/borradores.component.ts
 
-// Definición de la interfaz para un mensaje
+import { Component, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MensajesService } from 'src/app/services/mensajes.service';
+
 interface Mensaje {
-  emisor: string;
-  receptor: string;
+  emisorMail: string;
+  receptorMail: string;
   mensaje: string;
-  borrador: boolean; // Campo para indicar que es un borrador
+  favoritoEmisor: number;
+  favoritoReceptor: number;
+  papeleraEmisor: number;
+  papeleraReceptor: number;
+  idMensajes: number;
 }
 
 @Component({
@@ -13,30 +20,110 @@ interface Mensaje {
   templateUrl: './borradores.component.html',
   styleUrls: ['./borradores.component.css']
 })
-export class BorradoresComponent {
-  // Lista de mensajes guardados como borradores
-  mensajes: Mensaje[] = [
-    { emisor: 'Pedro', receptor: 'Cet30', mensaje: 'Mensaje que aún no he enviado.', borrador: true },
-    { emisor: 'Ana', receptor: 'Boca', mensaje: 'Este es un mensaje de prueba.', borrador: true },
-    { emisor: 'Luis', receptor: 'Angie', mensaje: 'Recordatorio para enviar el informe.', borrador: true }
-  ];
+export class BorradoresComponent implements OnInit {
+  mensajes = new MatTableDataSource<Mensaje>();
+  displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones'];
 
-  // Columnas que se mostrarán en la tabla
-  displayedColumns: string[] = ['receptor', 'mensaje', 'acciones'];
+  constructor(private mensajesService: MensajesService) { }
 
-  // Función para eliminar un borrador de la lista
-  deleteBorrador(mensaje: Mensaje): void {
-    this.mensajes = this.mensajes.filter(m => m !== mensaje); // Elimina el borrador de la lista
+  ngOnInit(): void {
+    this.getBorradores();
   }
 
-  // Función para abrir un formulario modal para editar un borrador
-  editBorrador(mensaje: Mensaje): void {
-    console.log('Abrir diálogo para editar el borrador:', mensaje);
+  getBorradores(): void {
+    this.mensajesService.getBorradores().subscribe(
+      (data: Mensaje[]) => {
+        console.log('Borradores recibidos:', data);
+        this.mensajes.data = data;
+      },
+      (error) => {
+        console.error('Error al obtener los borradores:', error);
+      }
+    );
   }
 
-  // Función para enviar un borrador
-  sendBorrador(mensaje: Mensaje): void {
-    console.log('Enviar mensaje:', mensaje);
-    // Aquí puedes implementar la lógica para enviar el mensaje
+  updateMensajeContenido(mensaje: Mensaje, nuevoContenido: string): void {
+    if (mensaje.idMensajes) {
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        nuevoContenido, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
+        (updatedMensaje: Mensaje) => {
+          const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
+          if (index !== -1) {
+            this.mensajes.data[index] = updatedMensaje;
+          }
+        },
+        (error) => {
+          console.error('Error al actualizar el contenido del mensaje:', error);
+        }
+      );
+    }
+  }
+
+  /* toggleEstadoFavorito(mensaje: Mensaje): void {
+    if (mensaje.idMensajes) {
+      const nuevoFavoritoEmisor = mensaje.favoritoEmisor === 1 ? 0 : 1;
+      const nuevoFavoritoReceptor = mensaje.favoritoReceptor === 1 ? 0 : 1;
+
+      mensaje.favoritoEmisor = nuevoFavoritoEmisor;
+      mensaje.favoritoReceptor = nuevoFavoritoReceptor;
+
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
+        (updatedMensaje: any) => {
+          const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
+          if (index !== -1) {
+            this.mensajes.data[index] = updatedMensaje;
+          }
+        },
+        (error) => {
+          console.error('Error al actualizar el estadoFavorito del mensaje:', error);
+        }
+      );
+    } else {
+      console.error('ID del mensaje es undefined');
+    }
+  } */
+
+  toggleEstadoPapelera(mensaje: Mensaje): void {
+    if (mensaje.idMensajes) {
+      const nuevoEstadoPapelera = 1;
+
+      mensaje.papeleraEmisor = 1;
+      mensaje.papeleraReceptor = 0;
+
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
+        (updatedMensaje: any) => {
+          const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
+          if (index !== -1) {
+            this.mensajes.data[index] = updatedMensaje;
+          }
+          this.getBorradores();
+        },
+        (error) => {
+          console.error('Error al actualizar el estadoPapelera del mensaje:', error);
+        }
+      );
+    } else {
+      console.error('ID del mensaje es undefined');
+    }
   }
 }

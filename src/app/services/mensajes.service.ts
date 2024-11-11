@@ -35,6 +35,11 @@ export class MensajesService {
     return this.http.get(`${this.apiUrl}?resource=bandejaSalida`, { headers: this.getHeaders() });
   }
 
+  // Método para obtener los mensajes de la bandeja de salida.
+  getBorradores(): Observable<any> {
+    return this.http.get(`${this.apiUrl}?resource=borradores`, { headers: this.getHeaders() });
+  }
+
   // Método para obtener los mensajes favoritos.
   getFavoritos(): Observable<any> {
     return this.http.get(`${this.apiUrl}?resource=favoritos`, { headers: this.getHeaders() });

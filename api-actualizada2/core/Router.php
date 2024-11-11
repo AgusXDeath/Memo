@@ -161,6 +161,12 @@ if ($resource) {
             verifyToken($authController);
             $result = $mensajesController->getBandejaSalida();
             break;
+
+        case 'borradores': // Agregar la ruta para los borradores
+            verifyToken($authController);
+            $result = $mensajesController->getBorradores();
+            break;  
+                    
         // Ruta para iniciar sesión (login).
         case 'login':
             if ($method === 'POST') {

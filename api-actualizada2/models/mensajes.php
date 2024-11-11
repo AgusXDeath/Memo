@@ -48,16 +48,27 @@ class Mensajes {
     }
 
     
-   // Editar un mensaje por ID
-   public function updateMensaje($id, $contenido, $estadoFavorito, $estadoPapelera) {
-    $query = "UPDATE " . $this->table . " SET mensaje = :mensaje, estadoFavorito = :estadoFavorito, estadoPapelera = :estadoPapelera WHERE idMensajes = :idMensajes";
+ // Editar un mensaje por ID
+public function updateMensaje($id, $contenido, $favoritoEmisor, $favoritoReceptor, $papeleraEmisor, $papeleraReceptor) {
+    $query = "UPDATE " . $this->table . " 
+              SET mensaje = :mensaje, 
+                  favoritoEmisor = :favoritoEmisor, 
+                  favoritoReceptor = :favoritoReceptor, 
+                  papeleraEmisor = :papeleraEmisor, 
+                  papeleraReceptor = :papeleraReceptor 
+              WHERE idMensajes = :idMensajes";
+              
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(":mensaje", $contenido);
-    $stmt->bindParam(":estadoFavorito", $estadoFavorito, PDO::PARAM_INT);
-    $stmt->bindParam(":estadoPapelera", $estadoPapelera, PDO::PARAM_INT);
+    $stmt->bindParam(":favoritoEmisor", $favoritoEmisor, PDO::PARAM_INT);
+    $stmt->bindParam(":favoritoReceptor", $favoritoReceptor, PDO::PARAM_INT);
+    $stmt->bindParam(":papeleraEmisor", $papeleraEmisor, PDO::PARAM_INT);
+    $stmt->bindParam(":papeleraReceptor", $papeleraReceptor, PDO::PARAM_INT);
     $stmt->bindParam(":idMensajes", $id);
+    
     return $stmt->execute();
 }
+
 
 }
 ?>

@@ -125,7 +125,9 @@ class MensajesController {
 
     // Método para obtener mensajes en la papelera
     public function getPapelera() {
+
         $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
+        
         if ($idUsuario) {
             $stmt = $this->papelera->getPapelera($idUsuario); // Obtener mensajes en la papelera
             $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtener todos los mensajes como un arreglo asociativo
@@ -145,38 +147,41 @@ class MensajesController {
             $data = json_decode(file_get_contents("php://input")); // Decodificar el JSON de la solicitud
             $receptormail = $data->receptormail; // Obtener el correo del receptor
             $mensaje = $data->mensaje; // Obtener el contenido del mensaje
-            $esBorrador = $data->esBorrador; // Obtener el estado de borrador
             // Llamar al método de enviar mensaje del modelo
-            echo $this->enviarMensaje->createMensaje($idUsuario, $receptormail, $mensaje, $esBorrador); // Retornar el resultado de la operación
+            echo $this->enviarMensaje->createMensaje($idUsuario, $receptormail, $mensaje); // Retornar el resultado de la operación
             exit();
         } else {
             echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
             exit();
         }
     }
-    // Método para borrar un mensaje por ID
+// Método para borrar un mensaje por ID
 public function deleteMensaje() {
-    $idUsuario = $this->getUsuarioIdFromToken(); // Obtener el ID del usuario
+    $idUsuario = $this->getUsuarioIdFromToken(); 
     if ($idUsuario) {
-        // Obtener el ID del mensaje desde la solicitud
         $idMensaje = $_GET['id'] ?? null;
         if ($idMensaje) {
-            // Llamar a la función de eliminar mensaje en el modelo Mensajes
-            $resultado = $this->mensajes->deleteMensaje($idMensaje);
-            if ($resultado) {
-                echo json_encode(["message" => "Mensaje eliminado correctamente"]); // Confirmación de eliminación
-            } else {
-                echo json_encode(["message" => "Error al eliminar el mensaje"]); // Mensaje de error en eliminación
+            try {
+                $resultado = $this->mensajes->deleteMensaje($idMensaje);
+                if ($resultado) {
+                    echo json_encode(["message" => "Mensaje eliminado correctamente"]);
+                } else {
+                    echo json_encode(["message" => "Error al eliminar el mensaje"]);
+                }
+            } catch (Exception $e) {
+                echo json_encode(["message" => "Error interno del servidor: " . $e->getMessage()]);
+                http_response_code(500);
             }
         } else {
-            echo json_encode(["message" => "ID de mensaje no proporcionado"]); // Mensaje de error si el ID no se proporciona
-            exit();
+            echo json_encode(["message" => "ID de mensaje no proporcionado"]);
+            http_response_code(400); // Bad Request
         }
     } else {
-        echo json_encode(["message" => "Token inválido o expirado"]); // Mensaje de error si el token es inválido
-        exit();
+        echo json_encode(["message" => "Token inválido o expirado"]);
+        http_response_code(401); // Unauthorized
     }
 }
+
 
 // Método para editar un mensaje por ID
 public function updateMensaje() {
@@ -184,15 +189,18 @@ public function updateMensaje() {
     if ($idUsuario) {
         // Obtener el ID del mensaje desde la solicitud
         $idMensaje = $_GET['id'] ?? null;
-        // Obtener el contenido del mensaje de la solicitud
+        // Obtener el contenido del mensaje y otros datos de la solicitud
         $data = json_decode(file_get_contents("php://input"));
         $contenido = $data->mensaje ?? null; // Obtener el contenido del mensaje
-        $estadoFavorito = $data->estadoFavorito ?? null; // Obtener el estado favorito
-        $estadoPapelera = $data->estadoPapelera ?? null; // Obtener el estado papelera
+        $favoritoEmisor = $data->favoritoEmisor ?? null; // Obtener favoritoEmisor
+        $favoritoReceptor = $data->favoritoReceptor ?? null; // Obtener favoritoReceptor
+        $papeleraEmisor = $data->papeleraEmisor ?? null; // Obtener papeleraEmisor
+        $papeleraReceptor = $data->papeleraReceptor ?? null; // Obtener papeleraReceptor
 
-        if ($idMensaje && $contenido !== null && $estadoFavorito !== null && $estadoPapelera !== null) {
+        // Verificar que todos los datos requeridos estén presentes
+        if ($idMensaje && $contenido !== null && $favoritoEmisor !== null && $favoritoReceptor !== null && $papeleraEmisor !== null && $papeleraReceptor !== null) {
             // Llamar a la función de actualización de mensaje en el modelo Mensajes
-            $resultado = $this->mensajes->updateMensaje($idMensaje, $contenido, $estadoFavorito, $estadoPapelera);
+            $resultado = $this->mensajes->updateMensaje($idMensaje, $contenido, $favoritoEmisor, $favoritoReceptor, $papeleraEmisor, $papeleraReceptor);
             if ($resultado) {
                 echo json_encode(["message" => "Mensaje actualizado correctamente"]); // Confirmación de actualización
                 exit();
@@ -209,6 +217,7 @@ public function updateMensaje() {
         exit();
     }
 }
+
 
 
 

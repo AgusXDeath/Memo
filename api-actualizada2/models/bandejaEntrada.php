@@ -22,7 +22,7 @@ class BandejaEntrada {
                   FROM " . $this->table . " m
                   JOIN usuarios ue ON m.emisor = ue.idUsuarios
                   JOIN usuarios ur ON m.receptor = ur.idUsuarios
-                  WHERE m.receptor = :receptor AND estadoPapelera = 0";
+                  WHERE m.receptor = :receptor AND papeleraReceptor = 0";
         $stmt = $this->conn->prepare($query); // Preparar consulta
         $stmt->bindParam(':receptor', $idUsuario); // Asignar valor al parámetro
         $stmt->execute(); // Ejecutar consulta

@@ -12,23 +12,27 @@ class Papelera {
     public function __construct($db) {
         $this->conn = $db; // Asignar conexión a la propiedad
     }
-
     public function getPapelera($idUsuario) {
-        // Consulta para seleccionar mensajes en la papelera junto con el correo del emisor y receptor
         $query = "SELECT m.*, 
                          ue.mail as emisorMail, 
                          ur.mail as receptorMail 
                   FROM " . $this->table . " m
                   JOIN usuarios ue ON m.emisor = ue.idUsuarios
                   JOIN usuarios ur ON m.receptor = ur.idUsuarios
-                  WHERE (m.receptor = :receptor OR m.emisor = :emisor) AND m.estadoPapelera = 1";
-                  
-        $stmt = $this->conn->prepare($query); // Preparar consulta
-        // Asignar valores a los parámetros
+                  WHERE 
+                      (
+                          (m.receptor = :receptor AND m.papeleraReceptor = 1) 
+                          OR 
+                          (m.emisor = :emisor AND m.papeleraEmisor = 1)
+                      )";
+    
+        $stmt = $this->conn->prepare($query); // Preparar la consulta
         $stmt->bindParam(':receptor', $idUsuario);
         $stmt->bindParam(':emisor', $idUsuario);
-        $stmt->execute(); // Ejecutar consulta
+        $stmt->execute(); // Ejecutar la consulta
         return $stmt; // Retornar el resultado
     }
+    
+
 }
 ?>

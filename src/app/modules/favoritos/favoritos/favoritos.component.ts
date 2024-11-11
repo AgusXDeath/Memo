@@ -44,42 +44,35 @@ export class FavoritosComponent implements OnInit {
 
   
   // Método para alternar el estado de favorito de un mensaje.
-toggleEstadoFavorito(mensaje: Mensaje): void {
-  console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes);
-  if (mensaje.idMensajes) {
-    // Cambiar el estado de favoritoEmisor a 1 y favoritoReceptor a 0
-    const nuevoFavoritoEmisor = mensaje.favoritoEmisor === 1 ? 0 : 1;
-const nuevoFavoritoReceptor = mensaje.favoritoReceptor === 1 ? 0 : 1;
-
-
-    // Actualiza los valores localmente antes de la llamada a la API
-    mensaje.favoritoEmisor = nuevoFavoritoEmisor;
-    mensaje.favoritoReceptor = nuevoFavoritoReceptor;
-
-    // Llamada a la API para actualizar el mensaje con los nuevos valores
-    this.mensajesService.updateMensaje(
-      mensaje.idMensajes, 
-      mensaje.mensaje, 
-      nuevoFavoritoEmisor, 
-      nuevoFavoritoReceptor, 
-      mensaje.papeleraEmisor, 
-      mensaje.papeleraReceptor
-    ).subscribe(
-      (updatedMensaje: any) => {
-        console.log('Respuesta de la API:', updatedMensaje);
-        const index = this.mensajes.findIndex(m => m.idMensajes === mensaje.idMensajes);
-        if (index !== -1) {
-          this.mensajes[index] = updatedMensaje; // Actualiza el mensaje en el array
+  toggleEstadoFavorito(mensaje: Mensaje): void {
+    console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes);
+    if (mensaje.idMensajes) {
+      const nuevoFavoritoEmisor = mensaje.favoritoEmisor === 1 ? 0 : 1;
+      const nuevoFavoritoReceptor = mensaje.favoritoReceptor === 1 ? 0 : 1;
+  
+      mensaje.favoritoEmisor = nuevoFavoritoEmisor;
+      mensaje.favoritoReceptor = nuevoFavoritoReceptor;
+  
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        nuevoFavoritoEmisor, 
+        nuevoFavoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
+        (updatedMensaje: any) => {
+          console.log('Respuesta de la API:', updatedMensaje);
+          this.getMensajesFavoritos(); // Refresca la lista de favoritos tras la actualización
+        },
+        (error) => {
+          console.error('Error al actualizar el estadoFavorito del mensaje:', error);
         }
-        
-      },
-      (error) => {
-        console.error('Error al actualizar el estadoFavorito del mensaje:', error);
-      }
-    );
-  } else {
-    console.error('ID del mensaje es undefined');
+      );
+    } else {
+      console.error('ID del mensaje es undefined');
+    }
   }
-}
+  
 
 }

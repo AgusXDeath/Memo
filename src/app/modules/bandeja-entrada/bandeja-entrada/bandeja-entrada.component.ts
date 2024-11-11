@@ -48,9 +48,13 @@ export class BandejaEntradaComponent implements OnInit {
       const nuevoFavoritoEmisor = mensaje.favoritoEmisor === 1 ? 0 : 1;
       const nuevoFavoritoReceptor = mensaje.favoritoReceptor === 1 ? 0 : 1;
       
-  
-      console.log('Favorito Emisor:', mensaje.favoritoEmisor);  // Log del nuevo estado
-      console.log('Favorito Receptor:', mensaje.favoritoReceptor); // Log del nuevo estado
+// Actualizar los valores en el objeto mensaje
+mensaje.favoritoEmisor = nuevoFavoritoEmisor;
+mensaje.favoritoReceptor = nuevoFavoritoReceptor;
+
+console.log('Nuevo Favorito Emisor:', mensaje.favoritoEmisor); // Log del nuevo estado
+console.log('Nuevo Favorito Receptor:', mensaje.favoritoReceptor); // Log del nuevo estado
+
       
       this.mensajesService.updateMensaje(
         mensaje.idMensajes, 

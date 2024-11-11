@@ -56,15 +56,30 @@ export class MensajesService {
 }
 
 
- // Método para actualizar un mensaje.
-updateMensaje(id: number, mensaje: string, estadoFavorito: number, estadoPapelera: number): Observable<any> {
-  const body = { 
-    mensaje, 
-    estadoFavorito, 
-    estadoPapelera 
-  }; // Datos a enviar en el cuerpo de la solicitud.
+// Método para actualizar un mensaje.
+updateMensaje(
+  id: number,
+  mensaje: string,
+  favoritoEmisor?: number,
+  favoritoReceptor?: number,
+  papeleraEmisor?: number,
+  papeleraReceptor?: number
+): Observable<any> {
+  // Cuerpo de la solicitud con los campos necesarios.
+  const body: any = { mensaje };
   
-  return this.http.put(`${this.apiUrl}?resource=mensajes&id=${id}`, body, { headers: this.getHeaders() });
+  // Solo agrega los campos si tienen un valor definido.
+  if (favoritoEmisor !== undefined) body.favoritoEmisor = favoritoEmisor;
+  if (favoritoReceptor !== undefined) body.favoritoReceptor = favoritoReceptor;
+  if (papeleraEmisor !== undefined) body.papeleraEmisor = papeleraEmisor;
+  if (papeleraReceptor !== undefined) body.papeleraReceptor = papeleraReceptor;
+
+  // Realiza la solicitud HTTP PUT.
+  return this.http.put(
+    `${this.apiUrl}?resource=mensajes&id=${id}`, 
+    body, 
+    { headers: this.getHeaders() }
+  );
 }
 
 }

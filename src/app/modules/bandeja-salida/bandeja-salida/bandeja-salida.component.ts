@@ -8,8 +8,10 @@ interface Mensaje {
   emisorMail: string;
   receptorMail: string;
   mensaje: string;
-  estadoFavorito: number; // Si no se recibe, asegúrate de que se maneje
-  estadoPapelera: number; // Si no se recibe, asegúrate de que se maneje
+  favoritoEmisor: number;
+  favoritoReceptor: number;
+  papeleraEmisor: number;
+  papeleraReceptor: number;
   idMensajes: number; // Cambiado a idMensajes
 }
 
@@ -42,35 +44,50 @@ export class BandejaSalidaComponent implements OnInit {
       }
     );
   }
-
-  // Método para actualizar solo el contenido del mensaje.
-  updateMensajeContenido(mensaje: Mensaje, nuevoContenido: string): void {
-    if (mensaje.idMensajes) { // Asegurarse de que el id no sea undefined
-      this.mensajesService.updateMensaje(mensaje.idMensajes, nuevoContenido, mensaje.estadoFavorito, mensaje.estadoPapelera).subscribe(
-        (updatedMensaje: Mensaje) => {
-          const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes); // Encontrar el índice del mensaje actualizado.
-          if (index !== -1) {
-            this.mensajes.data[index] = updatedMensaje; // Actualizar el mensaje en el array.
-          }
-        },
-        (error) => {
-          console.error('Error al actualizar el contenido del mensaje:', error); // Manejar errores al actualizar el mensaje.
+// Método para actualizar solo el contenido del mensaje.
+updateMensajeContenido(mensaje: Mensaje, nuevoContenido: string): void {
+  if (mensaje.idMensajes) { // Asegurarse de que el id no sea undefined
+    this.mensajesService.updateMensaje(
+      mensaje.idMensajes, 
+      nuevoContenido, 
+      mensaje.favoritoEmisor,  // Usamos favoritoEmisor en lugar de estadoFavorito
+      mensaje.favoritoReceptor, // Usamos favoritoReceptor
+      mensaje.papeleraEmisor,   // Usamos papeleraEmisor
+      mensaje.papeleraReceptor  // Usamos papeleraReceptor
+    ).subscribe(
+      (updatedMensaje: Mensaje) => {
+        const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes); // Encontrar el índice del mensaje actualizado.
+        if (index !== -1) {
+          this.mensajes.data[index] = updatedMensaje; // Actualizar el mensaje en el array.
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Error al actualizar el contenido del mensaje:', error); // Manejar errores al actualizar el mensaje.
+      }
+    );
   }
+}
+
 
   toggleEstadoFavorito(mensaje: Mensaje): void {
-    console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes); // Log del ID
+    console.log('Cambiar estado favorito para el mensaje ID:', mensaje.idMensajes); // Log del ID
     if (mensaje.idMensajes) {
-      console.log('Estado actual de favorito:', mensaje.estadoFavorito); // Log del estado actual
-      const nuevoEstadoFavorito = mensaje.estadoFavorito === 1 ? 0 : 1; // Alternar entre 0 y 1
-      console.log('Nuevo estado favorito:', nuevoEstadoFavorito); // Log del nuevo estado
+      // Establecer favoritoEmisor a 1 y favoritoReceptor a 0
+      const nuevoFavoritoEmisor = mensaje.favoritoEmisor === 1 ? 0 : 1;
+const nuevoFavoritoReceptor = mensaje.favoritoReceptor === 1 ? 0 : 1;
+
   
-      // Actualiza localmente el estado antes de la llamada a la API
-      mensaje.estadoFavorito = nuevoEstadoFavorito; 
-  
-      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, nuevoEstadoFavorito, mensaje.estadoPapelera).subscribe(
+      console.log('Favorito Emisor:', mensaje.favoritoEmisor);  // Log del nuevo estado
+      console.log('Favorito Receptor:', mensaje.favoritoReceptor); // Log del nuevo estado
+      
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
         (updatedMensaje: any) => {
           console.log('Respuesta de la API:', updatedMensaje); // Verifica la respuesta de la API
           const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
@@ -89,22 +106,31 @@ export class BandejaSalidaComponent implements OnInit {
   
   toggleEstadoPapelera(mensaje: Mensaje): void {
     if (mensaje.idMensajes) {
-      console.log('Estado actual de papelera:', mensaje.estadoPapelera); // Log del estado actual
+      
       const nuevoEstadoPapelera = 1; // Establecer siempre a 1
       console.log('Nuevo estado papelera:', nuevoEstadoPapelera); // Log del nuevo estado
       console.log('Tipo de nuevo estado papelera:', typeof nuevoEstadoPapelera); // Log del tipo del nuevo estado
   
-      // Actualiza localmente el estado antes de la llamada a la API
-      mensaje.estadoPapelera = nuevoEstadoPapelera; 
+      // Establecer papeleraEmisor a 1 y papeleraReceptor a 0
+      mensaje.papeleraEmisor = 1; 
+      mensaje.papeleraReceptor = 0; 
+
   
-      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, mensaje.estadoFavorito, nuevoEstadoPapelera).subscribe(
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
         (updatedMensaje: any) => {
           console.log('Respuesta de la API:', updatedMensaje); // Muestra lo que devuelve el servidor
           const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
           if (index !== -1) {
             this.mensajes.data[index] = updatedMensaje; // Actualiza el mensaje en el array
           }
-          this.getMensajesBandejaSalida();
+          this.getMensajesBandejaSalida(); // Vuelve a obtener los mensajes
         },
         (error) => {
           console.error('Error al actualizar el estadoPapelera del mensaje:', error);

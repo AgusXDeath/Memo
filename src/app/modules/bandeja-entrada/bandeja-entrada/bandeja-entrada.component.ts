@@ -3,13 +3,16 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MensajesService } from 'src/app/services/mensajes.service';
 
 interface Mensaje {
-  emisorMail: string; // Cambiado de `emisor` a `emisorMail`
-  receptorMail: string; // Cambiado de `receptor` a `receptorMail`
+  emisorMail: string;
+  receptorMail: string;
   mensaje: string;
-  idMensajes: number; 
-  estadoFavorito: number; 
-  estadoPapelera: number; 
+  favoritoEmisor: number;
+  favoritoReceptor: number;
+  papeleraEmisor: number;
+  papeleraReceptor: number;
+  idMensajes: number; // Cambiado a idMensajes
 }
+
 
 @Component({
   selector: 'app-bandeja-entrada',
@@ -39,17 +42,29 @@ export class BandejaEntradaComponent implements OnInit {
   }
 
   toggleEstadoFavorito(mensaje: Mensaje): void {
-    console.log('Toggle estado favorito para mensaje ID:', mensaje.idMensajes);
+    console.log('Cambiar estado favorito para el mensaje ID:', mensaje.idMensajes); // Log del ID
     if (mensaje.idMensajes) {
-      const nuevoEstadoFavorito = mensaje.estadoFavorito === 1 ? 0 : 1;
-      mensaje.estadoFavorito = nuevoEstadoFavorito;
+      // Establecer favoritoEmisor a 1 y favoritoReceptor a 0
+      const nuevoFavoritoEmisor = mensaje.favoritoEmisor === 1 ? 0 : 1;
+      const nuevoFavoritoReceptor = mensaje.favoritoReceptor === 1 ? 0 : 1;
+      
   
-      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, nuevoEstadoFavorito, mensaje.estadoPapelera).subscribe(
+      console.log('Favorito Emisor:', mensaje.favoritoEmisor);  // Log del nuevo estado
+      console.log('Favorito Receptor:', mensaje.favoritoReceptor); // Log del nuevo estado
+      
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
         (updatedMensaje: any) => {
-          console.log('Respuesta de la API:', updatedMensaje);
+          console.log('Respuesta de la API:', updatedMensaje); // Verifica la respuesta de la API
           const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
           if (index !== -1) {
-            this.mensajes.data[index] = updatedMensaje;
+            this.mensajes.data[index] = updatedMensaje; // Actualiza el mensaje en el array
           }
         },
         (error) => {
@@ -57,31 +72,44 @@ export class BandejaEntradaComponent implements OnInit {
         }
       );
     } else {
-      console.error('ID del mensaje es undefined');
+      console.error('ID del mensaje es undefined'); // Manejar el caso donde el ID es undefined
     }
   }
-
+  
   toggleEstadoPapelera(mensaje: Mensaje): void {
     if (mensaje.idMensajes) {
+      
       const nuevoEstadoPapelera = 1; // Establecer siempre a 1
-      mensaje.estadoPapelera = nuevoEstadoPapelera;
+      console.log('Nuevo estado papelera:', nuevoEstadoPapelera); // Log del nuevo estado
+      console.log('Tipo de nuevo estado papelera:', typeof nuevoEstadoPapelera); // Log del tipo del nuevo estado
   
-      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, mensaje.estadoFavorito, nuevoEstadoPapelera).subscribe(
+      // Establecer papeleraEmisor a 1 y papeleraReceptor a 0
+      mensaje.papeleraEmisor = 0; 
+      mensaje.papeleraReceptor = 1; 
+
+  
+      this.mensajesService.updateMensaje(
+        mensaje.idMensajes, 
+        mensaje.mensaje, 
+        mensaje.favoritoEmisor, 
+        mensaje.favoritoReceptor, 
+        mensaje.papeleraEmisor, 
+        mensaje.papeleraReceptor
+      ).subscribe(
         (updatedMensaje: any) => {
-          console.log('Respuesta de la API:', updatedMensaje);
+          console.log('Respuesta de la API:', updatedMensaje); // Muestra lo que devuelve el servidor
           const index = this.mensajes.data.findIndex(m => m.idMensajes === mensaje.idMensajes);
           if (index !== -1) {
-            this.mensajes.data[index] = updatedMensaje;
+            this.mensajes.data[index] = updatedMensaje; // Actualiza el mensaje en el array
           }
-          this.getMensajes();
+          this.getMensajes(); // Vuelve a obtener los mensajes
         },
-         
         (error) => {
           console.error('Error al actualizar el estadoPapelera del mensaje:', error);
         }
       );
     } else {
-      console.error('ID del mensaje es undefined');
+      console.error('ID del mensaje es undefined'); // Manejar el caso donde el ID es undefined
     }
   }
 }

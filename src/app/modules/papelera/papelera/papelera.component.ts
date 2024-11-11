@@ -4,12 +4,14 @@ import { MensajesService } from 'src/app/services/mensajes.service';
 
 // Definición de la interfaz para un mensaje.
 interface Mensaje {
-  idMensajes: number;
-  emisorMail: string; // Actualizado para reflejar el correo del emisor
-  receptorMail: string; // Actualizado para reflejar el correo del receptor
+  emisorMail: string;
+  receptorMail: string;
   mensaje: string;
-  estadoFavorito: number; // Agregar esta línea
-  estadoPapelera: number; // Asegúrate de que esta línea también esté presente
+  favoritoEmisor: number;
+  favoritoReceptor: number;
+  papeleraEmisor: number;
+  papeleraReceptor: number;
+  idMensajes: number; // Cambiado a idMensajes
 }
 
 // Definir el componente Papelera y sus metadatos.
@@ -57,32 +59,42 @@ deleteMensaje(idMensajes: number): void {
   );
 }
 
-  // Método para alternar el estado de papelera de un mensaje.
-  toggleEstadoPapelera(mensaje: Mensaje): void {
-    if (mensaje.idMensajes) {
-      console.log('Estado actual de papelera:', mensaje.estadoPapelera); // Log del estado actual
-      const nuevoEstadoPapelera = 0; // Establecer siempre a 0
-      console.log('Nuevo estado papelera:', nuevoEstadoPapelera); // Log del nuevo estado
+ // Método para alternar el estado de papelera de un mensaje.
+toggleEstadoPapelera(mensaje: Mensaje): void {
+  if (mensaje.idMensajes) {
+    
+    const nuevoPapeleraEmisor = 0; // Establecer papeleraEmisor a 1
+    const nuevoPapeleraReceptor = 0; // Establecer papeleraReceptor a 0
+    console.log('Nuevo estado papelera:', nuevoPapeleraEmisor, nuevoPapeleraReceptor); // Log del nuevo estado
 
-      // Actualiza localmente el estado antes de la llamada a la API
-      mensaje.estadoPapelera = nuevoEstadoPapelera;
+    // Actualiza los valores localmente antes de la llamada a la API
+    mensaje.papeleraEmisor = nuevoPapeleraEmisor;
+    mensaje.papeleraReceptor = nuevoPapeleraReceptor;
 
-      this.mensajesService.updateMensaje(mensaje.idMensajes, mensaje.mensaje, mensaje.estadoFavorito, nuevoEstadoPapelera).subscribe(
-        (updatedMensaje: Mensaje) => {
-          console.log('Respuesta de la API:', updatedMensaje); // Verifica la respuesta de la API
-          const index = this.mensajes.findIndex(m => m.idMensajes === mensaje.idMensajes);
-          if (index !== -1) {
-            this.mensajes[index] = updatedMensaje; // Actualiza el mensaje en el array
-          }
-           // Actualiza la tabla de mensajes después de la actualización
-        this.getMensajesPapelera(); // Llamar al método para recargar los mensajes de la papelera
-        },
-        (error) => {
-          console.error('Error al actualizar el estadoPapelera del mensaje:', error);
+    // Llamada a la API para actualizar el mensaje con los nuevos valores
+    this.mensajesService.updateMensaje(
+      mensaje.idMensajes, 
+      mensaje.mensaje, 
+      mensaje.favoritoEmisor, 
+      mensaje.favoritoReceptor, 
+      nuevoPapeleraEmisor, 
+      nuevoPapeleraReceptor
+    ).subscribe(
+      (updatedMensaje: any) => {
+        console.log('Respuesta de la API:', updatedMensaje); // Muestra la respuesta de la API
+        const index = this.mensajes.findIndex(m => m.idMensajes === mensaje.idMensajes);
+        if (index !== -1) {
+          this.mensajes[index] = updatedMensaje; // Actualiza el mensaje en el array
         }
-      );
-    } else {
-      console.error('ID del mensaje es undefined'); // Manejar el caso donde el ID es undefined
-    }
+        this.getMensajesPapelera(); // Actualiza la lista de mensajes en la papelera
+      },
+      (error) => {
+        console.error('Error al actualizar el estadoPapelera del mensaje:', error); // Maneja el error si lo hay
+      }
+    );
+  } else {
+    console.error('ID del mensaje es undefined'); // Maneja el caso donde el ID es undefined
   }
+}
+
 }

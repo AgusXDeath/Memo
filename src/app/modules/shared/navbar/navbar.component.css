@@ -98,10 +98,6 @@
   display: block;
 }
 
-.burger input {
-  display: none;
-}
-
 .burger span {
   display: block;
   position: absolute;
@@ -132,18 +128,19 @@
   transform: translateY(-100%);
 }
 
-.burger input:checked ~ span:nth-of-type(1) {
+/* Cambia la apariencia del botón cuando el drawer está abierto */
+.burger span.open:nth-of-type(1) {
   transform: rotate(45deg);
   top: -2px;
   left: 5px;
 }
 
-.burger input:checked ~ span:nth-of-type(2) {
+.burger span.open:nth-of-type(2) {
   width: 0%;
   opacity: 0;
 }
 
-.burger input:checked ~ span:nth-of-type(3) {
+.burger span.open:nth-of-type(3) {
   transform: rotate(-45deg);
   top: 15px;
   left: 5px;

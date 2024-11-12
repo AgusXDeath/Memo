@@ -3,6 +3,9 @@
       <span>Tabla Grupos Funciones</span>
     </mat-toolbar>
 </div>
+<div *ngIf="isLoading" class="spinner"></div>
+
+<div *ngIf="!isLoading">
 
 <table mat-table [dataSource]="gruposFunciones" class="mat-elevation-z8">
 

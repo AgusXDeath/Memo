@@ -23,6 +23,8 @@ export class BandejaEntradaComponent implements OnInit {
   mensajes = new MatTableDataSource<Mensaje>();
   displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje', 'acciones'];
 
+  isLoading = true;  // Variable para gestionar el estado de carga
+
   constructor(private mensajesService: MensajesService) {}
 
   ngOnInit(): void {
@@ -30,13 +32,16 @@ export class BandejaEntradaComponent implements OnInit {
   }
 
   private getMensajes(): void {
+    this.isLoading = true;  // Mostrar spinner al iniciar la carga de datos
     this.mensajesService.getBandejaEntrada().subscribe(
       (data: Mensaje[]) => {
         console.log('Mensajes recibidos:', data);
         this.mensajes.data = data;
-      },
+        this.isLoading = false;  // Ocultar spinner al terminar la carga
+         },
       (error) => {
         console.error('Error al obtener mensajes', error);
+        this.isLoading = false;  // Ocultar spinner al terminar la carga
       }
     );
   }

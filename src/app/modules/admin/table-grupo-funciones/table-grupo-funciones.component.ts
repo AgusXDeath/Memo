@@ -13,6 +13,8 @@ export class TablaGruposFuncionesComponent implements OnInit {
 
   gruposFunciones = new MatTableDataSource<any>([]);
   funcionesMap: { [key: number]: string } = {}; // Mapa para almacenar descripciones de funciones
+  isLoading = true;  // Variable para gestionar el estado de carg
+  
 
   constructor(private gruposFuncionesService: UsuariosService, public dialog: MatDialog) {}
 
@@ -22,32 +24,33 @@ export class TablaGruposFuncionesComponent implements OnInit {
   }
 
   loadGruposFunciones(): void {
+    this.isLoading = true; // Mostrar el spinner al iniciar la carga
     this.gruposFuncionesService.getGrupoFunciones().subscribe(
       (gruposFunciones) => {
         this.gruposFunciones.data = gruposFunciones;
+        this.isLoading = false; // Ocultar el spinner al finalizar la carga
       },
       (error) => {
         console.error('Error al cargar grupos funciones:', error);
+        this.isLoading = false; // Ocultar el spinner en caso de error
       }
     );
   }
 
-  // Nueva función para cargar las descripciones de las funciones
   loadFunciones(): void {
     this.gruposFuncionesService.getFunciones().subscribe(
       (funciones) => {
-        console.log('Funciones obtenidas:', funciones); // Verifica que estés obteniendo funciones
-        this.funcionesMap = {}; // Reiniciar el mapa antes de llenarlo
+        this.funcionesMap = {};
         funciones.forEach(funcion => {
-          this.funcionesMap[funcion.idFuncion] = funcion.descripcion; // Almacena la descripción por ID
+          this.funcionesMap[funcion.idFuncion] = funcion.descripcion;
         });
-        console.log('Mapa de funciones:', this.funcionesMap); // Verifica que el mapa se esté llenando correctamente
       },
       (error) => {
         console.error('Error al cargar funciones:', error);
       }
     );
   }
+
 
   openCreateForm(): void {
     const dialogRef = this.dialog.open(ModalAgregarGrupofuncionesComponent, {

@@ -21,6 +21,7 @@ interface Mensaje {
 export class FavoritosComponent implements OnInit {
   mensajes: Mensaje[] = []; // Array para almacenar los mensajes.
   displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje', 'acciones']; // Añadir 'acciones'.
+  isLoading= true; 
 
   // Constructor que inyecta el servicio de mensajes.
   constructor(private mensajesService: MensajesService) {}
@@ -32,12 +33,15 @@ export class FavoritosComponent implements OnInit {
 
   // Método para obtener mensajes de favoritos desde el servicio.
   getMensajesFavoritos(): void {
+    this.isLoading = true; // Mostrar el spinner mientras se obtienen los mensajes.
     this.mensajesService.getFavoritos().subscribe(
       (data: Mensaje[]) => {
         this.mensajes = data; // Asignar los datos recibidos al array de mensajes.
+      this.isLoading = false;
       },
       (error) => {
         console.error('Error al obtener los mensajes de favoritos:', error); // Manejar errores al obtener los mensajes.
+        this.isLoading = false;
       }
     );
   }

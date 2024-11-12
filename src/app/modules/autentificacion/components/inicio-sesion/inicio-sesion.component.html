@@ -2,8 +2,9 @@
   <div class="image-section"></div> <!-- Sección de la imagen de fondo -->
 
   <div class="body">
+    <mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
     <div class="login">
-      <mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
+      
 
       <form class="img" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <img src="../../../../../assets/img/logo1.png" width="50%">

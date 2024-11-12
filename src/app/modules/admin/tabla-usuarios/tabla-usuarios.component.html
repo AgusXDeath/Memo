@@ -4,6 +4,9 @@
         </span>
       </mat-toolbar>
   </div>
+  <div *ngIf="isLoading" class="spinner"></div>
+
+<div *ngIf="!isLoading">
 <!-- Tabla para listar los usuarios -->
 <table mat-table [dataSource]="usuarios" class="mat-elevation-z8">
 
@@ -60,6 +63,6 @@
   <tr mat-header-row *matHeaderRowDef="['idUsuarios','nombre', 'email', 'clave', 'grupoDescripcion', 'acciones']"></tr>
   <tr mat-row *matRowDef="let row; columns: ['idUsuarios','nombre', 'email', 'clave', 'grupoDescripcion', 'acciones'];"></tr>
 </table>
-
+</div>
 <!-- Botón para abrir el modal de creación -->
 <button class="boton-agregar" mat-raised-button (click)="openCreateForm()">Agregar Usuario</button>

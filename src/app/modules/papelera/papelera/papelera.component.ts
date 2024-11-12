@@ -23,6 +23,7 @@ interface Mensaje {
 export class PapeleraComponent implements OnInit {
   mensajes: Mensaje[] = []; // Array para almacenar los mensajes.
   displayedColumns: string[] = ['emisorMail', 'receptorMail', 'mensaje', 'acciones']; // Columnas que se mostrarán en la tabla.
+  isLoading = true;
 
   // Constructor que inyecta el servicio de mensajes.
   constructor(private mensajesService: MensajesService) {}
@@ -34,12 +35,16 @@ export class PapeleraComponent implements OnInit {
 
   // Método para obtener mensajes de la papelera desde el servicio.
   getMensajesPapelera(): void {
+    this.isLoading = true;
     this.mensajesService.getPapelera().subscribe(
       (data: Mensaje[]) => {
         this.mensajes = data; // Asignar los datos recibidos al array de mensajes.
+      
+      this.isLoading = false;
       },
       (error) => {
         console.error('Error al obtener los mensajes de la papelera:', error); // Manejar errores al obtener los mensajes.
+        this.isLoading = false; // Desactivar el cargador de datos.
       }
     );
   }

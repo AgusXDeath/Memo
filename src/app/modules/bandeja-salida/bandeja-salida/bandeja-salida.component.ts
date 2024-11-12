@@ -24,6 +24,7 @@ interface Mensaje {
 export class BandejaSalidaComponent implements OnInit {
   mensajes = new MatTableDataSource<Mensaje>(); // Array para almacenar los mensajes.
   displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones']; // Columnas que se mostrarán en la tabla.
+   isLoading= true;
 
   // Constructor que inyecta el servicio de mensajes.
   constructor(private mensajesService: MensajesService) { }
@@ -34,13 +35,16 @@ export class BandejaSalidaComponent implements OnInit {
   }
 
   getMensajesBandejaSalida(): void {
+    this.isLoading =true
     this.mensajesService.getBandejaSalida().subscribe(
       (data: Mensaje[]) => {
         console.log('Mensajes recibidos:', data); // Verifica la respuesta
         this.mensajes.data = data; // Asignar los datos recibidos al array de mensajes.
-      },
+     this.isLoading = false;},
+      
       (error) => {
         console.error('Error al obtener los mensajes de la bandeja de salida:', error); // Manejar errores al obtener los mensajes.
+        this.isLoading =false;
       }
     );
   }

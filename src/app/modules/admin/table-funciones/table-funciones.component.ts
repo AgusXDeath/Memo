@@ -14,6 +14,7 @@ export class TablaFuncionesComponent implements OnInit {
   // Fuente de datos para la tabla de funciones
   funciones = new MatTableDataSource<any>([]);
   selectedFuncion: any = { idFuncion: null, descripcion: '' };  // Función seleccionada
+  isLoading = true;  // Variable para gestionar el estado de carga
 
   // Inyecta el servicio de funciones (puede ser el mismo que usas para los grupos si es multiuso) y MatDialog
   constructor(private apiService: UsuariosService, public dialog: MatDialog) {}
@@ -25,11 +26,14 @@ export class TablaFuncionesComponent implements OnInit {
 
   // Cargar las funciones
   loadFunciones() {
+    this.isLoading = true;  // Mostrar spinner al iniciar la carga de datos
     this.apiService.getFunciones().subscribe(funciones => {
       console.log('Funciones:', funciones); // Log de las funciones
       this.funciones.data = funciones;
+      this.isLoading = false;  // Ocultar spinner al terminar la carga
     }, error => {
       console.error('Error al cargar funciones:', error);
+      this.isLoading = false;  // Ocultar spinner al terminar la carga
     });
   }
 

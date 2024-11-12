@@ -23,6 +23,7 @@ interface Mensaje {
 export class BorradoresComponent implements OnInit {
   mensajes = new MatTableDataSource<Mensaje>();
   displayedColumns: string[] = ['emisor', 'receptor', 'mensaje', 'acciones'];
+  isLoading =true;
 
   constructor(private mensajesService: MensajesService) { }
 
@@ -31,13 +32,16 @@ export class BorradoresComponent implements OnInit {
   }
 
   getBorradores(): void {
+    this.isLoading = true; 
     this.mensajesService.getBorradores().subscribe(
       (data: Mensaje[]) => {
         console.log('Borradores recibidos:', data);
         this.mensajes.data = data;
+      this.isLoading =false;
       },
       (error) => {
         console.error('Error al obtener los borradores:', error);
+        this.isLoading = false;
       }
     );
   }

@@ -4,6 +4,10 @@
       </span>
     </mat-toolbar>
 
+    <div *ngIf="isLoading" class="spinner"></div>
+
+    <div *ngIf="!isLoading">
+
   <table mat-table [dataSource]="mensajes" class="mat-elevation-z8 trash-table">
     
     <!-- Definición de la columna "Emisor" -->

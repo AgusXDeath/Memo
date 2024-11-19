@@ -63,37 +63,33 @@
       transform: translateY(-100%);
     }
   }
-
-  /* From Uiverse.io by andrew-demchenk0 */ 
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
+/* Estilo para el contenedor row */
+.row {
+  display: flex;
+  flex-direction: row; /* Alineación horizontal */
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
+  gap: 8px; /* Espacio entre los botones */
+}
+/* Estilo general para los botones */
+.bin-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 40px;
+  border-radius: 15%;
+  border: none;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  color: white; /* Color del ícono */
 }
 
-.container {
-  display: block;
-  position: relative;
-  cursor: pointer;
-  user-select: none;
+/* Botón favorito: amarillo */
+.bin-button.favorito {
+  background-color: #ffeb3b; /* Amarillo */
+  color: #ffffff; /* Icono negro */
 }
 
-.container svg {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 50px;
-  width: 50px;
-  transition: all 0.3s;
-  fill: #666;
-}
-
-.container svg:hover {
-  transform: scale(1.1);
-}
-
-.container input:checked ~ svg {
-  fill: #ffeb49;
+.bin-button.favorito:hover {
+  background-color: #fdd835; /* Amarillo más oscuro */
 }

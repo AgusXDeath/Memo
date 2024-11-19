@@ -12,68 +12,111 @@
     margin-top: 64px;
 }
 
-/* From Uiverse.io by andrew-demchenk0 */ 
-.container input {
+
+/* Estilo del Spinner */
+.spinner {
+  --size: 30px;
+  --first-block-clr: #002952;
+  --second-block-clr: #a8cf45;
+  --clr: #111;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: auto;
+}
+
+.spinner::after,
+.spinner::before {
+  box-sizing: border-box;
   position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
+  content: "";
+  width: var(--size);
+  height: var(--size);
+  top: 50%;
+  animation: up 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
+  left: 50%;
+  background: var(--first-block-clr);
 }
 
-.container {
-  display: block;
-  position: relative;
-  cursor: pointer;
-  user-select: none;
+.spinner::after {
+  background: var(--second-block-clr);
+  top: calc(50% - var(--size));
+  left: calc(50% - var(--size));
+  animation: down 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
 }
 
-.container svg {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 50px;
-  width: 50px;
-  transition: all 0.3s;
-  fill: #666;
+@keyframes down {
+  0%, 100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(100%);
+  }
+  50% {
+    transform: translateX(100%) translateY(100%);
+  }
+  75% {
+    transform: translateY(100%);
+  }
 }
 
-.container svg:hover {
-  transform: scale(1.1);
+@keyframes up {
+  0%, 100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(-100%) translateY(-100%);
+  }
+  75% {
+    transform: translateY(-100%);
+  }
 }
 
-.container input:checked ~ svg {
-  fill: #ffeb49;
+/* Estilo para el contenedor row */
+.row {
+  display: flex;
+  flex-direction: row; /* Alineación horizontal */
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
+  gap: 8px; /* Espacio entre los botones */
 }
 
-/* From Uiverse.io by vinodjangid07 */ 
+/* Estilo general para los botones */
 .bin-button {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 55px;
-  height: 55px;
-  border-radius: 15px;
-  background-color: rgb(255, 95, 95);
-  cursor: pointer;
-  border: 3px solid rgb(255, 201, 201);
-  transition-duration: 0.3s;
+  width: 30px;
+  height: 40px;
+  border-radius: 15%;
+  border: none;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  color: white; /* Color del ícono */
 }
-.bin-bottom {
-  width: 15px;
+
+/* Botón favorito: amarillo */
+.bin-button.favorito {
+  background-color: #ffeb3b; /* Amarillo */
+  color: #ffffff; /* Icono negro */
 }
-.bin-top {
-  width: 17px;
-  transform-origin: right;
-  transition-duration: 0.3s;
+
+.bin-button.favorito:hover {
+  background-color: #fdd835; /* Amarillo más oscuro */
 }
-.bin-button:hover .bin-top {
-  transform: rotate(45deg);
+
+/* Botón papelera: rojo */
+.bin-button.papelera {
+  background-color: rgb(255, 95, 95); /* Rojo */
 }
-.bin-button:hover {
-  background-color: rgb(255, 0, 0);
+
+.bin-button.papelera:hover {
+  background-color: rgb(255, 0, 0); /* Rojo más oscuro */
 }
+
+/* Efecto al hacer clic */
 .bin-button:active {
   transform: scale(0.9);
 }

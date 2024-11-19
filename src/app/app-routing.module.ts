@@ -17,7 +17,7 @@ const routes: Routes = [
   {
     path: "dashboard",
     loadChildren: () => import('./modules/autentificacion/components/dashboard/dashboard.module').then(m => m.DashboardModule),
-    // canActivate: [AuthGuard] // Ruta para cargar el módulo del dashboard (comentada la guardia de autenticación).
+    canActivate: [AuthGuard] // Ruta para cargar el módulo del dashboard (comentada la guardia de autenticación).
   },
   {
     path: "**", redirectTo: "inicio-sesion", pathMatch: 'full' // Redirigir cualquier otra ruta a la ruta de inicio de sesión.

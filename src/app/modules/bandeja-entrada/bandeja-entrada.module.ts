@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BandejaEntradaRoutingModule } from './bandeja-entrada-routing.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   imports: [
     CommonModule,
     BandejaEntradaRoutingModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatButtonModule
  
   ]
 })
